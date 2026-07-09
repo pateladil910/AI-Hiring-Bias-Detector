@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | EquiHire AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-primary-fixed": "#141a34", "surface-container": "#102034", "surface-container-high": "#1b2b3f", "on-tertiary": "#2c303c", "surface-bright": "#2a3a4f", "on-error-container": "#ffdad6", outline: "#8d90a0", primary: "#bfc5e7", "inverse-surface": "#d3e4fe", "primary-fixed": "#dde1ff", "secondary-fixed": "#62fae3", "primary-fixed-dim": "#bfc5e7", surface: "#031427", "outline-variant": "#434654", "on-tertiary-fixed-variant": "#434653", "on-error": "#690005", "inverse-on-surface": "#213145", "surface-dim": "#031427", "on-background": "#d3e4fe", "surface-container-low": "#0b1c30", "on-secondary-container": "#004d44", "on-primary": "#292f4a", "error-container": "#93000a", "secondary-container": "#03c6b2", "on-surface-variant": "#c3c5d7", "inverse-primary": "#575d7b", "on-secondary-fixed-variant": "#005047", "on-secondary": "#003731", "tertiary-fixed": "#dfe2f2", background: "#031427", tertiary: "#c3c6d6", "on-primary-container": "#222843", secondary: "#44e2cd", "on-secondary-fixed": "#00201c", "primary-container": "#898fb0", "on-primary-fixed-variant": "#3f4562", "surface-container-highest": "#26364a", error: "#ffb4ab", "on-tertiary-container": "#262935", "surface-variant": "#26364a", "on-surface": "#d3e4fe", "surface-tint": "#bfc5e7", "on-tertiary-fixed": "#171b27", "surface-container-lowest": "#000f21", "tertiary-container": "#8d909f", "tertiary-fixed-dim": "#c3c6d6", "secondary-fixed-dim": "#3cddc7", "navy-deep": "#0B0F1A", "electric-blue": "#4F7CFF"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {base: "4px", "auth-card-width": "440px", xl: "64px", sm: "16px", lg: "40px", xs: "8px", md: "24px", gutter: "24px"}, fontFamily: {"display-lg": ["Geist"], "body-sm": ["Inter"], "title-sm": ["Geist"], "headline-md-mobile": ["Geist"], "body-md": ["Inter"], "headline-md": ["Geist"], "label-caps": ["Geist"], headline: ["Geist"], display: ["Geist"], body: ["Inter"], label: ["Geist"]}, fontSize: {"display-lg": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "title-sm": ["18px", {lineHeight: "24px", fontWeight: "600"}], "headline-md-mobile": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "headline-md": ["30px", {lineHeight: "38px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}]}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neural-gradient {
+            background: linear-gradient(135deg, #4F7CFF 0%, #44e2cd 100%);
+        }
+        .auth-glow:focus-within {
+            box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.25);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); opacity: 0.8; }
+            50% { transform: translateY(-10px); opacity: 1; }
+            100% { transform: translateY(0px); opacity: 0.8; }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest min-h-screen flex flex-col md:flex-row overflow-x-hidden selection:bg-primary-container selection:text-white">
+<!-- Left Panel: 3D Animation & Brand Visual -->
+<section class="relative w-full h-[409px] md:h-screen md:w-[55%] bg-navy-deep overflow-hidden flex items-center justify-center">
+<!-- 3D Scene Background -->
+<!-- STITCH_THREEJS_START:ANIMATION_2 class="absolute inset-0 w-full h-full opacity-60" -->
+<div class="absolute inset-0 w-full h-full opacity-60" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_2" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_2');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const container = document.getElementById('threejs-container') || document.body;
+const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+camera.position.z = 5;
+
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+container.appendChild(renderer.domElement);
+
+// Particle System (Neural Network Nodes)
+const particleCount = 150;
+const geometry = new THREE.BufferGeometry();
+const positions = new Float32Array(particleCount * 3);
+const colors = new Float32Array(particleCount * 3);
+
+const primaryColor = new THREE.Color(0x4F7CFF);
+const accentColor = new THREE.Color(0x2DD4BF);
+
+for (let i = 0; i < particleCount; i++) {
+    // Sphere distribution
+    const r = 2.5;
+    const theta = Math.acos(1 - 2 * Math.random());
+    const phi = 2 * Math.PI * Math.random();
+    
+    positions[i * 3] = r * Math.sin(theta) * Math.cos(phi);
+    positions[i * 3 + 1] = r * Math.sin(theta) * Math.sin(phi);
+    positions[i * 3 + 2] = r * Math.cos(theta);
+
+    const mix = Math.random();
+    colors[i * 3] = THREE.MathUtils.lerp(primaryColor.r, accentColor.r, mix);
+    colors[i * 3 + 1] = THREE.MathUtils.lerp(primaryColor.g, accentColor.g, mix);
+    colors[i * 3 + 2] = THREE.MathUtils.lerp(primaryColor.b, accentColor.b, mix);
+}
+
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+const material = new THREE.PointsMaterial({
+    size: 0.08,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.8,
+    blending: THREE.AdditiveBlending
+});
+
+const particles = new THREE.Points(geometry, material);
+scene.add(particles);
+
+// Connections (Neural Lines)
+const lineMaterial = new THREE.LineBasicMaterial({ 
+    color: 0x4F7CFF, 
+    transparent: true, 
+    opacity: 0.2 
+});
+
+const linesGeometry = new THREE.BufferGeometry();
+const linePositions = [];
+const maxDistance = 1.2;
+
+for (let i = 0; i < particleCount; i++) {
+    for (let j = i + 1; j < particleCount; j++) {
+        const dx = positions[i * 3] - positions[j * 3];
+        const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+        const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
+        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        
+        if (dist < maxDistance) {
+            linePositions.push(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
+            linePositions.push(positions[j * 3], positions[j * 3 + 1], positions[j * 3 + 2]);
+        }
+    }
+}
+linesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+const lines = new THREE.LineSegments(linesGeometry, lineMaterial);
+scene.add(lines);
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+
+// Animation Loop
+function animate() {
+    requestAnimationFrame(animate);
+    
+    particles.rotation.y += 0.002;
+    particles.rotation.x += 0.001;
+    lines.rotation.y += 0.002;
+    lines.rotation.x += 0.001;
+
+    // Pulse effect logic
+    const time = Date.now() * 0.001;
+    material.opacity = 0.6 + Math.sin(time * 2) * 0.2;
+    
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+});
+
+animate();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_2 -->
+<!-- Atmospheric Overlays -->
+<div class="absolute inset-0 bg-gradient-to-t from-navy-deep via-transparent to-transparent opacity-80 md:opacity-40"></div>
+<!-- Floating Tagline -->
+<div class="relative z-10 text-center px-md animate-float">
+<h2 class="font-display-lg text-headline-md-mobile md:text-headline-md text-white tracking-tight">
+                Fair hiring, powered by <span class="text-electric-blue">explainable AI.</span>
+</h2>
+<div class="mt-xs flex justify-center space-x-base">
+<span class="h-1 w-8 bg-electric-blue rounded-full"></span>
+<span class="h-1 w-2 bg-secondary rounded-full"></span>
+</div>
+</div>
+</section>
+<!-- Right Panel: Auth Surface -->
+<main class="w-full min-h-[614px] md:h-screen md:w-[45%] bg-white flex flex-col items-center justify-center py-xl px-md md:px-xl relative z-20 shadow-[-20px_0px_50px_rgba(0,0,0,0.1)]">
+<div class="w-full max-w-[440px] flex flex-col">
+<!-- Header & Logo -->
+<header class="mb-lg">
+<div class="flex items-center space-x-sm mb-md">
+<div class="w-10 h-10 neural-gradient rounded-lg flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">hub</span>
+</div>
+<span class="font-display-lg text-title-sm font-bold text-navy-deep tracking-tight">EquiHire AI</span>
+</div>
+<h1 class="font-display-lg text-headline-md-mobile md:text-headline-md text-navy-deep">Welcome back</h1>
+<p class="font-body-md text-on-tertiary-fixed-variant mt-xs">Access your objective candidate assessment dashboard.</p>
+</header>
+<!-- Toggle Tabs -->
+<div class="flex border-b border-outline-variant mb-lg">
+<button class="px-md py-sm font-title-sm text-body-md text-navy-deep border-b-2 border-electric-blue transition-all">
+                    Log In
+                </button>
+<button class="px-md py-sm font-title-sm text-body-md text-on-surface-variant hover:text-navy-deep transition-all">
+                    Sign Up
+                </button>
+</div>
+<!-- Login Form -->
+<form class="space-y-md" onsubmit="event.preventDefault();">
+<!-- Email Field -->
+<div class="flex flex-col space-y-xs">
+<label class="font-label-caps text-label-caps text-navy-deep uppercase" for="email">Work Email</label>
+<div class="relative group auth-glow rounded-lg">
+<input class="w-full h-12 px-md bg-white border border-outline-variant rounded-lg font-body-md text-navy-deep focus:border-electric-blue focus:ring-0 transition-all outline-none" id="email" placeholder="name@company.com" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col space-y-xs">
+<div class="flex justify-between items-center">
+<label class="font-label-caps text-label-caps text-navy-deep uppercase" for="password">Password</label>
+<a class="font-body-sm text-electric-blue hover:underline transition-all" href="#">Forgot password?</a>
+</div>
+<div class="relative group auth-glow rounded-lg">
+<input class="w-full h-12 px-md bg-white border border-outline-variant rounded-lg font-body-md text-navy-deep focus:border-electric-blue focus:ring-0 transition-all outline-none" id="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- Primary CTA -->
+<button class="w-full h-12 bg-navy-deep text-white font-title-sm text-body-md rounded-lg flex items-center justify-center space-x-sm hover:bg-electric-blue hover:scale-[1.02] active:scale-95 transition-all shadow-md group">
+<span>Sign In</span>
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</form>
+<!-- Divider -->
+<div class="relative my-lg flex items-center">
+<div class="flex-grow border-t border-outline-variant"></div>
+<span class="mx-md font-label-caps text-label-caps text-on-surface-variant">OR CONTINUE WITH</span>
+<div class="flex-grow border-t border-outline-variant"></div>
+</div>
+<!-- Social Logins -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<button class="h-12 border border-outline-variant rounded-lg flex items-center justify-center space-x-sm hover:bg-surface-container-lowest transition-all group">
+<img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmHUKfvJa-NVcKZ_D60L6XT-hm2pLC4iMXKlcI7Z3G4ZljEiC6gVhrQKQu5i73zDy0-Q8Rv5cXzTZ-4zGF-E-Sy14K2EB2G1gR5n99yal8qDUxJrFh6mvR9VfktQ_j7vguYmJ842csverLA86QZEGnvZs5zQKMdvtf46wbfc_Dg2x_HnXMH2FRuI4gdzq_WnYPMApJpWnCMJP-wVoDolW7C4lugfHb6yS35B85mtDOUJg8ZzqHywOp"/>
+<span class="font-body-md text-on-tertiary-fixed-variant group-hover:text-navy-deep">Google</span>
+</button>
+<button class="h-12 border border-outline-variant rounded-lg flex items-center justify-center space-x-sm hover:bg-surface-container-lowest transition-all group">
+<img alt="Microsoft" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLpwxWFES1SNdOY3SEVPSFas-lFtZqNDvMl1KYDzv2kEtN-77bY_IaswUVnG3jNvX7dN2xmH083Ax_qFib0pNiTU1rrxqNu2o0M83DNOBaCncTj-usGznjZK8yXTQDtgBWt6GUqJb-kwBGr6T8Nlw-nF9OddUE9XQqyRbPLGjXPxpHnQ--FkdSKjrV5t2XvYqPheerMCEkctzNqh2wh_ai6sraEaG7vPD32GA9D4lip61mKzW4FGaf"/>
+<span class="font-body-md text-on-tertiary-fixed-variant group-hover:text-navy-deep">Microsoft</span>
+</button>
+</div>
+<!-- Footer -->
+<footer class="mt-xl pt-lg border-t border-outline-variant flex flex-col md:flex-row justify-between items-center space-y-sm md:space-y-0">
+<p class="font-body-sm text-on-surface-variant">© 2024 EquiHire AI</p>
+<div class="flex space-x-md">
+<a class="font-body-sm text-on-surface-variant hover:text-navy-deep transition-colors" href="#">Privacy</a>
+<a class="font-body-sm text-on-surface-variant hover:text-navy-deep transition-colors" href="#">Terms</a>
+<a class="font-body-sm text-on-surface-variant hover:text-navy-deep transition-colors" href="#">Support</a>
+</div>
+</footer>
+</div>
+</main>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('auth-glow');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('auth-glow');
+            });
+        });
+
+        // Toggle state logic for tabs
+        const tabs = document.querySelectorAll('button[class*="px-md py-sm"]');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('text-navy-deep', 'border-b-2', 'border-electric-blue');
+                    t.classList.add('text-on-surface-variant');
+                });
+                tab.classList.remove('text-on-surface-variant');
+                tab.classList.add('text-navy-deep', 'border-b-2', 'border-electric-blue');
+            });
+        });
+    </script>
+</body></html>
