@@ -1,0 +1,27 @@
+/* Import shared visual variables and themes */
+@import url("./login.css");
+
+/* Dashboard-specific UI adjustments */
+.dashboard-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.metric-card {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(129, 140, 248, 0.45);
+    box-shadow: 0 15px 30px rgba(129, 140, 248, 0.06), inset 0 0 10px rgba(129, 140, 248, 0.02);
+}
+
+.candidate-row {
+    transition: background-color 0.2s ease;
+}
+
+.candidate-row:hover {
+    background-color: rgba(255, 255, 255, 0.45);
+}

@@ -1,181 +1,311 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Sign Up | EquiHire AI</title>
-    
-    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    
-    <link rel="stylesheet" href="./CSS/signup.css">
-    
-    <script>
-        tailwind.config = {
-            darkMode: "class", 
-            theme: {
-                extend: {
-                    colors: {
-                        "navy-deep": "#070B14",
-                        "navy-panel": "#0E1524",
-                        "electric-blue": "#3B82F6",
-                        "neon-cyan": "#10B981"
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Plus Jakarta Sans', 'sans-serif']
-                    },
-                    animation: {
-                        'radar': 'radar-beam 8s linear infinite',
-                        'pulse-slow': 'pulse-slow 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        'radar-beam': {
-                            '0%': { transform: 'rotate(0deg)' },
-                            '100%': { transform: 'rotate(360deg)' },
-                        },
-                        'pulse-slow': {
-                            '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
-                            '50%': { opacity: '0.5', transform: 'scale(1.1)' },
-                        }
-                    }
-                }
-            }
-        };
-    </script>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sign Up | EquiHire AI — Unbiased Hiring</title>
+<meta name="description" content="Create your EquiHire AI account — AI-powered fair hiring platform."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ═══ SAME DESIGN TOKENS & STYLES AS LOGIN.HTML ═══ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --indigo:#4f46e5;--indigo-l:#6366f1;--violet:#7c3aed;--teal:#0d9488;--teal-l:#14b8a6;
+  --emerald:#059669;--pink:#db2777;--slate-9:#0f172a;--slate-7:#334155;--slate-5:#64748b;
+  --slate-3:#cbd5e1;--slate-1:#f1f5f9;--white:#ffffff;--bg:#f8f7ff;
+  --card:rgba(255,255,255,0.92);--border:rgba(99,102,241,0.12);
+  --shadow:0 24px 80px rgba(79,70,229,0.07),0 0 0 1px rgba(99,102,241,0.08);
+  --r-lg:22px;--r-md:12px;--r-sm:8px;
+  --font-d:'Plus Jakarta Sans',sans-serif;--font-b:'Inter',sans-serif;
+}
+html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(--slate-7);-webkit-font-smoothing:antialiased;overflow:hidden;}
+
+.bg-canvas{position:fixed;inset:0;z-index:0;overflow:hidden;}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(90px);}
+.bg-orb-1{width:560px;height:560px;top:-180px;left:-160px;background:radial-gradient(circle,#c7d2fe 0%,#e0e7ff 55%,transparent 80%);animation:orb-drift-1 18s ease-in-out infinite;}
+.bg-orb-2{width:480px;height:480px;top:-100px;right:-140px;background:radial-gradient(circle,#a5f3fc 0%,#cffafe 50%,transparent 80%);animation:orb-drift-2 22s ease-in-out infinite;}
+.bg-orb-3{width:400px;height:400px;bottom:-120px;left:30%;background:radial-gradient(circle,#d9f99d 0%,#dcfce7 50%,transparent 80%);animation:orb-drift-3 20s ease-in-out infinite;}
+.bg-orb-4{width:300px;height:300px;bottom:10%;right:5%;background:radial-gradient(circle,#fde68a 0%,#fef9c3 50%,transparent 80%);animation:orb-drift-1 25s ease-in-out infinite reverse;}
+.bg-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(99,102,241,0.08) 1px,transparent 1px);background-size:28px 28px;}
+@keyframes orb-drift-1{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(30px,-20px) scale(1.04);}66%{transform:translate(-15px,25px) scale(0.97);}}
+@keyframes orb-drift-2{0%,100%{transform:translate(0,0) scale(1);}40%{transform:translate(-25px,20px) scale(1.06);}70%{transform:translate(15px,-12px) scale(0.96);}}
+@keyframes orb-drift-3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(20px,-18px) scale(1.05);}}
+
+.auth-wrapper{position:relative;z-index:10;height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.auth-card{width:100%;max-width:900px;height:650px;display:flex;border-radius:var(--r-lg);overflow:hidden;background:var(--card);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.85);box-shadow:var(--shadow);animation:card-in 0.7s cubic-bezier(0.34,1.56,0.64,1) both;}
+@keyframes card-in{from{opacity:0;transform:translateY(28px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+/* ── Showcase ── */
+.showcase{width:42%;flex-shrink:0;padding:32px 28px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(155deg,rgba(238,242,255,0.95) 0%,rgba(236,254,255,0.90) 55%,rgba(240,253,244,0.95) 100%);border-right:1px solid rgba(99,102,241,0.10);position:relative;overflow:hidden;}
+.showcase::before{content:'';position:absolute;top:-80px;right:-60px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,0.10) 0%,transparent 70%);pointer-events:none;}
+.showcase::after{content:'';position:absolute;bottom:-60px;left:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(13,148,136,0.09) 0%,transparent 70%);pointer-events:none;}
+
+.brand-row{display:flex;align-items:center;gap:10px;position:relative;z-index:2;}
+.brand-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--indigo) 0%,var(--teal) 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(79,70,229,0.28);font-size:18px;color:white;font-weight:700;font-family:var(--font-d);letter-spacing:-0.04em;}
+.brand-name{font-family:var(--font-d);font-size:15px;font-weight:800;color:var(--slate-9);letter-spacing:-0.03em;}
+.brand-name span{color:var(--indigo);}
+
+.showcase-center{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:12px 0;}
+
+/* Steps visual (unique to signup) */
+.steps-visual{width:220px;display:flex;flex-direction:column;gap:0;}
+.step-item{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;background:white;border-radius:12px;border:1px solid rgba(99,102,241,0.09);box-shadow:0 3px 12px rgba(79,70,229,0.05);animation:step-in 0.5s ease both;}
+.step-item+.step-item{margin-top:8px;}
+@keyframes step-in{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:translateX(0);}}
+.step-num{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:11px;font-weight:800;flex-shrink:0;}
+.step-txt h4{font-family:var(--font-d);font-size:11px;font-weight:800;color:var(--slate-9);margin-bottom:2px;}
+.step-txt p{font-size:9.5px;color:var(--slate-5);line-height:1.45;}
+
+/* Trust badges */
+.trust-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;}
+.trust-badge{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;font-family:var(--font-d);font-size:9px;font-weight:800;letter-spacing:0.04em;}
+
+.showcase-tagline{position:relative;z-index:2;text-align:center;}
+.tagline-head{font-family:var(--font-d);font-size:14px;font-weight:800;color:var(--slate-9);letter-spacing:-0.02em;line-height:1.35;}
+.tagline-head em{font-style:normal;background:linear-gradient(90deg,var(--indigo),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tagline-sub{font-size:10.5px;color:var(--slate-5);margin-top:5px;line-height:1.55;}
+
+/* ── Form Pane ── */
+.form-pane{flex:1;display:flex;align-items:center;justify-content:center;padding:28px 36px;background:white;}
+.flip-wrap{perspective:1400px;width:100%;max-width:320px;}
+.flip-inner{position:relative;width:100%;min-height:550px;transform-style:preserve-3d;transition:transform 0.78s cubic-bezier(0.42,0,0.18,1.28);}
+.flip-inner.flipped{transform:rotateY(180deg);}
+.flip-face{position:absolute;width:100%;top:0;left:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;}
+.flip-face--back{transform:rotateY(180deg);}
+
+.form-logo{display:flex;align-items:center;gap:9px;margin-bottom:20px;}
+.form-logo-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--indigo) 0%,var(--teal) 100%);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:14px;font-weight:800;color:white;letter-spacing:-0.04em;box-shadow:0 3px 12px rgba(79,70,229,0.22);}
+.form-logo-name{font-family:var(--font-d);font-size:13px;font-weight:800;color:var(--slate-9);letter-spacing:-0.03em;}
+.form-h1{font-family:var(--font-d);font-size:22px;font-weight:800;color:var(--slate-9);letter-spacing:-0.03em;line-height:1.2;margin-bottom:4px;}
+.form-sub{font-size:11.5px;color:var(--slate-5);margin-bottom:20px;}
+
+.tab-row{display:flex;border-bottom:1.5px solid #f1f5f9;margin-bottom:20px;}
+.tab-btn{padding:0 0 10px;margin-right:18px;background:none;border:none;font-family:var(--font-d);font-size:11.5px;font-weight:700;color:var(--slate-5);cursor:pointer;border-bottom:2px solid transparent;position:relative;bottom:-1.5px;transition:color 0.2s,border-color 0.2s;}
+.tab-btn.is-active{color:var(--indigo);border-bottom-color:var(--indigo);}
+
+.field-label{display:block;font-family:var(--font-d);font-size:9px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;color:var(--slate-5);margin-bottom:5px;}
+.field-input{width:100%;height:40px;padding:0 13px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:var(--r-sm);font-size:12.5px;font-family:var(--font-b);color:var(--slate-9);outline:none;transition:border-color 0.22s,box-shadow 0.22s,background 0.22s;}
+.field-input::placeholder{color:#94a3b8;}
+.field-input:focus{border-color:rgba(99,102,241,0.55);background:white;box-shadow:0 0 0 3px rgba(99,102,241,0.10);}
+.field-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.forgot-link{font-size:10px;font-weight:700;font-family:var(--font-d);color:var(--indigo);text-decoration:none;opacity:.85;}
+.forgot-link:hover{opacity:1;text-decoration:underline;}
+
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;height:42px;border-radius:10px;font-family:var(--font-d);font-size:12.5px;font-weight:800;color:white;text-decoration:none;border:none;cursor:pointer;background:linear-gradient(135deg,var(--indigo) 0%,var(--violet) 50%,#6d28d9 100%);box-shadow:0 4px 18px rgba(79,70,229,0.28),0 1px 3px rgba(79,70,229,0.18);transition:transform 0.15s,box-shadow 0.25s,filter 0.25s;position:relative;overflow:hidden;margin-top:14px;}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15) 0%,transparent 60%);pointer-events:none;}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 7px 24px rgba(79,70,229,0.35);filter:brightness(1.06);}
+.btn-primary:active{transform:translateY(0);}
+.btn-primary svg{transition:transform 0.2s;}
+.btn-primary:hover svg{transform:translateX(3px);}
+
+.divider{display:flex;align-items:center;gap:10px;margin:14px 0;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#f1f5f9;}
+.divider span{font-family:var(--font-d);font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#94a3b8;white-space:nowrap;}
+
+.oauth-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.btn-oauth{display:flex;align-items:center;justify-content:center;gap:7px;height:38px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:var(--r-sm);font-family:var(--font-d);font-size:11px;font-weight:700;color:var(--slate-7);cursor:pointer;transition:background 0.18s,border-color 0.18s,box-shadow 0.18s;}
+.btn-oauth:hover{background:white;border-color:rgba(99,102,241,0.25);box-shadow:0 2px 10px rgba(79,70,229,0.07);}
+
+.check-row{display:flex;align-items:flex-start;gap:8px;margin-top:11px;}
+.check-row input[type="checkbox"]{margin-top:1.5px;width:13px;height:13px;accent-color:var(--indigo);cursor:pointer;flex-shrink:0;}
+.check-row label{font-size:10.5px;font-weight:500;font-family:var(--font-d);color:var(--slate-5);line-height:1.5;cursor:pointer;}
+.check-row a{color:var(--indigo);font-weight:700;text-decoration:none;}
+.check-row a:hover{text-decoration:underline;}
+
+@media(max-width:700px){html,body{overflow-y:auto;}.auth-card{flex-direction:column;height:auto;}.showcase{width:100%;border-right:none;border-bottom:1px solid rgba(99,102,241,0.08);padding:24px 20px;}}
+</style>
 </head>
-<body class="bg-navy-deep min-h-screen flex flex-col md:flex-row overflow-x-hidden selection:bg-electric-blue/30 antialiased text-slate-200">
+<body>
 
-<section class="relative w-full h-[450px] md:h-screen md:w-[55%] bg-[#080d1a] overflow-hidden flex flex-col items-center justify-between p-8 md:p-16 border-b md:border-b-0 md:border-r border-slate-800/50">
-    <div class="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-electric-blue/10 rounded-full filter blur-[100px] animate-pulse-slow"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-emerald-500/5 rounded-full filter blur-[100px] animate-pulse-slow" style="animation-delay: 3s"></div>
-    <div class="absolute inset-0 bg-grid"></div>
+<div class="bg-canvas">
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-orb bg-orb-4"></div>
+  <div class="bg-dots"></div>
+</div>
 
-    <div class="relative z-10 self-start flex items-center space-x-2.5 bg-slate-900/80 backdrop-blur-md px-4 py-2 rounded-full border border-slate-800/60 shadow-xl">
-        <span class="flex h-2 w-2 relative">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-        </span>
-        <span class="font-display font-semibold text-xs tracking-wider text-slate-400 uppercase">EquiHub Guard Active</span>
+<div class="auth-wrapper">
+<div class="auth-card">
+
+  <!-- ════ LEFT SHOWCASE (Signup-specific content) ════ -->
+  <div class="showcase">
+
+    <div class="brand-row">
+      <div class="brand-icon">EQ</div>
+      <span class="brand-name">Equi<span>Hire</span> AI</span>
     </div>
 
-    <div class="relative z-10 w-64 h-64 md:w-80 md:h-80 my-auto flex items-center justify-center">
-        <div class="absolute inset-0 border border-slate-800 rounded-full shadow-[0_0_50px_rgba(0,0,0,0.5)]"></div>
-        <div class="absolute inset-8 border border-slate-800/70 rounded-full"></div>
-        <div class="absolute inset-16 border border-slate-800/40 rounded-full"></div>
-        <div class="absolute inset-24 border border-slate-800/20 rounded-full"></div>
-        
-        <div class="absolute top-0 bottom-0 left-1/2 w-[1px] bg-gradient-to-b from-transparent via-slate-800 to-transparent"></div>
-        <div class="absolute left-0 right-0 top-1/2 h-[1px] bg-gradient-to-r from-transparent via-slate-800 to-transparent"></div>
+    <div class="showcase-center">
 
-        <div class="absolute inset-0 rounded-full overflow-hidden animate-radar opacity-40" style="transform-origin: center center;">
-            <div class="w-1/2 h-1/2 absolute top-0 right-0 bg-gradient-to-tr from-transparent to-electric-blue/30 origin-bottom-left" style="transform: skewX(-45deg);"></div>
+      <!-- AI-Based Hiring Feature Highlights -->
+      <div class="steps-visual" style="width: 100%; max-width: 250px;">
+        <div class="step-item" style="animation-delay:0.3s">
+          <div class="step-num" style="background:#eef2ff;color:#4f46e5">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+            </svg>
+          </div>
+          <div class="step-txt">
+            <h4>Identity Masking</h4>
+            <p>Automatically scrubs names, age markers, pronouns, and university origins from applicant profiles to ensure blind screening.</p>
+          </div>
         </div>
+        <div class="step-item" style="animation-delay:0.5s">
+          <div class="step-num" style="background:#f0fdf4;color:#059669">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 0A4 4 0 1110.12 13.9l-3.536 3.536m7.07-7.07a4 4 0 00-5.656 5.656m0 0a4 4 0 005.656-5.656m-7.07 7.07l-3.536 3.536m7.07-7.07L12 3m0 18v-3"/>
+            </svg>
+          </div>
+          <div class="step-txt">
+            <h4>Skill Graph Matching</h4>
+            <p>Measures core technical capabilities and project complexity by parsing credentials into objective experience vectors.</p>
+          </div>
+        </div>
+        <div class="step-item" style="animation-delay:0.7s">
+          <div class="step-num" style="background:#eff6ff;color:#2563eb">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <div class="step-txt">
+            <h4>Explainable Auditing</h4>
+            <p>Generates detailed capability compliance logs justifying rank selections to prevent subjective reviewer bias.</p>
+          </div>
+        </div>
+      </div>
 
-        <div class="absolute top-10 left-16 bg-slate-900/90 border border-slate-800 backdrop-blur px-2.5 py-1 rounded-md text-[10px] font-mono flex items-center gap-1.5 shadow-lg">
-            <span class="material-symbols-outlined text-red-400 text-xs">visibility_off</span> Age/Gender Suppressed
+      <!-- Trust badges -->
+      <div class="trust-row">
+        <div class="trust-badge" style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe">
+          ✦ Bias-Free
         </div>
-        <div class="absolute bottom-16 left-8 bg-slate-900/90 border border-slate-800 backdrop-blur px-2.5 py-1 rounded-md text-[10px] font-mono flex items-center gap-1.5 shadow-lg">
-            <span class="material-symbols-outlined text-red-400 text-xs">block</span> Name Redacted
+        <div class="trust-badge" style="background:#f0fdf4;color:#059669;border:1px solid #bbf7d0">
+          ✓ GDPR Safe
         </div>
-        <div class="absolute top-24 right-4 bg-emerald-950/80 border border-emerald-500/30 backdrop-blur px-2.5 py-1 rounded-md text-[10px] font-mono text-emerald-400 flex items-center gap-1.5 shadow-lg shadow-emerald-950/20">
-            <span class="material-symbols-outlined text-emerald-400 text-xs">check_circle</span> Skill Vectors Loaded
+        <div class="trust-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe">
+          ⚡ AI-Powered
         </div>
+      </div>
 
-        <div class="relative w-12 h-12 rounded-full bg-slate-900 border-2 border-electric-blue flex items-center justify-center shadow-2xl shadow-electric-blue/40">
-            <span class="material-symbols-outlined text-electric-blue text-xl">security</span>
-        </div>
     </div>
 
-    <div class="relative z-10 text-center max-w-sm">
-        <h2 class="font-display text-xl md:text-2xl font-bold text-white tracking-tight leading-snug">
-            Fair hiring, powered by <span class="text-transparent bg-clip-text bg-gradient-to-r from-electric-blue to-emerald-400 font-extrabold">explainable AI.</span>
-        </h2>
-        <p class="text-xs text-slate-400 mt-2 leading-relaxed">Our advanced neural filters extract technical intelligence while fully omitting demographic identifiers dynamically.</p>
+    <div class="showcase-tagline">
+      <p class="tagline-head">Your next great hire<br/>is waiting — <em>fairly.</em></p>
+      <p class="tagline-sub">Join 2,400+ companies building<br/>diverse, high-performing teams.</p>
     </div>
-</section>
 
-<main class="w-full min-h-[600px] md:h-screen md:w-[45%] bg-white flex flex-col items-center justify-center py-12 px-8 md:px-20 relative z-20 shadow-[-10px_0px_40px_rgba(0,0,0,0.04)]">
-    <div class="w-full max-w-[340px] flex flex-col justify-center">
-        <header class="mb-6">
-            <div class="flex items-center space-x-2.5 mb-4">
-                <div class="w-8 h-8 bg-gradient-to-tr from-blue-600 to-emerald-400 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20">
-                    <span class="material-symbols-outlined text-white text-base">hub</span>
-                </div>
-                <span class="font-display text-base font-bold text-slate-900 tracking-tight">EquiHire AI</span>
+  </div>
+
+  <!-- ════ RIGHT FORM (starts FLIPPED to show Signup) ════ -->
+  <div class="form-pane">
+    <div class="flip-wrap">
+      <div class="flip-inner flipped" id="card-inner">
+
+        <!-- ░░ FRONT — LOGIN ░░ -->
+        <div class="flip-face flip-face--front">
+
+          <h1 class="form-h1">Welcome back 👋</h1>
+          <p class="form-sub">Sign in to your hiring console.</p>
+          <div class="tab-row">
+            <button class="tab-btn is-active">Log In</button>
+            <button class="tab-btn btn-to-signup">Sign Up</button>
+          </div>
+          <form onsubmit="event.preventDefault()">
+            <div>
+              <label class="field-label" for="l-email">Email Address</label>
+              <input class="field-input" id="l-email" type="email" placeholder="name@example.com" autocomplete="email"/>
             </div>
-            <h1 class="font-display text-xl md:text-2xl font-bold text-slate-900 tracking-tight">Create your account</h1>
-            <p class="text-xs text-slate-500 mt-1">Get started with an objective assessment pipeline.</p>
-        </header>
-
-        <div class="flex border-b border-slate-100 mb-6">
-            <a id="tab-login" class="pb-2 pr-4 font-display font-medium text-xs text-slate-400 hover:text-slate-700 transition-all focus:outline-none" href="./login.html">
-                Log In
-            </a>
-            <button id="tab-signup" class="pb-2 px-4 font-display font-semibold text-xs text-blue-600 border-b-2 border-blue-600 transition-all focus:outline-none">
-                Sign Up
-            </button>
+            <div style="margin-top:13px">
+              <div class="field-row">
+                <label class="field-label" style="margin:0" for="l-pass">Password</label>
+                <a class="forgot-link" href="#">Forgot password?</a>
+              </div>
+              <input class="field-input" id="l-pass" type="password" placeholder="Enter your password"/>
+            </div>
+            <a href="index.html" class="btn-primary">Sign In to Console <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </form>
+          <div class="divider"><span>or continue with</span></div>
+          <div class="oauth-row">
+            <button class="btn-oauth"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>Google</button>
+            <button class="btn-oauth"><svg width="14" height="14" viewBox="0 0 23 23"><path d="M0 0h11v11H0z" fill="#F25022"/><path d="M12 0h11v11H12z" fill="#7FBA00"/><path d="M0 12h11v11H0z" fill="#00A4EF"/><path d="M12 12h11v11H12z" fill="#FFB900"/></svg>Microsoft</button>
+          </div>
         </div>
 
-        <form class="space-y-4" onsubmit="event.preventDefault();">
-            <div class="space-y-1">
-                <label class="font-display font-bold text-[10px] text-slate-500 tracking-wider uppercase" for="name">Full Name</label>
-                <input class="w-full h-9 px-3 bg-slate-50/60 border border-slate-200 rounded-lg text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-0 transition-all outline-none" id="name" placeholder="John Doe" type="text"/>
-            </div>
+        <!-- ░░ BACK — SIGNUP ░░ -->
+        <div class="flip-face flip-face--back">
 
-            <div class="space-y-1">
-                <label class="font-display font-bold text-[10px] text-slate-500 tracking-wider uppercase" for="email">Email</label>
-                <input class="w-full h-9 px-3 bg-slate-50/60 border border-slate-200 rounded-lg text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-0 transition-all outline-none" id="email" placeholder="name@company.com" type="email"/>
+          <h1 class="form-h1">Get started ✨</h1>
+          <p class="form-sub">Create your fair-hire pipeline account.</p>
+          <div class="tab-row">
+            <button class="tab-btn btn-to-login">Log In</button>
+            <button class="tab-btn is-active">Sign Up</button>
+          </div>
+          <form onsubmit="event.preventDefault()">
+            <div>
+              <label class="field-label" for="s-name">Full Name</label>
+              <input class="field-input" id="s-name" type="text" placeholder="Jane Doe" autocomplete="name"/>
             </div>
-            
-            <div class="space-y-1">
-                <label class="font-display font-bold text-[10px] text-slate-500 tracking-wider uppercase" for="password">Password</label>
-                <input class="w-full h-9 px-3 bg-slate-50/60 border border-slate-200 rounded-lg text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-0 transition-all outline-none" id="password" placeholder="••••••••" type="password"/>
+            <div style="margin-top:11px">
+              <label class="field-label" for="s-email">Email Address</label>
+              <input class="field-input" id="s-email" type="email" placeholder="name@example.com" autocomplete="email"/>
             </div>
-
-            <div class="flex items-start gap-2 pt-1">
-                <input id="terms" class="mt-0.5 h-3.5 w-3.5 shrink-0 rounded border-slate-300 text-blue-600 focus:ring-0 transition-all" type="checkbox"/>
-                <label for="terms" class="text-[11px] text-slate-500 font-display leading-tight select-none">
-                    I agree to the <a href="#" class="text-blue-600 hover:underline font-medium">Terms of Service</a> and <a href="#" class="text-blue-600 hover:underline font-medium">Privacy Policy</a>.
-                </label>
+            <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 10px; margin-top: 11px;">
+              <div>
+                <label class="field-label" for="s-phone">Mobile Number</label>
+                <input class="field-input" id="s-phone" type="tel" placeholder="+1 (555) 000-0000"/>
+              </div>
+              <div>
+                <label class="field-label" for="s-age">Age</label>
+                <input class="field-input" id="s-age" type="number" placeholder="25" min="18" max="100"/>
+              </div>
             </div>
-
-            <button type="submit" class="w-full h-9 mt-2 bg-slate-900 text-white font-display font-semibold text-xs rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-600 active:scale-[0.99] transition-all shadow-sm group">
-                <a href="./index.html">Create Account</a>
-                <span class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
-            </button>
-        </form>
-
-        <div class="relative my-5 flex items-center">
-            <div class="flex-grow border-t border-slate-100"></div>
-            <span class="mx-3 font-display font-bold text-[9px] text-slate-400 tracking-widest uppercase">Or OAuth Identity</span>
-            <div class="flex-grow border-t border-slate-100"></div>
+            <p style="font-size: 8px; color: var(--slate-5); margin-top: 5px; line-height: 1.3;">
+              * Note: Mobile and age details are encrypted & cloaked by EquiHire Guard to prevent bias during candidate screening.
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 11px;">
+              <div>
+                <label class="field-label" for="s-pass">Password</label>
+                <input class="field-input" id="s-pass" type="password" placeholder="••••••••" autocomplete="new-password"/>
+              </div>
+              <div>
+                <label class="field-label" for="s-pass-confirm">Confirm Password</label>
+                <input class="field-input" id="s-pass-confirm" type="password" placeholder="••••••••" autocomplete="new-password"/>
+              </div>
+            </div>
+            <div class="check-row">
+              <input id="s-terms" type="checkbox"/>
+              <label for="s-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
+            </div>
+            <a href="index.html" class="btn-primary" style="margin-top:14px">Create My Account <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </form>
+          <div class="divider"><span>or sign up with</span></div>
+          <div class="oauth-row">
+            <button class="btn-oauth"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>Google</button>
+            <button class="btn-oauth"><svg width="14" height="14" viewBox="0 0 23 23"><path d="M0 0h11v11H0z" fill="#F25022"/><path d="M12 0h11v11H12z" fill="#7FBA00"/><path d="M0 12h11v11H0z" fill="#00A4EF"/><path d="M12 12h11v11H12z" fill="#FFB900"/></svg>Microsoft</button>
+          </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-2.5">
-            <button class="h-9 border border-slate-200 rounded-lg flex items-center justify-center space-x-2 hover:bg-slate-50 hover:border-slate-300 transition-all group">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
-                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
-                </svg>
-                <span class="font-display font-medium text-[11px] text-slate-600">Google</span>
-            </button>
-            <button class="h-9 border border-slate-200 rounded-lg flex items-center justify-center space-x-2 hover:bg-slate-50 hover:border-slate-300 transition-all group">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 0h11v11H0z" fill="#F25022"/>
-                    <path d="M12 0h11v11H12z" fill="#7FBA00"/>
-                    <path d="M0 12h11v11H0z" fill="#00A4EF"/>
-                    <path d="M12 12h11v11H12z" fill="#FFB900"/>
-                </svg>
-                <span class="font-display font-medium text-[11px] text-slate-600">Microsoft</span>
-            </button>
-        </div>
+      </div>
     </div>
-</main>
+  </div>
 
-<script src="./JavaScript/signup.js"></script>
+</div>
+</div>
+
+<script>
+(function(){
+  const inner = document.getElementById('card-inner');
+  const flip = v => {
+    v ? inner.classList.add('flipped') : inner.classList.remove('flipped');
+    document.title = v ? 'Sign Up | EquiHire AI' : 'Login | EquiHire AI';
+    try { history.pushState({}, '', v ? 'signup.html' : 'login.html'); } catch(e){}
+  };
+  document.querySelectorAll('.btn-to-signup').forEach(b => b.addEventListener('click', () => flip(true)));
+  document.querySelectorAll('.btn-to-login').forEach(b  => b.addEventListener('click', () => flip(false)));
+})();
+</script>
 </body>
 </html>
