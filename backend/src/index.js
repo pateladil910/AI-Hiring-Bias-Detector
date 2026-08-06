@@ -1,6 +1,7 @@
 require('dotenv').config();
 const http = require('http');
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const { connectDB } = require('./config/db');
 const { attachWebSocketServer } = require('./websocket/biasScoreWS');
@@ -8,6 +9,7 @@ const { attachWebSocketServer } = require('./websocket/biasScoreWS');
 // ─── Route Imports ────────────────────────────────────────────────────────────
 const authRoutes = require('./routes/auth');
 const jobRoutes = require('./routes/jobs');
+const applicationRoutes = require('./routes/applications');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -42,6 +44,10 @@ app.get('/health', (_req, res) => {
 // ─── API Routes ───────────────────────────────────────────────────────────────
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', applicationRoutes);
+
+// Serve uploaded resumes (so frontend can link to them)
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // ─── 404 Handler ─────────────────────────────────────────────────────────────
 app.use((_req, res) => {

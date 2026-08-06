@@ -6,7 +6,7 @@ Phase 2+: Resume scan, Test generation, Grading, Eligibility stubs remain.
 """
 
 import os
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
@@ -14,6 +14,9 @@ from typing import Optional, List, Dict, Any
 # ─── Phase 1: Real services ───────────────────────────────────────────────────
 from services.bias_detector import bias_detector
 from services.skill_profiler import extract_skill_profile
+
+# ─── Phase 2: Resume parser + anonymiser ──────────────────────────────────────────────
+from services.resume_parser import extract_text_from_bytes, anonymise_text, extract_metadata
 
 app = FastAPI(
     title="AI Hiring Bias Detector — AI Service",
@@ -90,8 +93,8 @@ def health():
     return {
         "status": "ok",
         "service": "hiring-bias-ai-service",
-        "phase": "1 — Bias detection (MOCK keyword) + Skill profiler active",
-        "version": "0.2.0",
+        "phase": "2 — Bias detection + Skill profiler + Resume parser/anonymiser active",
+        "version": "0.3.0",
     }
 
 
@@ -139,16 +142,74 @@ def analyze_jd_quick(req: JDAnalyzeRequest):
     }
 
 
-# ─── Phase 2 Stub: Resume Bias Scan ──────────────────────────────────────────
-@app.post("/analyze/resume", response_model=BiasAnalysisResponse)
-def analyze_resume(req: ResumeAnalyzeRequest):
-    """STUB — Phase 2. Anonymised mode resume scanner."""
-    return BiasAnalysisResponse(
-        score=85.0,
-        flags=[],
-        explanation="STUB: No bias signals detected in anonymised resume.",
-        model_version="stub-v0",
-    )
+# ─── Phase 2 ACTIVE: Resume Analysis (parse + anonymise + bias scan) ────────────────
+@app.post("/analyze/resume")
+async def analyze_resume(file: UploadFile = File(...), application_id: str = Form(...)):
+    """
+    Phase 2 ACTIVE:
+    1. Extract text from PDF/DOCX/TXT
+    2. Anonymise PII (strip name, email, phone, address, etc.)
+    3. Run bias detection on anonymised text
+    Returns anonymised_text, bias_result, metadata for storage in backend.
+    """
+    if not file.filename:
+        raise HTTPException(status_code=422, detail="No file provided")
+
+    allowed_types = [".pdf", ".docx", ".txt"]
+    suffix = "." + file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else ""
+    if suffix not in allowed_types:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Unsupported file type '{suffix}'. Allowed: {', '.join(allowed_types)}"
+        )
+
+    file_bytes = await file.read()
+    if len(file_bytes) > 5 * 1024 * 1024:  # 5MB limit
+        raise HTTPException(status_code=413, detail="File too large. Max 5MB.")
+
+    # Step 1: Extract text
+    raw_text = extract_text_from_bytes(file_bytes, file.filename)
+    if not raw_text or len(raw_text.strip()) < 20:
+        raise HTTPException(status_code=422, detail="Could not extract readable text from the resume. Try a .txt or .docx file.")
+
+    # Step 2: Anonymise PII
+    anon_result = anonymise_text(raw_text)
+    anonymised_text = anon_result["anonymised_text"]
+
+    # Step 3: Bias scan on anonymised text
+    bias_result = bias_detector.detect(anonymised_text)
+
+    # Step 4: Extract metadata
+    metadata = extract_metadata(raw_text)
+
+    return {
+        "application_id": application_id,
+        "anonymised_text": anonymised_text,
+        "redacted_fields": anon_result["redacted_fields"],
+        "bias_score": bias_result["score"],
+        "bias_flags": bias_result["flags"],
+        "bias_explanation": bias_result["explanation"],
+        "metadata": metadata,
+        "model_version": "mock-v2",
+    }
+
+
+@app.post("/analyze/resume/text")
+async def analyze_resume_text(req: ResumeAnalyzeRequest):
+    """
+    Alternate endpoint: takes pre-extracted text (for testing without a file upload).
+    """
+    anon_result = anonymise_text(req.resume_text)
+    bias_result = bias_detector.detect(anon_result["anonymised_text"])
+    return {
+        "application_id": req.application_id,
+        "anonymised_text": anon_result["anonymised_text"],
+        "redacted_fields": anon_result["redacted_fields"],
+        "bias_score": bias_result["score"],
+        "bias_flags": bias_result["flags"],
+        "bias_explanation": bias_result["explanation"],
+        "model_version": "mock-v2",
+    }
 
 
 # ─── Phase 3 Stub: Test Generation ───────────────────────────────────────────

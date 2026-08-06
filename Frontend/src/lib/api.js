@@ -50,13 +50,19 @@ export const jobsAPI = {
 
 // ─── Applications ─────────────────────────────────────────────────────────────
 export const applicationsAPI = {
-  apply: (jobId, formData) =>
-    api.post(`/api/applications`, formData, {
+  // Candidate: submit application with resume (FormData)
+  apply: (formData) =>
+    api.post('/api/applications', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
+  // Candidate: view own applications
+  myApplications: () => api.get('/api/applications/my'),
+  // Single application detail
   get: (id) => api.get(`/api/applications/${id}`),
-  listForJob: (jobId) => api.get(`/api/jobs/${jobId}/applications`),
+  // Recruiter: view applicants for a specific job (anonymised)
+  byJob: (jobId) => api.get(`/api/applications/job/${jobId}`),
 };
+
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
 export const testsAPI = {

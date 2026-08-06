@@ -67,6 +67,9 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// Export useAuth separately to avoid Vite Fast Refresh incompatibility
+// (Fast Refresh requires files to export only components OR only hooks — not both)
+export { AuthContext };
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used within AuthProvider');
