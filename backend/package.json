@@ -20,7 +20,8 @@
     "multer": "^1.4.5-lts.1",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.4"
+    "sequelize": "^6.37.4",
+    "ws": "^8.21.2"
   },
   "devDependencies": {
     "jest": "^29.7.0",
@@ -28,6 +29,8 @@
     "supertest": "^7.0.0"
   },
   "jest": {
-    "testMatch": ["**/__tests__/**/*.test.js"]
+    "testMatch": [
+      "**/__tests__/**/*.test.js"
+    ]
   }
 }

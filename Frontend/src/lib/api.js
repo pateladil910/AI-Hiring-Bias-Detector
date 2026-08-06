@@ -38,11 +38,14 @@ export const authAPI = {
 
 // ─── Jobs ─────────────────────────────────────────────────────────────────────
 export const jobsAPI = {
-  list: () => api.get('/api/jobs'),
-  get: (id) => api.get(`/api/jobs/${id}`),
-  create: (data) => api.post('/api/jobs', data),
-  analyze: (id) => api.post(`/api/jobs/${id}/analyze`),  // Phase 1
-  publish: (id) => api.patch(`/api/jobs/${id}/publish`), // Phase 1
+  list:    ()         => api.get('/api/jobs'),
+  myJobs:  ()         => api.get('/api/jobs/my'),
+  get:     (id)       => api.get(`/api/jobs/${id}`),
+  create:  (data)     => api.post('/api/jobs', data),
+  update:  (id, data) => api.put(`/api/jobs/${id}`, data),
+  analyze: (id)       => api.post(`/api/jobs/${id}/analyze`),
+  publish: (id)       => api.patch(`/api/jobs/${id}/publish`),
+  unpublish: (id)     => api.patch(`/api/jobs/${id}/unpublish`),
 };
 
 // ─── Applications ─────────────────────────────────────────────────────────────

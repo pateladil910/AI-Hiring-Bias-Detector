@@ -1,7 +1,9 @@
 require('dotenv').config();
+const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const { connectDB } = require('./config/db');
+const { attachWebSocketServer } = require('./websocket/biasScoreWS');
 
 // ─── Route Imports ────────────────────────────────────────────────────────────
 const authRoutes = require('./routes/auth');
@@ -63,8 +65,12 @@ app.use((err, _req, res, _next) => {
 const start = async () => {
   try {
     await connectDB();
-    app.listen(PORT, () => {
+    // Use http.createServer so WebSocket can share the same port
+    const httpServer = http.createServer(app);
+    attachWebSocketServer(httpServer);
+    httpServer.listen(PORT, () => {
       console.log(`✅ Backend running on http://localhost:${PORT}`);
+      console.log(`🔌 WebSocket at ws://localhost:${PORT}/ws/bias-score`);
       console.log(`📋 Health check: http://localhost:${PORT}/health`);
     });
   } catch (err) {
