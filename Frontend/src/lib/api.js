@@ -66,8 +66,10 @@ export const applicationsAPI = {
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
 export const testsAPI = {
-  get: (id) => api.get(`/api/tests/${id}`),
-  submit: (id, answers) => api.post(`/api/tests/${id}/submit`, { answers }),
+  get:                    (id)    => api.get(`/api/tests/${id}`),
+  submit:                 (id, answers) => api.post(`/api/tests/${id}/submit`, { answers }),
+  generateForApplication: (appId) => api.post(`/api/tests/generate/${appId}`),
+  getByApplication:       (appId) => api.get(`/api/tests/by-application/${appId}`),
 };
 
 // ─── Eligibility ──────────────────────────────────────────────────────────────

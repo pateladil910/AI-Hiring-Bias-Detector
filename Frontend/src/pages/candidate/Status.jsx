@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { CheckCircle, Clock, Circle, Briefcase, FileText, ShieldCheck, Calendar, ChevronRight, AlertTriangle } from 'lucide-react';
-import { applicationsAPI } from '../../lib/api';
+import { Link, useNavigate } from 'react-router-dom';
+import { CheckCircle, Clock, Circle, Briefcase, FileText, ShieldCheck, Calendar, ChevronRight, AlertTriangle, FlaskConical } from 'lucide-react';
+import { applicationsAPI, testsAPI } from '../../lib/api';
 
 const STATUS_CONFIG = {
   applied:         { label: 'Applied',         step: 0, color: 'var(--color-primary)',  badge: 'badge-primary' },
@@ -61,10 +61,26 @@ function PipelineBar({ activeStep }) {
 }
 
 function ApplicationCard({ app }) {
+  const navigate = useNavigate();
+  const [testId, setTestId] = useState(null);
+  const [testLoading, setTestLoading] = useState(false);
   const statusCfg = STATUS_CONFIG[app.status] || STATUS_CONFIG.applied;
   const scoreColor = app.resumeBiasScore !== null
     ? (app.resumeBiasScore >= 70 ? 'var(--color-success)' : app.resumeBiasScore >= 40 ? 'var(--color-warning)' : 'var(--color-danger)')
     : 'var(--color-text-muted)';
+
+  // Fetch test ID when status is test_sent so we can navigate to it
+  useEffect(() => {
+    if (app.status === 'test_sent' || app.status === 'test_completed') {
+      setTestLoading(true);
+      testsAPI.getByApplication(app.id)
+        .then(({ data }) => {
+          if (data.test) setTestId(data.test.id);
+        })
+        .catch(() => {})
+        .finally(() => setTestLoading(false));
+    }
+  }, [app.id, app.status]);
 
   return (
     <div className="card" style={{ padding: '20px 24px' }}>
@@ -82,10 +98,59 @@ function ApplicationCard({ app }) {
       {/* Pipeline progress bar */}
       <PipelineBar activeStep={statusCfg.step} />
 
+      {/* Phase 3: Test Available CTA */}
+      {app.status === 'test_sent' && (
+        <div style={{
+          marginTop: 16,
+          padding: '14px 16px',
+          background: 'rgba(124,92,255,0.1)',
+          border: '1px solid rgba(124,92,255,0.3)',
+          borderRadius: 'var(--radius-md)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <FlaskConical size={18} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
+            <div>
+              <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--color-text-primary)', marginBottom: 2 }}>
+                Aptitude Test Available
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>30 minute timed assessment</div>
+            </div>
+          </div>
+          {testLoading ? (
+            <span className="spinner" style={{ width: 18, height: 18, flexShrink: 0 }} />
+          ) : testId ? (
+            <button
+              id={`take-test-${app.id}`}
+              className="btn btn-accent btn-sm"
+              onClick={() => navigate(`/candidate/test/${testId}`)}
+            >
+              Take Test →
+            </button>
+          ) : (
+            <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Loading…</span>
+          )}
+        </div>
+      )}
+
+      {/* Phase 3: Test Completed score display */}
+      {app.status === 'test_completed' && (
+        <div style={{
+          marginTop: 16, padding: '10px 14px',
+          background: 'rgba(52,199,123,0.08)',
+          border: '1px solid rgba(52,199,123,0.25)',
+          borderRadius: 'var(--radius-md)',
+          display: 'flex', alignItems: 'center', gap: 8, fontSize: 13,
+        }}>
+          <CheckCircle size={14} style={{ color: 'var(--color-success)' }} />
+          <span style={{ color: 'var(--color-success)', fontWeight: 500 }}>Test submitted — results are being processed.</span>
+        </div>
+      )}
+
       {/* Resume bias score (if scanned) */}
       {app.resumeBiasScore !== null && (
         <div style={{
-          marginTop: 16, padding: '8px 12px',
+          marginTop: 12, padding: '8px 12px',
           background: 'var(--color-surface-alt)', borderRadius: 'var(--radius-md)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>

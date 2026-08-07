@@ -291,3 +291,169 @@ code, pre, .mono {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+
+/* ── Phase 3: Test-Taking UI ─────────────────────────────────────────────────── */
+
+/* Question option button (MCQ) */
+.question-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: 14px var(--space-4);
+  background: var(--color-surface-alt);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-md);
+}
+.question-option:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background: rgba(91, 127, 255, 0.07);
+}
+.question-option.selected {
+  border-color: var(--color-primary);
+  background: rgba(91, 127, 255, 0.15);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+.question-option.correct {
+  border-color: var(--color-success);
+  background: rgba(52, 199, 123, 0.12);
+  color: var(--color-success);
+}
+.question-option.incorrect {
+  border-color: var(--color-danger);
+  background: rgba(240, 85, 76, 0.1);
+  color: var(--color-danger);
+}
+.question-option:disabled { opacity: 0.7; cursor: not-allowed; }
+
+/* Option label pill (A / B / C / D) */
+.option-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+.question-option.selected .option-label {
+  background: var(--color-primary);
+  color: #fff;
+}
+.question-option.correct .option-label {
+  background: var(--color-success);
+  color: #fff;
+}
+.question-option.incorrect .option-label {
+  background: var(--color-danger);
+  color: #fff;
+}
+
+/* Question navigator dot */
+.q-nav-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-alt);
+  border: 1.5px solid var(--color-border);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.q-nav-dot:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.q-nav-dot.answered {
+  background: rgba(52, 199, 123, 0.15);
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+.q-nav-dot.flagged {
+  background: rgba(245, 185, 61, 0.15);
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+}
+.q-nav-dot.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* Horizontal progress bar */
+.progress-bar-track {
+  width: 100%;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width 0.4s ease;
+}
+.progress-bar-fill.success { background: var(--color-success); }
+.progress-bar-fill.warning { background: var(--color-warning); }
+.progress-bar-fill.danger  { background: var(--color-danger); }
+
+/* Countdown timer */
+.test-timer {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: 0.05em;
+  transition: color var(--transition-md);
+}
+.test-timer.warning { color: var(--color-warning); }
+.test-timer.danger  { color: var(--color-danger); animation: pulse-red 1s ease-in-out infinite; }
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+/* Score ring (result screen) */
+.score-ring-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+.score-ring-label {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Breakdown table row */
+.breakdown-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 80px 60px;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 13px;
+}
+.breakdown-row:last-child { border-bottom: none; }
+.breakdown-row.correct { background: rgba(52, 199, 123, 0.04); }
+.breakdown-row.incorrect { background: rgba(240, 85, 76, 0.04); }
+

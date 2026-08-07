@@ -15,11 +15,13 @@ import RecruiterDashboard from './pages/recruiter/Dashboard';
 import RecruiterJobs from './pages/recruiter/Jobs';
 import JobCreate from './pages/recruiter/JobCreate';
 import RecruiterCandidates from './pages/recruiter/Candidates';
+import TestResults from './pages/recruiter/TestResults';
 
 // Candidate pages
 import CandidateStatus from './pages/candidate/Status';
 import CandidateJobs from './pages/candidate/Jobs';
 import Apply from './pages/candidate/Apply';
+import TakeTest from './pages/candidate/TakeTest';
 
 // ─── Protected Route Guards ───────────────────────────────────────────────────
 const RequireAuth = ({ children }) => {
@@ -79,7 +81,7 @@ export default function App() {
             <Route path="jobs/new" element={<JobCreate />} />
             <Route path="jobs/:id/edit" element={<JobCreate />} />
             <Route path="candidates" element={<RecruiterCandidates />} />
-            {/* Phase 3+ routes added here */}
+            <Route path="test-results/:testId" element={<TestResults />} />
           </Route>
 
           {/* Candidate portal */}
@@ -95,7 +97,7 @@ export default function App() {
             <Route path="status" element={<CandidateStatus />} />
             <Route path="jobs" element={<CandidateJobs />} />
             <Route path="apply/:jobId" element={<Apply />} />
-            {/* Phase 3+ routes added here */}
+            <Route path="test/:testId" element={<TakeTest />} />
           </Route>
 
           {/* Fallback */}

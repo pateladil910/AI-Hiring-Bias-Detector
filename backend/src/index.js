@@ -10,6 +10,7 @@ const { attachWebSocketServer } = require('./websocket/biasScoreWS');
 const authRoutes = require('./routes/auth');
 const jobRoutes = require('./routes/jobs');
 const applicationRoutes = require('./routes/applications');
+const testsRoutes = require('./routes/tests');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -45,6 +46,7 @@ app.get('/health', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/tests', testsRoutes);
 
 // Serve uploaded resumes (so frontend can link to them)
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));

@@ -2,7 +2,9 @@
 AI Hiring Bias Detector — Python AI Microservice
 FastAPI entrypoint wiring all AI capabilities.
 Phase 1: Bias detection (MOCK keyword classifier) + JD Skill Profiler active.
-Phase 2+: Resume scan, Test generation, Grading, Eligibility stubs remain.
+Phase 2: Resume scan + anonymiser active.
+Phase 3: Test generation + auto-grading active.
+Phase 4+: Eligibility stub remains.
 """
 
 import os
@@ -15,8 +17,12 @@ from typing import Optional, List, Dict, Any
 from services.bias_detector import bias_detector
 from services.skill_profiler import extract_skill_profile
 
-# ─── Phase 2: Resume parser + anonymiser ──────────────────────────────────────────────
+# ─── Phase 2: Resume parser + anonymiser ─────────────────────────────────────
 from services.resume_parser import extract_text_from_bytes, anonymise_text, extract_metadata
+
+# ─── Phase 3: Test generator + grader ────────────────────────────────────────
+from services.test_generator import generate_questions
+from services.grader import grade
 
 app = FastAPI(
     title="AI Hiring Bias Detector — AI Service",
@@ -93,8 +99,8 @@ def health():
     return {
         "status": "ok",
         "service": "hiring-bias-ai-service",
-        "phase": "2 — Bias detection + Skill profiler + Resume parser/anonymiser active",
-        "version": "0.3.0",
+        "phase": "3 — Bias detection + Skill profiler + Resume parser + Test generator + Grader active",
+        "version": "0.4.0",
     }
 
 
@@ -212,35 +218,59 @@ async def analyze_resume_text(req: ResumeAnalyzeRequest):
     }
 
 
-# ─── Phase 3 Stub: Test Generation ───────────────────────────────────────────
+# ─── Phase 3 ACTIVE: Test Generation ────────────────────────────────────────
 @app.post("/generate/test")
 def generate_test(req: TestGenerateRequest):
-    """STUB — Phase 3. Claude API will generate MCQ + short answer from skill_profile."""
+    """
+    Phase 3 ACTIVE:
+    Generates MCQ + short-answer questions from the JD skill profile.
+    Uses Claude API if ANTHROPIC_API_KEY is set, else uses smart MOCK generator.
+    IMPORTANT: correct_index and rubric_keywords are returned here for server-side
+    storage; the backend MUST strip them before sending questions to candidates.
+    """
+    if not req.skill_profile:
+        raise HTTPException(status_code=422, detail="skill_profile is required for test generation")
+
+    result = generate_questions(
+        skill_profile=req.skill_profile,
+        num_mcq=req.num_mcq,
+        num_short_answer=req.num_short_answer,
+    )
+
     return {
         "job_id": req.job_id,
-        "questions": [
-            {
-                "id": "q1",
-                "type": "mcq",
-                "question": f"STUB: Field detected: {req.skill_profile.get('primary_field', 'general')}",
-                "options": ["Option A", "Option B", "Option C", "Option D"],
-                "correct": 0,
-            }
-        ],
-        "model_version": "stub-v0",
+        "questions": result["questions"],
+        "num_mcq": result["num_mcq"],
+        "num_short_answer": result["num_short_answer"],
+        "topics_covered": result["topics_covered"],
+        "model_version": result["model_version"],
     }
 
 
-# ─── Phase 3 Stub: Auto-Grading ──────────────────────────────────────────────
+# ─── Phase 3 ACTIVE: Auto-Grading ────────────────────────────────────────────
 @app.post("/grade")
 def grade_submission(req: GradeRequest):
-    """STUB — Phase 3."""
+    """
+    Phase 3 ACTIVE:
+    Grades submitted answers against stored questions.
+    MCQ: rule-based (correct_index comparison).
+    Short-answer: MOCK rubric keyword matching.
+    Returns auto_score (0-100), llm_confidence, and per-question breakdown.
+    """
+    if not req.questions or not req.answers:
+        raise HTTPException(status_code=422, detail="questions and answers are required")
+
+    result = grade(
+        questions=req.questions,
+        answers=req.answers,
+    )
+
     return {
         "test_id": req.test_id,
-        "auto_score": 80.0,
-        "llm_confidence": 0.92,
-        "breakdown": [],
-        "model_version": "stub-v0",
+        "auto_score": result["auto_score"],
+        "llm_confidence": result["llm_confidence"],
+        "breakdown": result["breakdown"],
+        "model_version": "mock-grader-v1",
     }
 
 

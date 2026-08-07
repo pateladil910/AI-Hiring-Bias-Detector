@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { Users, Briefcase, ChevronDown, ShieldCheck, AlertTriangle, Clock } from 'lucide-react';
-import { jobsAPI, applicationsAPI } from '../../lib/api';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Users, Briefcase, ChevronDown, ShieldCheck, AlertTriangle, Clock, ClipboardList } from 'lucide-react';
+import { jobsAPI, applicationsAPI, testsAPI } from '../../lib/api';
 
 const STATUS_BADGE = {
   applied:        { label: 'Applied',         cls: 'badge-primary' },
@@ -34,6 +34,7 @@ function ScoreBar({ score }) {
 
 export default function RecruiterCandidates() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const selectedJobId = searchParams.get('jobId') || '';
 
   const [myJobs, setMyJobs] = useState([]);
@@ -42,6 +43,9 @@ export default function RecruiterCandidates() {
   const [loadingJobs, setLoadingJobs] = useState(true);
   const [loadingApps, setLoadingApps] = useState(false);
   const [error, setError] = useState('');
+  // Phase 3: per-application test generation state
+  const [testLoading, setTestLoading] = useState({});   // { [appId]: true/false }
+  const [testSent, setTestSent] = useState({});          // { [appId]: true }
 
   // Load recruiter's jobs for the dropdown
   useEffect(() => {
@@ -63,10 +67,19 @@ export default function RecruiterCandidates() {
     if (!selectedJobId) { setApplications([]); return; }
     setLoadingApps(true);
     setError('');
+    setTestSent({});
     applicationsAPI.byJob(selectedJobId)
       .then(({ data }) => {
         setApplications(data.applications);
         setJobTitle(data.job?.title || '');
+        // Pre-mark already-sent tests
+        const alreadySent = {};
+        data.applications.forEach((a) => {
+          if (['test_sent', 'test_completed', 'eligible', 'not_eligible', 'needs_review', 'interview', 'rejected', 'hired'].includes(a.status)) {
+            alreadySent[a.id] = true;
+          }
+        });
+        setTestSent(alreadySent);
       })
       .catch((err) => {
         setError(err.response?.data?.error?.message || 'Failed to load applicants.');
@@ -74,6 +87,23 @@ export default function RecruiterCandidates() {
       })
       .finally(() => setLoadingApps(false));
   }, [selectedJobId]);
+
+  // Phase 3: Send test to a candidate
+  async function handleSendTest(appId) {
+    setTestLoading((prev) => ({ ...prev, [appId]: true }));
+    try {
+      await testsAPI.generateForApplication(appId);
+      setTestSent((prev) => ({ ...prev, [appId]: true }));
+      // Update local status
+      setApplications((prev) =>
+        prev.map((a) => a.id === appId ? { ...a, status: 'test_sent' } : a)
+      );
+    } catch (e) {
+      setError(e.response?.data?.error?.message || 'Failed to send test. Please try again.');
+    } finally {
+      setTestLoading((prev) => ({ ...prev, [appId]: false }));
+    }
+  }
 
   const pendingReview = applications.filter((a) => a.status === 'needs_review').length;
   const eligible = applications.filter((a) => a.status === 'eligible').length;
@@ -199,10 +229,13 @@ export default function RecruiterCandidates() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {applications.map((app, idx) => {
               const statusCfg = STATUS_BADGE[app.status] || STATUS_BADGE.applied;
+              const isSent = testSent[app.id];
+              const isGenerating = testLoading[app.id];
+              const hasScore = app.status === 'test_completed' || app.status === 'eligible' || app.status === 'not_eligible';
               return (
                 <div key={app.id} className="card" style={{
                   padding: '14px 20px',
-                  display: 'grid', gridTemplateColumns: '60px 1fr 180px 120px',
+                  display: 'grid', gridTemplateColumns: '60px 1fr 160px 140px 160px',
                   alignItems: 'center', gap: 12,
                 }}>
                   {/* Index */}
@@ -225,6 +258,40 @@ export default function RecruiterCandidates() {
 
                   {/* Status */}
                   <span className={`badge ${statusCfg.cls}`}>{statusCfg.label}</span>
+
+                  {/* Phase 3: Actions */}
+                  <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+                    {/* Send Test button — only for 'applied' status */}
+                    {app.status === 'applied' && !isSent && (
+                      <button
+                        id={`send-test-${app.id}`}
+                        className="btn btn-sm btn-accent"
+                        onClick={() => handleSendTest(app.id)}
+                        disabled={isGenerating}
+                      >
+                        {isGenerating ? (
+                          <><span className="spinner" style={{ width: 12, height: 12 }} /> Generating…</>
+                        ) : '📋 Send Test'}
+                      </button>
+                    )}
+
+                    {/* Already sent badge */}
+                    {isSent && app.status === 'test_sent' && (
+                      <span className="badge badge-warning" style={{ fontSize: 11 }}>⏳ Awaiting</span>
+                    )}
+
+                    {/* View Results — when test completed */}
+                    {(app.status === 'test_completed' || app.status === 'eligible' || app.status === 'not_eligible' || app.status === 'needs_review') && (
+                      <button
+                        id={`view-results-${app.id}`}
+                        className="btn btn-sm btn-ghost"
+                        onClick={() => navigate(`/recruiter/test-results/${app.id}`)}
+                        style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+                      >
+                        <ClipboardList size={12} /> Results
+                      </button>
+                    )}
+                  </div>
                 </div>
               );
             })}
