@@ -5,18 +5,21 @@ import {
   Briefcase,
   Users,
   ClipboardList,
+  ShieldAlert,
   LogOut,
   ChevronLeft,
   ChevronRight,
   Menu,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import ChatbotWidget from '../components/ChatbotWidget';
 
 const navItems = [
-  { to: '/recruiter/dashboard', icon: <LayoutDashboard size={18} />, label: 'Dashboard' },
-  { to: '/recruiter/jobs',      icon: <Briefcase size={18} />,       label: 'Jobs' },
-  { to: '/recruiter/candidates',icon: <Users size={18} />,           label: 'Candidates' },
-  { to: '/recruiter/audit',     icon: <ClipboardList size={18} />,   label: 'Audit Trail' },
+  { to: '/recruiter/dashboard',   icon: <LayoutDashboard size={18} />, label: 'Dashboard' },
+  { to: '/recruiter/jobs',        icon: <Briefcase size={18} />,       label: 'Jobs' },
+  { to: '/recruiter/candidates',  icon: <Users size={18} />,           label: 'Candidates' },
+  { to: '/recruiter/review',      icon: <ShieldAlert size={18} />,     label: 'Review Queue' },
+  { to: '/recruiter/audit',       icon: <ClipboardList size={18} />,   label: 'Audit Trail' },
 ];
 
 const ROLE_LABELS = {
@@ -150,6 +153,9 @@ export default function RecruiterLayout() {
       <main style={{ flex: 1, overflow: 'auto' }}>
         <Outlet />
       </main>
+
+      {/* ── Floating AI Chatbot Widget ─────────────────────────────────────── */}
+      <ChatbotWidget />
     </div>
   );
 }

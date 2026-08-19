@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Pages
 import Landing from './pages/Landing';
@@ -16,6 +17,8 @@ import RecruiterJobs from './pages/recruiter/Jobs';
 import JobCreate from './pages/recruiter/JobCreate';
 import RecruiterCandidates from './pages/recruiter/Candidates';
 import TestResults from './pages/recruiter/TestResults';
+import ReviewQueue from './pages/recruiter/ReviewQueue';
+import AuditTrail from './pages/recruiter/AuditTrail';
 
 // Candidate pages
 import CandidateStatus from './pages/candidate/Status';
@@ -58,9 +61,10 @@ const HomeRedirect = () => {
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
           {/* Public */}
           <Route path="/" element={<HomeRedirect />} />
           <Route path="/login" element={<Login />} />
@@ -82,6 +86,8 @@ export default function App() {
             <Route path="jobs/:id/edit" element={<JobCreate />} />
             <Route path="candidates" element={<RecruiterCandidates />} />
             <Route path="test-results/:testId" element={<TestResults />} />
+            <Route path="review" element={<ReviewQueue />} />
+            <Route path="audit" element={<AuditTrail />} />
           </Route>
 
           {/* Candidate portal */}
@@ -100,10 +106,11 @@ export default function App() {
             <Route path="test/:testId" element={<TakeTest />} />
           </Route>
 
-          {/* Fallback */}
+          {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
-  );
+  </ErrorBoundary>
+);
 }

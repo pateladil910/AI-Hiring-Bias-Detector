@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Users, Briefcase, ChevronDown, ShieldCheck, AlertTriangle, Clock, ClipboardList } from 'lucide-react';
-import { jobsAPI, applicationsAPI, testsAPI } from '../../lib/api';
+import { Users, Briefcase, ChevronDown, ShieldCheck, AlertTriangle, Clock, ClipboardList, Zap } from 'lucide-react';
+import { jobsAPI, applicationsAPI, testsAPI, eligibilityAPI } from '../../lib/api';
 
 const STATUS_BADGE = {
   applied:        { label: 'Applied',         cls: 'badge-primary' },
@@ -43,9 +43,10 @@ export default function RecruiterCandidates() {
   const [loadingJobs, setLoadingJobs] = useState(true);
   const [loadingApps, setLoadingApps] = useState(false);
   const [error, setError] = useState('');
-  // Phase 3: per-application test generation state
+  // Phase 3 & 4 states
   const [testLoading, setTestLoading] = useState({});   // { [appId]: true/false }
   const [testSent, setTestSent] = useState({});          // { [appId]: true }
+  const [eligibilityLoading, setEligibilityLoading] = useState({}); // { [appId]: true/false }
 
   // Load recruiter's jobs for the dropdown
   useEffect(() => {
@@ -102,6 +103,21 @@ export default function RecruiterCandidates() {
       setError(e.response?.data?.error?.message || 'Failed to send test. Please try again.');
     } finally {
       setTestLoading((prev) => ({ ...prev, [appId]: false }));
+    }
+  }
+
+  // Phase 4: Compute eligibility for a test_completed candidate
+  async function handleComputeEligibility(appId) {
+    setEligibilityLoading((prev) => ({ ...prev, [appId]: true }));
+    try {
+      const res = await eligibilityAPI.compute(appId);
+      setApplications((prev) =>
+        prev.map((a) => a.id === appId ? { ...a, status: res.data.applicationStatus } : a)
+      );
+    } catch (e) {
+      setError(e.response?.data?.error?.message || 'Failed to compute eligibility.');
+    } finally {
+      setEligibilityLoading((prev) => ({ ...prev, [appId]: false }));
     }
   }
 
@@ -280,7 +296,24 @@ export default function RecruiterCandidates() {
                       <span className="badge badge-warning" style={{ fontSize: 11 }}>⏳ Awaiting</span>
                     )}
 
-                    {/* View Results — when test completed */}
+                    {/* Phase 4: Run Eligibility button when test_completed */}
+                    {app.status === 'test_completed' && (
+                      <button
+                        id={`compute-eligibility-${app.id}`}
+                        className="btn btn-sm btn-accent"
+                        onClick={() => handleComputeEligibility(app.id)}
+                        disabled={eligibilityLoading[app.id]}
+                        style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+                      >
+                        {eligibilityLoading[app.id] ? (
+                          <><span className="spinner" style={{ width: 12, height: 12 }} /> Computing…</>
+                        ) : (
+                          <><Zap size={12} /> Run Eligibility</>
+                        )}
+                      </button>
+                    )}
+
+                    {/* View Results — when test completed or later */}
                     {(app.status === 'test_completed' || app.status === 'eligible' || app.status === 'not_eligible' || app.status === 'needs_review') && (
                       <button
                         id={`view-results-${app.id}`}

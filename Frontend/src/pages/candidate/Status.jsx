@@ -64,12 +64,13 @@ function ApplicationCard({ app }) {
   const navigate = useNavigate();
   const [testId, setTestId] = useState(null);
   const [testLoading, setTestLoading] = useState(false);
+  const [verdict, setVerdict] = useState(null);
   const statusCfg = STATUS_CONFIG[app.status] || STATUS_CONFIG.applied;
   const scoreColor = app.resumeBiasScore !== null
     ? (app.resumeBiasScore >= 70 ? 'var(--color-success)' : app.resumeBiasScore >= 40 ? 'var(--color-warning)' : 'var(--color-danger)')
     : 'var(--color-text-muted)';
 
-  // Fetch test ID when status is test_sent so we can navigate to it
+  // Fetch test ID when status is test_sent or test_completed
   useEffect(() => {
     if (app.status === 'test_sent' || app.status === 'test_completed') {
       setTestLoading(true);
@@ -79,6 +80,17 @@ function ApplicationCard({ app }) {
         })
         .catch(() => {})
         .finally(() => setTestLoading(false));
+    }
+  }, [app.id, app.status]);
+
+  // Phase 4: Fetch eligibility verdict explanation when status is evaluated
+  useEffect(() => {
+    if (['eligible', 'not_eligible', 'needs_review'].includes(app.status)) {
+      eligibilityAPI.getVerdict(app.id)
+        .then(({ data }) => {
+          if (data.verdict) setVerdict(data.verdict);
+        })
+        .catch(() => {});
     }
   }, [app.id, app.status]);
 
@@ -144,6 +156,27 @@ function ApplicationCard({ app }) {
         }}>
           <CheckCircle size={14} style={{ color: 'var(--color-success)' }} />
           <span style={{ color: 'var(--color-success)', fontWeight: 500 }}>Test submitted — results are being processed.</span>
+        </div>
+      )}
+
+      {/* Phase 4: AI Verdict Explanation Box */}
+      {['eligible', 'not_eligible', 'needs_review'].includes(app.status) && verdict && (
+        <div style={{
+          marginTop: 16, padding: '12px 16px',
+          background: app.status === 'eligible' ? 'rgba(52,199,123,0.08)' : app.status === 'not_eligible' ? 'rgba(240,85,76,0.08)' : 'rgba(245,185,61,0.08)',
+          border: `1px solid ${app.status === 'eligible' ? 'rgba(52,199,123,0.25)' : app.status === 'not_eligible' ? 'rgba(240,85,76,0.25)' : 'rgba(245,185,61,0.25)'}`,
+          borderRadius: 'var(--radius-md)', fontSize: 13, lineHeight: 1.6,
+        }}>
+          <div style={{ fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <ShieldCheck size={15} style={{ color: statusCfg.color }} />
+            AI Decision Explanation
+            {verdict.overriddenBy && (
+              <span className="badge badge-neutral" style={{ fontSize: 10, marginLeft: 'auto' }}>Reviewed by Recruiter</span>
+            )}
+          </div>
+          <div style={{ color: 'var(--color-text-secondary)' }}>
+            {verdict.explanation}
+          </div>
         </div>
       )}
 

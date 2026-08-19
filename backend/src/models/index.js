@@ -66,6 +66,7 @@ const EligibilityVerdict = sequelize.define('EligibilityVerdict', {
   id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
   verdict: { type: DataTypes.ENUM(...VERDICT), allowNull: false },
   explanation: { type: DataTypes.TEXT, allowNull: false },
+  scoreDetail: { type: DataTypes.JSONB, defaultValue: null },
   modelVersion: { type: DataTypes.STRING, defaultValue: 'v1.0' },
   overriddenBy: { type: DataTypes.UUID, defaultValue: null },
   overrideReason: { type: DataTypes.TEXT, defaultValue: null },

@@ -1,6 +1,7 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { ClipboardCheck, Briefcase, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import ChatbotWidget from '../components/ChatbotWidget';
 
 const navItems = [
   { to: '/candidate/status', icon: <ClipboardCheck size={18} />, label: 'My Applications' },
@@ -78,6 +79,9 @@ export default function CandidateLayout() {
       <main style={{ flex: 1 }}>
         <Outlet />
       </main>
+
+      {/* ── Floating AI Chatbot Widget ─────────────────────────────────────── */}
+      <ChatbotWidget />
     </div>
   );
 }

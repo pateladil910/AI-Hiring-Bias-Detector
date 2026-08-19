@@ -4,7 +4,7 @@ FastAPI entrypoint wiring all AI capabilities.
 Phase 1: Bias detection (MOCK keyword classifier) + JD Skill Profiler active.
 Phase 2: Resume scan + anonymiser active.
 Phase 3: Test generation + auto-grading active.
-Phase 4+: Eligibility stub remains.
+Phase 4: Eligibility Engine active.
 """
 
 import os
@@ -24,10 +24,16 @@ from services.resume_parser import extract_text_from_bytes, anonymise_text, extr
 from services.test_generator import generate_questions
 from services.grader import grade
 
+# ─── Phase 4: Eligibility engine ───────────────────────────────────────────
+from services.eligibility_engine import compute_verdict
+
+# ─── Phase 5: Chatbot service ──────────────────────────────────────────────
+from services.chatbot_service import generate_chat_reply
+
 app = FastAPI(
     title="AI Hiring Bias Detector — AI Service",
-    description="Python microservice handling bias detection, test generation, grading, and eligibility decisions.",
-    version="0.2.0",
+    description="Python microservice handling bias detection, test generation, grading, eligibility decisions, and interactive chatbot.",
+    version="0.6.0",
 )
 
 # ─── CORS ─────────────────────────────────────────────────────────────────────
@@ -78,6 +84,7 @@ class EligibilityRequest(BaseModel):
     application_id: str
     test_score: float
     resume_skill_match: float
+    llm_confidence: float = 1.0   # Phase 4: pass grader confidence to adjust thresholds
 
 
 class BiasAnalysisResponse(BaseModel):
@@ -93,14 +100,27 @@ class EligibilityResponse(BaseModel):
     model_version: str = "stub-v0"
 
 
+class ChatbotMessageRequest(BaseModel):
+    role: str = "candidate"
+    message: str
+    conversation_history: Optional[List[Dict[str, str]]] = None
+    context: Optional[Dict[str, Any]] = None
+
+
+class ChatbotMessageResponse(BaseModel):
+    reply: str
+    suggestions: List[str]
+    model_version: str
+
+
 # ─── Health Check ─────────────────────────────────────────────────────────────
 @app.get("/health")
 def health():
     return {
         "status": "ok",
         "service": "hiring-bias-ai-service",
-        "phase": "3 — Bias detection + Skill profiler + Resume parser + Test generator + Grader active",
-        "version": "0.4.0",
+        "phase": "5 — Bias + Skill profiler + Resume parser + Test generator + Grader + Eligibility + Chatbot active",
+        "version": "0.6.0",
     }
 
 
@@ -274,14 +294,47 @@ def grade_submission(req: GradeRequest):
     }
 
 
-# ─── Phase 4 Stub: Eligibility Engine ────────────────────────────────────────
+# ─── Phase 4 ACTIVE: Eligibility Engine ──────────────────────────────────────────
 @app.post("/eligibility", response_model=EligibilityResponse)
 def compute_eligibility(req: EligibilityRequest):
-    """STUB — Phase 4. IMPORTANT: Never uses demographic signals."""
-    if req.test_score >= 70 and req.resume_skill_match >= 0.6:
-        verdict, explanation = "eligible", "STUB: Candidate meets test and skill match thresholds."
-    elif req.test_score < 40:
-        verdict, explanation = "not_eligible", "STUB: Test score below minimum threshold."
-    else:
-        verdict, explanation = "needs_review", "STUB: Borderline result — routed to recruiter."
-    return EligibilityResponse(verdict=verdict, explanation=explanation, model_version="stub-v0")
+    """
+    Phase 4 ACTIVE:
+    Computes eligibility verdict from objective signals only.
+    NEVER uses demographic signals (name, age, gender, address, etc.).
+    Returns: eligible | not_eligible | needs_review + plain-English explanation.
+    """
+    result = compute_verdict(
+        test_score=req.test_score,
+        resume_skill_match=req.resume_skill_match,
+        llm_confidence=req.llm_confidence,
+        application_id=req.application_id,
+    )
+    return EligibilityResponse(
+        verdict=result["verdict"],
+        explanation=result["explanation"],
+        model_version=result["model_version"],
+    )
+
+
+# ─── Phase 5 ACTIVE: Interactive AI Chatbot ──────────────────────────────────
+@app.post("/chatbot/message", response_model=ChatbotMessageResponse)
+def chatbot_message(req: ChatbotMessageRequest):
+    """
+    Phase 5 ACTIVE:
+    Contextual, fair hiring assistant for candidates and recruiters.
+    Provides transparent explanations, bias recommendations, and policy guidance.
+    """
+    if not req.message or not req.message.strip():
+        raise HTTPException(status_code=422, detail="message is required")
+
+    result = generate_chat_reply(
+        role=req.role,
+        message=req.message.strip(),
+        conversation_history=req.conversation_history,
+        context=req.context,
+    )
+    return ChatbotMessageResponse(
+        reply=result["reply"],
+        suggestions=result.get("suggestions", []),
+        model_version=result.get("model_version", "rule-v1"),
+    )

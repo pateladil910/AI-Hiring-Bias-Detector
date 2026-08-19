@@ -74,13 +74,35 @@ export const testsAPI = {
 
 // ─── Eligibility ──────────────────────────────────────────────────────────────
 export const eligibilityAPI = {
-  getVerdict: (applicationId) => api.get(`/api/eligibility/${applicationId}`),
-  override: (id, reason) => api.patch(`/api/eligibility/${id}/override`, { reason }),
+  compute:     (applicationId)            => api.post(`/api/eligibility/compute/${applicationId}`),
+  getVerdict:  (applicationId)            => api.get(`/api/eligibility/${applicationId}`),
+  override:    (verdictId, newVerdict, reason) => api.patch(`/api/eligibility/${verdictId}/override`, { newVerdict, reason }),
+  reviewQueue: ()                         => api.get('/api/eligibility/review-queue/all'),
 };
 
 // ─── Audit ────────────────────────────────────────────────────────────────────
 export const auditAPI = {
-  list: (params) => api.get('/api/audit', { params }),
+  list:     (params) => api.get('/api/audit', { params }),
+  stats:    ()       => api.get('/api/audit/stats'),
+  downloadCSV: (params) => {
+    const searchParams = new URLSearchParams(params || {}).toString();
+    const url = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/audit/export/csv${searchParams ? `?${searchParams}` : ''}`;
+    return url;
+  },
+};
+
+// ─── Analytics ────────────────────────────────────────────────────────────────
+export const analyticsAPI = {
+  dashboard: () => api.get('/api/analytics/dashboard'),
+};
+
+// ─── Chatbot ──────────────────────────────────────────────────────────────────
+export const chatbotAPI = {
+  getSession:    ()                  => api.post('/api/chatbot/session'),
+  newSession:    ()                  => api.post('/api/chatbot/session/new'),
+  getById:       (sessionId)         => api.get(`/api/chatbot/session/${sessionId}`),
+  sendMessage:   (sessionId, data)   => api.post(`/api/chatbot/session/${sessionId}/message`, data),
+  clearSession:  (sessionId)         => api.delete(`/api/chatbot/session/${sessionId}`),
 };
 
 export default api;

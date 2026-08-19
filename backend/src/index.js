@@ -11,6 +11,10 @@ const authRoutes = require('./routes/auth');
 const jobRoutes = require('./routes/jobs');
 const applicationRoutes = require('./routes/applications');
 const testsRoutes = require('./routes/tests');
+const eligibilityRoutes = require('./routes/eligibility');
+const chatbotRoutes = require('./routes/chatbot');
+const auditRoutes = require('./routes/audit');
+const analyticsRoutes = require('./routes/analytics');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -47,6 +51,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/tests', testsRoutes);
+app.use('/api/eligibility', eligibilityRoutes);
+app.use('/api/chatbot', chatbotRoutes);
+app.use('/api/audit', auditRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // Serve uploaded resumes (so frontend can link to them)
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
