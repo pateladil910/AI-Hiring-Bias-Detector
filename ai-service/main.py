@@ -153,14 +153,41 @@ async def analyze_resume(file: UploadFile = File(...), application_id: str = For
     if not raw_text or len(raw_text.strip()) < 20:
         raise HTTPException(status_code=422, detail="Could not extract readable text from resume.")
 
-    anonymised_text = anonymise_text(raw_text)
+    anonymised_res = anonymise_text(raw_text)
+    anonymised_text_str = anonymised_res.get("anonymised_text", raw_text) if isinstance(anonymised_res, dict) else anonymised_res
     metadata = extract_metadata(raw_text)
-    bias_result = bias_detector.scan_lexicon(anonymised_text)
+    bias_result = bias_detector.scan_lexicon(anonymised_text_str)
 
     return {
         "application_id": application_id,
         "raw_text_length": len(raw_text),
-        "anonymised_text": anonymised_text,
+        "anonymised_text": anonymised_text_str,
+        "redacted_fields": anonymised_res.get("redacted_fields", []) if isinstance(anonymised_res, dict) else [],
+        "bias_result": bias_result,
+        "metadata": metadata,
+    }
+
+
+@app.post("/analyze/resume/text")
+def analyze_resume_text(req: Dict[str, Any]):
+    """
+    Direct text endpoint for resume anonymization and analysis.
+    """
+    resume_text = req.get("resume_text", "")
+    application_id = req.get("application_id", "direct-scan")
+    if not resume_text:
+        raise HTTPException(status_code=422, detail="resume_text is required")
+
+    anonymised_res = anonymise_text(resume_text)
+    anonymised_text_str = anonymised_res.get("anonymised_text", resume_text) if isinstance(anonymised_res, dict) else anonymised_res
+    metadata = extract_metadata(resume_text)
+    bias_result = bias_detector.scan_lexicon(anonymised_text_str)
+
+    return {
+        "application_id": application_id,
+        "raw_text_length": len(resume_text),
+        "anonymised_text": anonymised_text_str,
+        "redacted_fields": anonymised_res.get("redacted_fields", []) if isinstance(anonymised_res, dict) else [],
         "bias_result": bias_result,
         "metadata": metadata,
     }
@@ -171,15 +198,19 @@ async def analyze_resume(file: UploadFile = File(...), application_id: str = For
 def generate_test(req: Dict[str, Any]):
     skill_profile = req.get("skill_profile", {})
     num_mcq = req.get("num_mcq", 8)
-    num_short = req.get("num_short_answer", 2)
-    questions = generate_questions(skill_profile, num_mcq=num_mcq, num_short=num_short)
+    num_short_answer = req.get("num_short_answer", req.get("num_short", 2))
+    test_data = generate_questions(skill_profile, num_mcq=num_mcq, num_short_answer=num_short_answer)
+    questions = test_data.get("questions", []) if isinstance(test_data, dict) else test_data
     return {
         "job_id": req.get("job_id"),
         "questions": questions,
         "question_count": len(questions),
+        "topics_covered": test_data.get("topics_covered", []) if isinstance(test_data, dict) else [],
+        "model_version": test_data.get("model_version", "mock-bank-v1") if isinstance(test_data, dict) else "mock-bank-v1",
     }
 
 
+@app.post("/grade")
 @app.post("/grade/test")
 def grade_test(req: Dict[str, Any]):
     questions = req.get("questions", [])
@@ -189,6 +220,7 @@ def grade_test(req: Dict[str, Any]):
 
 
 # ─── Eligibility Engine ───────────────────────────────────────────────────────
+@app.post("/eligibility")
 @app.post("/eligibility/evaluate")
 def evaluate_eligibility(req: Dict[str, Any]):
     test_score = req.get("test_score", 0.0)
@@ -198,11 +230,12 @@ def evaluate_eligibility(req: Dict[str, Any]):
 
 # ─── AI Chatbot Assistant ────────────────────────────────────────────────────
 @app.post("/chat")
-async def chat_endpoint(req: ChatbotMessageRequest):
-    reply = await generate_chat_reply(
+@app.post("/chatbot/message")
+def chat_endpoint(req: ChatbotMessageRequest):
+    reply = generate_chat_reply(
         role=req.role,
         message=req.message,
-        history=req.conversation_history or [],
+        conversation_history=req.conversation_history or [],
         context=req.context or {}
     )
     return reply

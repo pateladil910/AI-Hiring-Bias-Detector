@@ -11,12 +11,18 @@ router.post('/request-access', async (req, res) => {
       return res.status(400).json({ error: { message: 'Company name and work email are required.' } });
     }
 
-    // Basic domain check to block common free webmail domains
-    const freeDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com'];
+    // Domain check to block consumer/free webmail domains
+    const freeDomains = [
+      'gmail.com', 'googlemail.com', 'yahoo.com', 'ymail.com', 'rocketmail.com',
+      'hotmail.com', 'outlook.com', 'live.com', 'msn.com',
+      'icloud.com', 'me.com', 'mac.com',
+      'aol.com', 'mail.com', 'proton.me', 'protonmail.com',
+      'zoho.com', 'yandex.com', 'gmx.com', 'fastmail.com',
+    ];
     const emailDomain = workEmail.split('@')[1]?.toLowerCase();
     if (freeDomains.includes(emailDomain)) {
       return res.status(400).json({
-        error: { message: 'Please provide a valid company work email address (e.g. name@company.com).' }
+        error: { message: `Personal email providers (@${emailDomain}) are not permitted. Please provide an official corporate work email.` }
       });
     }
 

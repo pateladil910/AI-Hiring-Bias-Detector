@@ -1,7 +1,254 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Users, Briefcase, ChevronDown, ShieldCheck, AlertTriangle, Clock, ClipboardList, Zap } from 'lucide-react';
+import {
+  Users, Briefcase, ShieldCheck, AlertTriangle, Clock,
+  ClipboardList, Zap, FileText, X, MessageSquare, Check,
+  UserCheck, UserX
+} from 'lucide-react';
 import { jobsAPI, applicationsAPI, testsAPI, eligibilityAPI } from '../../lib/api';
+
+// ─── Candidate Review & Status Transition Modal ──────────────────────────────
+function CandidateReviewModal({ app, candidateIndex, onClose, onUpdated }) {
+  const [status, setStatus] = useState(app.status);
+  const [notes, setNotes] = useState(app.recruiterNotes || '');
+  const [saving, setSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSave = async (newStatus) => {
+    setSaving(true);
+    setError('');
+    setSaveSuccess(false);
+    const targetStatus = newStatus || status;
+    try {
+      await applicationsAPI.updateStatus(app.id, {
+        status: targetStatus,
+        notes: notes.trim(),
+      });
+      setStatus(targetStatus);
+      setSaveSuccess(true);
+      if (onUpdated) {
+        onUpdated(app.id, { status: targetStatus, recruiterNotes: notes.trim() });
+      }
+      setTimeout(() => {
+        setSaveSuccess(false);
+      }, 2000);
+    } catch (err) {
+      setError(err.response?.data?.error?.message || 'Failed to update candidate review.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)',
+      backdropFilter: 'blur(4px)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      zIndex: 250, padding: 20,
+    }}>
+      <div className="card" style={{ maxWidth: 520, width: '100%', padding: 28, background: 'var(--color-surface)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+          <div>
+            <div className="badge badge-primary" style={{ fontSize: 11, marginBottom: 6 }}>
+              Blind Candidate Review
+            </div>
+            <h3 style={{ margin: 0, fontSize: 18 }}>Candidate #{String(candidateIndex).padStart(3, '0')}</h3>
+          </div>
+          <button
+            onClick={onClose}
+            className="btn btn-ghost btn-sm"
+            style={{ padding: 6 }}
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        {error && <div className="alert alert-error" style={{ marginBottom: 16 }}>{error}</div>}
+        {saveSuccess && <div className="alert alert-success" style={{ marginBottom: 16 }}>Review notes &amp; status saved!</div>}
+
+        {/* Status selection */}
+        <div className="form-group" style={{ marginBottom: 16 }}>
+          <label className="form-label" style={{ fontSize: 12 }}>Pipeline Stage</label>
+          <select
+            className="form-input"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="applied">Applied (Initial)</option>
+            <option value="test_sent">Test Sent</option>
+            <option value="test_completed">Test Completed</option>
+            <option value="needs_review">Needs Review</option>
+            <option value="eligible">Eligible (Passed)</option>
+            <option value="interview">Interview Stage</option>
+            <option value="hired">Hired</option>
+            <option value="rejected">Not Selected</option>
+          </select>
+        </div>
+
+        {/* Evaluation notes */}
+        <div className="form-group" style={{ marginBottom: 20 }}>
+          <label className="form-label" style={{ fontSize: 12 }}>
+            Recruiter Evaluation &amp; Interview Notes
+          </label>
+          <textarea
+            className="form-input"
+            rows={4}
+            placeholder="Record technical observations, interview feedback, or compliance justification..."
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            style={{ resize: 'vertical' }}
+          />
+          <span style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 4, display: 'block' }}>
+            Notes are audited and visible to authorized compliance reviewers.
+          </span>
+        </div>
+
+        {/* Fast Action Buttons */}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            className="btn btn-sm btn-ghost"
+            onClick={() => handleSave('interview')}
+            disabled={saving}
+            style={{ display: 'flex', alignItems: 'center', gap: 4, borderColor: 'var(--color-primary)' }}
+          >
+            <UserCheck size={14} /> Advance to Interview
+          </button>
+          <button
+            type="button"
+            className="btn btn-sm btn-ghost"
+            onClick={() => handleSave('hired')}
+            disabled={saving}
+            style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--color-success)', borderColor: 'var(--color-success)' }}
+          >
+            <Check size={14} /> Mark Hired
+          </button>
+          <button
+            type="button"
+            className="btn btn-sm btn-ghost"
+            onClick={() => handleSave('rejected')}
+            disabled={saving}
+            style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--color-danger)' }}
+          >
+            <UserX size={14} /> Reject
+          </button>
+        </div>
+
+        {/* Modal actions */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={onClose}
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => handleSave()}
+            disabled={saving}
+            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+          >
+            {saving ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <Check size={14} />}
+            Save Review
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Redacted CV Slide-Over Drawer ────────────────────────────────────────────
+function CvDrawer({ app, onClose }) {
+  if (!app) return null;
+  const resume = app.anonymisedText || app.anonymisedResume || app.anonymizedResume || '';
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        onClick={onClose}
+        style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)',
+          zIndex: 200, animation: 'fadeIn 150ms ease-out',
+        }}
+      />
+      {/* Drawer panel */}
+      <div style={{
+        position: 'fixed', top: 0, right: 0, bottom: 0, width: 520, maxWidth: '95vw',
+        background: 'var(--color-surface)', borderLeft: '1px solid var(--color-border)',
+        zIndex: 201, display: 'flex', flexDirection: 'column',
+        animation: 'slideInRight 200ms ease-out',
+        boxShadow: '-8px 0 32px rgba(0,0,0,0.4)',
+      }}>
+        {/* Drawer header */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '20px 24px', borderBottom: '1px solid var(--color-border)',
+          flexShrink: 0,
+        }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <FileText size={18} style={{ color: 'var(--color-primary)' }} />
+              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600 }}>Redacted Resume</h3>
+            </div>
+            <p style={{ margin: '4px 0 0 28px', fontSize: 12, color: 'var(--color-text-muted)' }}>
+              PII has been automatically stripped — names, emails, phones &amp; addresses removed
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'transparent', border: '1px solid var(--color-border)',
+              borderRadius: 8, padding: 6, cursor: 'pointer',
+              color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center',
+            }}
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* PII strip confirmation badge */}
+        <div style={{
+          margin: '16px 24px 0',
+          padding: '8px 14px',
+          background: 'rgba(52,199,123,0.08)',
+          border: '1px solid rgba(52,199,123,0.2)',
+          borderRadius: 8, fontSize: 12,
+          color: 'var(--color-success)',
+          display: 'flex', alignItems: 'center', gap: 8,
+          flexShrink: 0,
+        }}>
+          <ShieldCheck size={14} />
+          Candidate identity protected — zero PII in this view
+        </div>
+
+        {/* Resume body */}
+        <div style={{ flex: 1, overflow: 'auto', padding: '16px 24px 24px' }}>
+          {resume ? (
+            <pre style={{
+              whiteSpace: 'pre-wrap', wordBreak: 'break-word',
+              fontFamily: 'var(--font-mono)', fontSize: 13, lineHeight: 1.8,
+              color: 'var(--color-text-primary)',
+              background: 'var(--color-surface-alt)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 10, padding: '18px 20px', margin: 0,
+            }}>
+              {resume}
+            </pre>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--color-text-muted)' }}>
+              <FileText size={40} style={{ opacity: 0.3, display: 'block', margin: '0 auto 16px' }} />
+              <p style={{ fontSize: 14 }}>Resume text not yet available.</p>
+              <p style={{ fontSize: 12 }}>The candidate may still be completing their application.</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
 
 const STATUS_BADGE = {
   applied:        { label: 'Applied',         cls: 'badge-primary' },
@@ -43,10 +290,12 @@ export default function RecruiterCandidates() {
   const [loadingJobs, setLoadingJobs] = useState(true);
   const [loadingApps, setLoadingApps] = useState(false);
   const [error, setError] = useState('');
+  const [cvDrawerApp, setCvDrawerApp] = useState(null); // { id, anonymisedResume }
   // Phase 3 & 4 states
   const [testLoading, setTestLoading] = useState({});   // { [appId]: true/false }
   const [testSent, setTestSent] = useState({});          // { [appId]: true }
   const [eligibilityLoading, setEligibilityLoading] = useState({}); // { [appId]: true/false }
+  const [reviewModalApp, setReviewModalApp] = useState(null);       // { app, index }
 
   // Load recruiter's jobs for the dropdown
   useEffect(() => {
@@ -121,11 +370,26 @@ export default function RecruiterCandidates() {
     }
   }
 
+  // Load on-demand full anonymised CV for Redacted CV Drawer
+  async function handleOpenCvDrawer(app) {
+    setCvDrawerApp(app);
+    if (!app.anonymisedText && !app.anonymisedResume) {
+      try {
+        const { data } = await applicationsAPI.get(app.id);
+        setCvDrawerApp(data.application);
+      } catch (err) {
+        console.error('Failed to load application detail:', err);
+      }
+    }
+  }
+
   const pendingReview = applications.filter((a) => a.status === 'needs_review').length;
   const eligible = applications.filter((a) => a.status === 'eligible').length;
 
   return (
-    <div className="page">
+    <>
+      <CvDrawer app={cvDrawerApp} onClose={() => setCvDrawerApp(null)} />
+      <div className="page">
       {/* Header */}
       <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
         <div>
@@ -261,8 +525,13 @@ export default function RecruiterCandidates() {
 
                   {/* Anonymised identity */}
                   <div>
-                    <div style={{ fontWeight: 500, fontSize: 14, color: 'var(--color-text-primary)' }}>
-                      Candidate #{String(idx + 1).padStart(3, '0')}
+                    <div style={{ fontWeight: 500, fontSize: 14, color: 'var(--color-text-primary)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span>Candidate #{String(idx + 1).padStart(3, '0')}</span>
+                      {app.recruiterNotes && (
+                        <span title="Review notes attached" style={{ cursor: 'pointer', fontSize: 12, color: 'var(--color-primary)' }}>
+                          📝
+                        </span>
+                      )}
                     </div>
                     <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
                       Applied {new Date(app.createdAt).toLocaleDateString()}
@@ -275,8 +544,34 @@ export default function RecruiterCandidates() {
                   {/* Status */}
                   <span className={`badge ${statusCfg.cls}`}>{statusCfg.label}</span>
 
-                  {/* Phase 3: Actions */}
-                  <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+                  {/* Actions column */}
+                  <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+                    {/* View Redacted CV */}
+                    <button
+                      id={`view-cv-${app.id}`}
+                      className="btn btn-sm btn-ghost"
+                      onClick={() => handleOpenCvDrawer(app)}
+                      style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+                      title="View anonymised resume"
+                    >
+                      <FileText size={12} /> Redacted CV
+                    </button>
+
+                    {/* Candidate Review & Status Transition */}
+                    <button
+                      id={`review-notes-${app.id}`}
+                      className="btn btn-sm btn-ghost"
+                      onClick={() => setReviewModalApp({ app, index: idx + 1 })}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 4,
+                        borderColor: app.recruiterNotes ? 'var(--color-primary)' : undefined,
+                      }}
+                      title="Review candidate notes and update status"
+                    >
+                      <MessageSquare size={12} />
+                      {app.recruiterNotes ? 'Notes' : 'Review'}
+                    </button>
+
                     {/* Send Test button — only for 'applied' status */}
                     {app.status === 'applied' && !isSent && (
                       <button
@@ -336,5 +631,23 @@ export default function RecruiterCandidates() {
         </div>
       )}
     </div>
+
+    {/* Candidate Review Modal */}
+    {reviewModalApp && (
+      <CandidateReviewModal
+        app={reviewModalApp.app}
+        candidateIndex={reviewModalApp.index}
+        onClose={() => setReviewModalApp(null)}
+        onUpdated={(appId, updates) => {
+          setApplications((prev) =>
+            prev.map((a) => (a.id === appId ? { ...a, ...updates } : a))
+          );
+          setReviewModalApp((prev) =>
+            prev && prev.app.id === appId ? { ...prev, app: { ...prev.app, ...updates } } : prev
+          );
+        }}
+      />
+    )}
+    </>
   );
 }

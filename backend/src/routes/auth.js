@@ -276,4 +276,33 @@ router.get('/me', authenticate, async (req, res) => {
   });
 });
 
+// ─── POST /api/auth/resend-verification ──────────────────────────────────────
+router.post('/resend-verification', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: { message: 'Email is required.' } });
+    }
+
+    const user = await User.findOne({ where: { email: email.toLowerCase().trim() } });
+
+    // Always return 200 to prevent email enumeration
+    if (!user || user.emailVerified) {
+      return res.json({ message: 'If that email exists and is unverified, a new link has been sent.' });
+    }
+
+    // Generate a fresh verification token
+    const newToken = crypto.randomBytes(32).toString('hex');
+    user.verificationToken = newToken;
+    await user.save();
+
+    await sendVerificationEmail(user.email, newToken);
+
+    return res.json({ message: 'Verification email re-sent. Please check your inbox.' });
+  } catch (err) {
+    console.error('[RESEND VERIFICATION ERROR]', err.message);
+    return res.status(500).json({ error: { message: 'Failed to resend verification email.' } });
+  }
+});
+
 module.exports = router;

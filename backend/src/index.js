@@ -1,7 +1,8 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 require('dotenv').config();
 const http = require('http');
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
 const { connectDB } = require('./config/db');
 const { attachWebSocketServer } = require('./websocket/biasScoreWS');
@@ -17,6 +18,7 @@ const eligibilityRoutes = require('./routes/eligibility');
 const chatbotRoutes = require('./routes/chatbot');
 const auditRoutes = require('./routes/audit');
 const analyticsRoutes = require('./routes/analytics');
+const biasRoutes = require('./routes/bias');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -59,6 +61,7 @@ app.use('/api/eligibility', eligibilityRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/audit', auditRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/bias', biasRoutes);
 
 // Serve uploaded resumes (so frontend can link to them)
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
@@ -85,6 +88,25 @@ app.use((err, _req, res, _next) => {
 const start = async () => {
   try {
     await connectDB();
+
+    // Ensure default admin exists for system administration & testing
+    const { User } = require('./models');
+    const bcrypt = require('bcryptjs');
+    const adminExists = await User.findOne({ where: { email: 'admin@fairhire.io' } });
+    if (!adminExists) {
+      const passwordHash = await bcrypt.hash('password123', 12);
+      await User.create({
+        email: 'admin@fairhire.io',
+        passwordHash,
+        firstName: 'System',
+        lastName: 'Admin',
+        role: 'admin',
+        emailVerified: true,
+        isActive: true,
+      });
+      console.log('👑 Default admin account seeded: admin@fairhire.io');
+    }
+
     // Use http.createServer so WebSocket can share the same port
     const httpServer = http.createServer(app);
     attachWebSocketServer(httpServer);

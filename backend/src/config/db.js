@@ -3,12 +3,12 @@ const path = require('path');
 
 let sequelize;
 
-if (process.env.DB_DIALECT === 'sqlite' || !process.env.POSTGRES_DB) {
+if (process.env.DB_DIALECT !== 'postgres' || !process.env.POSTGRES_DB) {
   // Use SQLite
   sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: path.join(__dirname, '../../dev.sqlite'),
-    logging: process.env.NODE_ENV === 'development' ? false : false,
+    logging: false,
   });
 } else {
   // Try Postgres

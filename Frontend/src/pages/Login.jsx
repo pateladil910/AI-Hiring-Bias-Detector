@@ -23,6 +23,14 @@ export default function Login() {
     setError('');
     try {
       const user = await login(form.email, form.password);
+      if (user && user.emailVerified === false) {
+        navigate('/verify-email', {
+          replace: true,
+          state: { email: user.email, unverified: true },
+        });
+        return;
+      }
+
       if (['admin'].includes(user.role)) {
         navigate('/admin/dashboard', { replace: true });
       } else if (['hr_lead', 'recruiter', 'compliance'].includes(user.role)) {

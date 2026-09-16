@@ -31,22 +31,32 @@ api.interceptors.response.use(
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 export const authAPI = {
-  register: (data) => api.post('/api/auth/register', data),
-  login: (data) => api.post('/api/auth/login', data),
-  me: () => api.get('/api/auth/me'),
+  register:             (data)  => api.post('/api/auth/register', data),
+  login:                (data)  => api.post('/api/auth/login', data),
+  me:                   ()      => api.get('/api/auth/me'),
+  resendVerification:   (email) => api.post('/api/auth/resend-verification', { email }),
 };
 
 // ─── Jobs ─────────────────────────────────────────────────────────────────────
 export const jobsAPI = {
-  list:    ()         => api.get('/api/jobs'),
-  myJobs:  ()         => api.get('/api/jobs/my'),
-  get:     (id)       => api.get(`/api/jobs/${id}`),
-  create:  (data)     => api.post('/api/jobs', data),
-  update:  (id, data) => api.put(`/api/jobs/${id}`, data),
-  analyze: (id)       => api.post(`/api/jobs/${id}/analyze`),
-  publish: (id)       => api.patch(`/api/jobs/${id}/publish`),
-  unpublish: (id)     => api.patch(`/api/jobs/${id}/unpublish`),
+  list:      ()         => api.get('/api/jobs'),
+  myJobs:    ()         => api.get('/api/jobs/my'),
+  get:       (id)       => api.get(`/api/jobs/${id}`),
+  create:    (data)     => api.post('/api/jobs', data),
+  update:    (id, data) => api.put(`/api/jobs/${id}`, data),
+  analyze:   (id)       => api.post(`/api/jobs/${id}/analyze`),
+  publish:   (id)       => api.patch(`/api/jobs/${id}/publish`),
+  unpublish: (id)       => api.patch(`/api/jobs/${id}/unpublish`),
 };
+
+// ─── Bias Scanner ─────────────────────────────────────────────────────────────
+export const biasAPI = {
+  deepScan:         (data) => api.post('/api/bias/deep-scan', data),
+  quickScan:        (data) => api.post('/api/bias/quick-scan', data),
+  acceptSuggestion: (data) => api.post('/api/bias/accept-suggestion', data),
+  dismissFlag:      (data) => api.post('/api/bias/dismiss-flag', data),
+};
+
 
 // ─── Applications ─────────────────────────────────────────────────────────────
 export const applicationsAPI = {
@@ -61,6 +71,8 @@ export const applicationsAPI = {
   get: (id) => api.get(`/api/applications/${id}`),
   // Recruiter: view applicants for a specific job (anonymised)
   byJob: (jobId) => api.get(`/api/applications/job/${jobId}`),
+  // Recruiter: advance status or save evaluation notes
+  updateStatus: (id, data) => api.patch(`/api/applications/${id}/status`, data),
 };
 
 
@@ -103,6 +115,13 @@ export const chatbotAPI = {
   getById:       (sessionId)         => api.get(`/api/chatbot/session/${sessionId}`),
   sendMessage:   (sessionId, data)   => api.post(`/api/chatbot/session/${sessionId}/message`, data),
   clearSession:  (sessionId)         => api.delete(`/api/chatbot/session/${sessionId}`),
+};
+
+// ─── Admin ────────────────────────────────────────────────────────────────────
+export const adminAPI = {
+  getRecruiterRequests: (status) => api.get('/api/admin/recruiter-requests', { params: status ? { status } : {} }),
+  decision: (id, decision, notes) => api.post(`/api/admin/recruiter-requests/${id}/decision`, { decision, notes }),
+  organisations: () => api.get('/api/admin/organisations'),
 };
 
 export default api;
