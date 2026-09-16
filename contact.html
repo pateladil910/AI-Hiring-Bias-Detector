@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact &amp; Support | EquiHire AI</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/footer.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+
+  <!-- Fullscreen Intro Animation Page -->
+  <div id="intro-animation-overlay">
+    <div class="intro-card">
+      <div class="intro-shield-box pulse-shield">EQ</div>
+      <span class="badge" style="background:rgba(255,255,255,0.15);color:#ffffff;border:1px solid rgba(255,255,255,0.25);margin-bottom:0.75rem;">
+        EQUIPROCESS AI ENGINE 2.4
+      </span>
+      <h2 style="color:#ffffff;font-size:1.75rem;font-weight:800;margin-bottom:0.5rem;">
+        AI Hiring Bias Detection &amp; Evaluation System
+      </h2>
+      <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;">
+        Initializing demographic cloaking shields, AST vector parsers, and EEOC neutrality audit tools...
+      </p>
+
+      <div class="intro-progress-track">
+        <div class="intro-progress-bar" id="intro-bar"></div>
+      </div>
+
+      <div class="flex-between" style="font-family:var(--font-mono);font-size:0.8rem;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;">
+        <span>STATUS: <span id="intro-status-num" style="color:#3cb371;font-weight:700;">0%</span></span>
+        <span>SYSTEM READY</span>
+      </div>
+
+      <div class="intro-tick-text" id="intro-tick">
+        ⚡ [01/04] Stripping Candidate Identifiers (Name, Gender, Age)...
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <div class="brand-logo-icon">EQ</div>
+          <div class="brand-text">
+            <span class="brand-name">Equi<span>Hire</span> AI</span>
+            <span class="brand-tag">Bias-Free Talent Engine</span>
+          </div>
+        </a>
+
+        <ul class="nav-menu"></ul>
+        <div class="nav-actions"></div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      
+      <div style="margin-bottom:2.5rem;text-align:center;">
+        <span class="badge badge-primary">GET IN TOUCH</span>
+        <h1 style="margin-top:0.5rem;">Contact EquiHire AI Enterprise Team</h1>
+        <p style="color:var(--text-muted);max-width:600px;margin:0.5rem auto 0;">
+          Have questions about our demographic-blind screening engine, EEOC compliance reports, or enterprise API integrations?
+        </p>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:3rem;">
+        
+        <div class="card">
+          <h3 style="margin-bottom:1.25rem;">Send Us a Message</h3>
+          <form onsubmit="handleContactSubmit(event)">
+            <div class="form-group">
+              <label class="form-label" for="c-name">Full Name</label>
+              <input type="text" class="form-input" id="c-name" placeholder="John Doe" required/>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="c-email">Work Email</label>
+              <input type="email" class="form-input" id="c-email" placeholder="john@company.com" required/>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="c-msg">Message</label>
+              <textarea class="form-textarea" id="c-msg" rows="4" placeholder="Tell us about your organization's recruitment volume..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;">
+              Submit Inquiry →
+            </button>
+          </form>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1.5rem;">
+          <div class="card">
+            <h3>🏢 Enterprise Sales &amp; Demo</h3>
+            <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.35rem;">
+              Schedule a live demo of our EEOC compliance audit generator and ATS integration suite.
+            </p>
+            <strong style="color:var(--primary);display:block;margin-top:0.5rem;">enterprise@equihire.ai</strong>
+          </div>
+
+          <div class="card">
+            <h3>🛡️ EEOC &amp; Legal Compliance</h3>
+            <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.35rem;">
+              Inquire about our algorithmic neutrality audits and GDPR data protection guarantees.
+            </p>
+            <strong style="color:var(--primary);display:block;margin-top:0.5rem;">compliance@equihire.ai</strong>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 EquiHire AI Inc. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/loader.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      showToast('Thank you! Your inquiry has been submitted. Our team will contact you shortly.', 'success');
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>

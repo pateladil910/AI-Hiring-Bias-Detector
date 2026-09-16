@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resume Analysis | EquiHire AI</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <script src="js/auth.js"></script>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <div class="brand-logo-icon">EQ</div>
+          <div class="brand-text">
+            <span class="brand-name">Equi<span>Hire</span> AI</span>
+          </div>
+        </a>
+        <div class="nav-actions">
+           <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container" style="max-width:800px;">
+      
+      <div class="card" style="padding:2.5rem;">
+        <h2 style="margin-bottom:2rem; border-bottom:1px solid var(--border); padding-bottom:1rem;">Resume Analysis — Skills & Gap Review</h2>
+        
+        <div style="margin-bottom:2rem;">
+          <h3 style="margin-bottom:1rem; font-size:1.1rem;">Redaction Summary</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:0.5rem;">The following demographic and identity markers were detected and removed:</p>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <span class="badge" style="background:var(--danger-soft); color:var(--danger);">Name</span>
+            <span class="badge" style="background:var(--danger-soft); color:var(--danger);">Email</span>
+            <span class="badge" style="background:var(--danger-soft); color:var(--danger);">Phone Number</span>
+            <span class="badge" style="background:var(--danger-soft); color:var(--danger);">Address</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom:2rem;">
+          <h3 style="margin-bottom:1rem; font-size:1.1rem;">Extracted Skills</h3>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <span class="badge" style="background:var(--primary-soft); color:var(--primary);">JavaScript</span>
+            <span class="badge" style="background:var(--primary-soft); color:var(--primary);">React</span>
+            <span class="badge" style="background:var(--primary-soft); color:var(--primary);">Node.js</span>
+            <span class="badge" style="background:var(--primary-soft); color:var(--primary);">HTML/CSS</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom:2rem;">
+          <h3 style="margin-bottom:1rem; font-size:1.1rem;">Domain Match (Frontend React)</h3>
+          <div class="grid-2">
+            <div class="card" style="background:var(--success-soft); border-color:var(--success); padding:1rem;">
+              <h4 style="color:var(--success); margin-bottom:0.5rem;">Present Required Skills</h4>
+              <ul style="font-size:0.85rem; padding-left:1.2rem;">
+                <li>React (3+ years detected)</li>
+                <li>JavaScript</li>
+              </ul>
+            </div>
+            <div class="card" style="background:var(--warning-soft); border-color:var(--warning); padding:1rem;">
+              <h4 style="color:var(--warning); margin-bottom:0.5rem;">Missing Required Skills</h4>
+              <ul style="font-size:0.85rem; padding-left:1.2rem;">
+                <li>TypeScript</li>
+                <li>GraphQL</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:2rem;">
+          <h3 style="margin-bottom:1rem; font-size:1.1rem;">Experience Evidence</h3>
+          <p style="font-size:0.9rem; color:var(--text);">Detected approximately <strong>4 years</strong> of relevant professional experience across 2 roles.</p>
+        </div>
+
+        <div style="display:flex; gap:1rem; margin-top:2rem; padding-top:2rem; border-top:1px solid var(--border);">
+          <button class="btn btn-primary" onclick="confirmAnalysis()">Confirm Profile</button>
+          <button class="btn btn-secondary" onclick="reportError()">Report Extraction Error</button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+  
+  <script>
+    function confirmAnalysis() {
+        alert("Profile confirmed.");
+        window.location.href = 'candidate-dashboard.html';
+    }
+    function reportError() {
+        const msg = prompt("Please describe the extraction issue:");
+        if (msg) alert("Issue reported.");
+    }
+  </script>
+</body>
+</html>

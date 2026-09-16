@@ -1,0 +1,71 @@
+.hero-section {
+  padding: 4.5rem 2rem 3.5rem;
+  text-align: center;
+  position: relative;
+  background: radial-gradient(circle at 50% 30%, rgba(232, 243, 238, 0.85) 0%, rgba(244, 249, 246, 0.95) 100%),
+              url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23116446' fill-opacity='0.05'%3E%3Cpath d='M60 60l30-30 30 30-30 30zM0 60l30-30 30 30-30 30z'/%3E%3C/g%3E%3C/svg%3E");
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 48px -12px rgba(17, 100, 70, 0.12);
+  margin-top: 1rem;
+  margin-bottom: 4rem;
+  overflow: hidden;
+}
+
+.hero-badge {
+  margin-bottom: 1.5rem;
+}
+
+.hero-title {
+  font-size: 3.35rem;
+  font-weight: 800;
+  max-width: 880px;
+  margin: 0 auto 1.25rem;
+  line-height: 1.15;
+}
+.hero-title mark {
+  background: linear-gradient(135deg, #116446, #2e8b57);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 1.18rem;
+  color: var(--text-muted);
+  max-width: 660px;
+  margin: 0 auto 2.5rem;
+}
+
+.hero-ctas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3.5rem;
+}
+
+.stats-bar {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.stat-number {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.demo-widget-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 2.25rem;
+  box-shadow: var(--shadow-xl);
+}

@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Brand Color Palette - Deep Emerald & Light Green Theme */
+  --primary: #116446;           /* Core Brand Color: Deep Emerald / Forest Green */
+  --primary-hover: #0c4d36;     /* Darker shade for hover */
+  --primary-light: #1b8a62;     /* Medium Emerald */
+  --primary-soft: #e8f3ee;      /* Soft Light Tint Background */
+  --primary-glow: rgba(17, 100, 70, 0.18);
+
+  --secondary: #2e8b57;         /* Sea Green Accent */
+  --secondary-light: #3cb371;   /* Mint Green */
+  --secondary-soft: #f0fdf6;
+
+  --accent-gold: #d97706;       /* Warm Amber Gold Accent */
+  --accent-gold-soft: #fef3c7;
+
+  --background: #f4f9f6;        /* Light Fresh Sage Tint Page Background */
+  --surface: #ffffff;           /* Clean Card White Surface */
+  --card: #ffffff;
+
+  --border: #d1e3d9;            /* Crisp Sage-Green Divider Border */
+  --border-dark: #abc7b8;
+
+  --text: #0c241b;              /* Deep Pine Slate Text for High Contrast */
+  --text-muted: #4a6b5d;        /* Muted Sage Text */
+  --text-light: #7b9e90;
+
+  --success: #116446;
+  --success-soft: #e8f3ee;
+  
+  --warning: #d97706;
+  --warning-soft: #fffbeb;
+
+  --danger: #d93838;
+  --danger-soft: #fde8e8;
+
+  --accent: #1b8a62;
+
+  /* Typography */
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Layout Tokens */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(12, 36, 27, 0.04), 0 1px 2px rgba(12, 36, 27, 0.02);
+  --shadow-md: 0 4px 14px -2px rgba(17, 100, 70, 0.08), 0 2px 6px -1px rgba(12, 36, 27, 0.04);
+  --shadow-lg: 0 12px 32px -4px rgba(17, 100, 70, 0.12), 0 4px 12px -2px rgba(12, 36, 27, 0.04);
+  --shadow-xl: 0 24px 48px -8px rgba(17, 100, 70, 0.18), 0 8px 24px -4px rgba(12, 36, 27, 0.06);
+
+  --radius-card: 16px;
+  --radius-control: 10px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --max-width: 1240px;
+  --nav-height: 72px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

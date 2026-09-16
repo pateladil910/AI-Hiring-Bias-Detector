@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Resume — Parity AI Platform</title>
+  <link rel="stylesheet" href="../shared/tokens.css"/>
+  <link rel="stylesheet" href="../shared/components.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-viewport">
+
+  <header id="parity-header" class="parity-header"></header>
+
+  <main class="main-content">
+
+    <div class="upload-header">
+      <span class="mono-label">STEP 03 / 12 — DOCUMENT SANITIZATION</span>
+      <h1 class="headline-serif">Upload Candidate Document</h1>
+      <p class="headline-sub">
+        Upload your latest resume. All demographic headers (photo, address, age, gender) are stripped immediately before parsing.
+      </p>
+    </div>
+
+    <div class="upload-container">
+      <div class="parity-card upload-card" id="drop-zone" onclick="triggerFileInput()">
+        <input type="file" id="file-input" accept=".pdf,.docx" style="display: none;" onchange="handleFileSelected(event)"/>
+        
+        <div class="upload-icon-wrap">
+          <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+        </div>
+
+        <h2 class="upload-title">Drop PDF or DOCX resume here</h2>
+        <p class="upload-subtitle">or click to browse local filesystem</p>
+
+        <div class="upload-limits">
+          <span class="status-pill pill-teal">ALLOWED FORMATS: .PDF, .DOCX</span>
+          <span class="status-pill pill-amber">MAXIMUM FILE SIZE: 10 MB</span>
+        </div>
+      </div>
+
+      <!-- Upload Progress Container (Determinate Bar) -->
+      <div class="parity-card progress-card" id="progress-card" style="display: none;">
+        <div class="prog-meta">
+          <span class="mono-label" id="prog-filename">Uploading...</span>
+          <span class="mono-val text-teal" id="prog-percent">0%</span>
+        </div>
+
+        <div class="prog-track">
+          <div class="prog-fill" id="prog-fill" style="width: 0%;"></div>
+        </div>
+
+        <div class="prog-status-text" id="prog-status">Reading document bytes...</div>
+      </div>
+
+      <!-- Sample Quick Action -->
+      <div class="sample-action-card">
+        <span class="mono-label">NO RESUME AT HAND?</span>
+        <button class="btn btn-ghost" onclick="loadSampleResume()">
+          ⚡ Use Calibrated Sample Resume (Alex Vance — Fullstack Engineer)
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

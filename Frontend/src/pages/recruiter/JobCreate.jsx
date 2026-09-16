@@ -146,6 +146,14 @@ export default function JobCreate() {
   const wordCount = rawText.trim() ? rawText.trim().split(/\s+/).length : 0;
   const canPublish = analyzed && (analysisResult?.score ?? liveScore) !== null && savedJobId;
 
+  const handleReplaceWord = (oldWord, replacement) => {
+    if (!oldWord || !replacement) return;
+    const escaped = oldWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b${escaped}\\b`, 'i');
+    const updated = rawText.replace(regex, replacement);
+    setRawText(updated);
+  };
+
   return (
     <div className="page" style={{ maxWidth: 1200, margin: '0 auto' }}>
 
@@ -168,7 +176,7 @@ export default function JobCreate() {
         )}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 24, alignItems: 'flex-start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24, alignItems: 'flex-start' }}>
 
         {/* ── Left: Editor ───────────────────────────────────────────────── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -261,7 +269,7 @@ export default function JobCreate() {
               disabled={analyzing || rawText.trim().length < 50}
             >
               {analyzing ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <Zap size={15} />}
-              {analyzing ? 'Analyzing…' : 'Analyze Bias'}
+              {analyzing ? 'Analyzing…' : 'Deep Scan Bias'}
             </button>
 
             {analyzed && !published && (
@@ -297,7 +305,7 @@ export default function JobCreate() {
             {/* Publish requirement note */}
             {!analyzed && savedJobId && (
               <p style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 14, lineHeight: 1.5 }}>
-                Run <strong>Analyze Bias</strong> before publishing. JDs cannot go live without a bias scan.
+                Run <strong>Deep Scan Bias</strong> before publishing. JDs cannot go live without a bias scan.
               </p>
             )}
           </div>
@@ -354,9 +362,11 @@ export default function JobCreate() {
             </h4>
             <BiasFlagPanel
               flags={analysisResult?.flags || []}
+              structuralNotes={analysisResult?.structural_notes || []}
               explanation={analysisResult?.explanation || ''}
               loading={analyzing}
               analyzed={analyzed}
+              onReplace={handleReplaceWord}
             />
           </div>
         </div>

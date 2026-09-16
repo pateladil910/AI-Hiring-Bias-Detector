@@ -1,0 +1,182 @@
+[
+  {
+    "id": "frontend",
+    "title": "Frontend Engineering",
+    "category": "Engineering",
+    "description": "UI Architecture, React/Vue/TypeScript, Web Performance Vitals, Responsive Design, and Client State Management.",
+    "icon": "code-slash",
+    "rubricVersion": "1.0",
+    "requiredSkills": ["HTML5", "CSS3", "JavaScript (ES6+)", "React", "TypeScript", "Responsive Design", "Web Performance", "Accessibility (WCAG)", "State Management"],
+    "totalQuestions": 8,
+    "format": "5 MCQ + 3 Aptitude + 1 Coding Challenge",
+    "estimatedDuration": "30 minutes",
+    "timeMinutes": 30,
+    "scoringWeights": {
+      "mcq": 0.4,
+      "coding": 0.4,
+      "resumeMatch": 0.2
+    }
+  },
+  {
+    "id": "backend",
+    "title": "Backend Engineering",
+    "category": "Engineering",
+    "description": "REST & GraphQL APIs, Database Indexing, Distributed Systems, Microservices, and Caching Strategies.",
+    "icon": "server",
+    "rubricVersion": "1.0",
+    "requiredSkills": ["Node.js", "REST APIs", "GraphQL", "SQL", "NoSQL (MongoDB)", "Caching (Redis)", "Microservices", "Authentication/JWT", "Docker"],
+    "totalQuestions": 8,
+    "format": "5 MCQ + 3 Aptitude + 1 Coding Challenge",
+    "estimatedDuration": "30 minutes",
+    "timeMinutes": 30,
+    "scoringWeights": {
+      "mcq": 0.4,
+      "coding": 0.4,
+      "resumeMatch": 0.2
+    }
+  },
+  {
+    "id": "fullstack",
+    "title": "Full Stack Engineering",
+    "category": "Engineering",
+    "description": "End-to-end web applications combining modern frontend frameworks, backend APIs, databases, and deployment.",
+    "icon": "layers",
+    "rubricVersion": "1.0",
+    "requiredSkills": ["React", "Node.js", "TypeScript", "SQL/NoSQL", "REST APIs", "Git", "Docker", "CSS", "Authentication"],
+    "totalQuestions": 8,
+    "format": "5 MCQ + 3 Aptitude + 1 Coding Challenge",
+    "estimatedDuration": "30 minutes",
+    "timeMinutes": 30,
+    "scoringWeights": {
+      "mcq": 0.4,
+      "coding": 0.4,
+      "resumeMatch": 0.2
+    }
+  },
+  {
+    "id": "python",
+    "title": "Python Development",
+    "category": "Software",
+    "description": "Pythonic idioms, FastAPI/Django frameworks, Async IO, Object-Oriented design, and Data Structures.",
+    "icon": "terminal",
+    "rubricVersion": "1.0",
+    "requiredSkills": ["Python 3.x", "Django/FastAPI", "OOP Principles", "Async Programming", "SQL", "Data Structures", "Unit Testing", "REST APIs"],
+    "totalQuestions": 8,
+    "format": "5 MCQ + 3 Aptitude + 1 Coding Challenge",
+    "estimatedDuration": "30 minutes",
+    "timeMinutes": 30,
+    "scoringWeights": {
+      "mcq": 0.4,
+      "coding": 0.4,
+      "resumeMatch": 0.2
+    }
+  },
+  {
+    "id": "java",
+    "title": "Java Enterprise",
+    "category": "Software",
+    "description": "Core Java 17+, Spring Boot Microservices, JVM Performance Tuning, Concurrency, and JPA/Hibernate.",
+    "icon": "cpu",
+    "rubricVersion": "1.0",
+    "requiredSkills": ["Java 11+", "Spring Boot", "JPA/Hibernate", "Concurrency", "Maven/Gradle", "JVM Tuning", "Microservices", "SQL", "REST APIs"],
+    "totalQuestions": 8,
+    "format": "5 MCQ + 3 Aptitude + 1 Coding Challenge",
+    "estimatedDuration": "30 minutes",
+    "timeMinutes": 30,
+    "scoringWeights": {
+      "mcq": 0.4,
+      "coding": 0.4,
+      "resumeMatch": 0.2
+    }
+  },
+  {
+    "id": "data-science",
+    "title": "Data Science",
+    "category": "Data",
+    "description": "Statistical modeling, Pandas/NumPy data wrangling, Exploratory Data Analysis, and Machine Learning workflows.",
+    "icon": "bar-chart-2",
+    "rubricVersion": "1.0",
+    "requiredSkills": ["Python", "Pandas", "NumPy", "Machine Learning (scikit-learn)", "Statistics", "Data Visualization", "SQL", "Jupyter", "Feature Engineering"],
+    "totalQuestions": 8,
+    "format": "5 MCQ + 3 Aptitude + 1 Coding Challenge",
+    "estimatedDuration": "30 minutes",
+    "timeMinutes": 30,
+    "scoringWeights": {
+      "mcq": 0.4,
+      "coding": 0.4,
+      "resumeMatch": 0.2
+    }
+  },
+  {
+    "id": "data-analyst",
+    "title": "Data Analytics",
+    "category": "Data",
+    "description": "Complex SQL queries, Data Visualization (Tableau/PowerBI), Business Intelligence, and KPI Metrics analysis.",
+    "icon": "pie-chart",
+    "rubricVersion": "1.0",
+    "requiredSkills": ["SQL", "Excel", "Tableau/Power BI", "Business Intelligence", "Statistics", "Data Cleaning", "KPI Analysis", "Python (optional)", "Reporting"],
+    "totalQuestions": 8,
+    "format": "5 MCQ + 3 Aptitude + 1 Coding Challenge",
+    "estimatedDuration": "30 minutes",
+    "timeMinutes": 30,
+    "scoringWeights": {
+      "mcq": 0.4,
+      "coding": 0.4,
+      "resumeMatch": 0.2
+    }
+  },
+  {
+    "id": "devops",
+    "title": "DevOps & Cloud SRE",
+    "category": "Infrastructure",
+    "description": "CI/CD Pipelines, Docker Containerization, Kubernetes Orchestration, Infrastructure as Code, and Site Reliability.",
+    "icon": "cloud-lightning",
+    "rubricVersion": "1.0",
+    "requiredSkills": ["Docker", "Kubernetes", "CI/CD (GitHub Actions/Jenkins)", "Terraform", "Linux", "Cloud (AWS/GCP/Azure)", "Monitoring", "Bash Scripting", "Networking"],
+    "totalQuestions": 8,
+    "format": "5 MCQ + 3 Aptitude + 1 Coding Challenge",
+    "estimatedDuration": "30 minutes",
+    "timeMinutes": 30,
+    "scoringWeights": {
+      "mcq": 0.4,
+      "coding": 0.4,
+      "resumeMatch": 0.2
+    }
+  },
+  {
+    "id": "cybersecurity",
+    "title": "Cyber Security",
+    "category": "Security",
+    "description": "OWASP Vulnerabilities, Network Security, Cryptography, Penetration Testing, and Identity & Access Management.",
+    "icon": "shield-check",
+    "rubricVersion": "1.0",
+    "requiredSkills": ["OWASP Top 10", "Network Security", "Cryptography", "Penetration Testing", "IAM", "Incident Response", "Secure Coding", "Linux", "Risk Assessment"],
+    "totalQuestions": 8,
+    "format": "5 MCQ + 3 Aptitude + 1 Coding Challenge",
+    "estimatedDuration": "30 minutes",
+    "timeMinutes": 30,
+    "scoringWeights": {
+      "mcq": 0.4,
+      "coding": 0.4,
+      "resumeMatch": 0.2
+    }
+  },
+  {
+    "id": "uiux",
+    "title": "UI/UX Design",
+    "category": "Design",
+    "description": "User Research, Prototyping, Design Systems, Information Architecture, and Accessibility (WCAG 2.1).",
+    "icon": "figma",
+    "rubricVersion": "1.0",
+    "requiredSkills": ["Figma", "User Research", "Wireframing", "Prototyping", "Design Systems", "WCAG Accessibility", "Information Architecture", "Usability Testing", "CSS"],
+    "totalQuestions": 8,
+    "format": "5 MCQ + 3 Aptitude + 1 Coding Challenge",
+    "estimatedDuration": "30 minutes",
+    "timeMinutes": 30,
+    "scoringWeights": {
+      "mcq": 0.4,
+      "coding": 0.4,
+      "resumeMatch": 0.2
+    }
+  }
+]

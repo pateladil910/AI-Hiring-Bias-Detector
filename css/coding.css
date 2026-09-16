@@ -1,0 +1,50 @@
+.coding-split {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 1.5rem;
+  min-height: 520px;
+}
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  background: #0f172a;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-dark);
+}
+.editor-header {
+  background: #1e293b;
+  padding: 0.75rem 1.25rem;
+  color: #94a3b8;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.editor-body {
+  display: flex;
+  flex: 1;
+}
+.line-numbers {
+  width: 40px;
+  background: #090d16;
+  color: #475569;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  padding: 1rem 0.5rem;
+  text-align: right;
+  user-select: none;
+}
+.code-area {
+  flex: 1;
+  background: transparent;
+  color: #f8fafc;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding: 1rem;
+  border: none;
+  outline: none;
+  resize: none;
+}

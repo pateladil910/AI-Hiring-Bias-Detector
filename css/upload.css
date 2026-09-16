@@ -1,0 +1,40 @@
+.upload-zone {
+  border: 2px dashed rgba(17, 100, 70, 0.4);
+  background: var(--primary-soft);
+  border-radius: var(--radius-xl);
+  padding: 3.5rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.upload-zone:hover, .upload-zone.dragover {
+  border-color: var(--primary);
+  background: rgba(232, 243, 238, 0.95);
+  transform: translateY(-2px);
+}
+.upload-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-dark);
+}
+.progress-bar-wrap {
+  height: 10px;
+  background: var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #116446, #3cb371);
+  width: 0%;
+  transition: width 0.2s ease;
+}

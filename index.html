@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EquiHire AI — Demographic-Blind AI Hiring Bias Detector &amp; Talent Engine</title>
+  <meta name="description" content="Evaluate Candidate Merit Free From Demographic Bias using EquiHire AI.">
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/footer.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+  <link rel="stylesheet" href="css/index.css"/>
+  <link rel="stylesheet" href="css/about.css"/>
+  <link rel="stylesheet" href="css/features.css"/>
+  <link rel="stylesheet" href="css/assessment.css"/>
+  <link rel="stylesheet" href="css/coding.css"/>
+  <link rel="stylesheet" href="css/bias-report.css"/>
+  <script src="js/auth.js"></script>
+</head>
+<body>
+
+  <!-- Fullscreen Intro Animation Page -->
+  <div id="intro-animation-overlay">
+    <div class="intro-card">
+      <div class="intro-shield-box pulse-shield">EQ</div>
+      <span class="badge" style="background:rgba(255,255,255,0.15);color:#ffffff;border:1px solid rgba(255,255,255,0.25);margin-bottom:0.75rem;">
+        EQUIPROCESS AI ENGINE 2.4
+      </span>
+      <h2 style="color:#ffffff;font-size:1.75rem;font-weight:800;margin-bottom:0.5rem;">
+        AI Hiring Bias Detection &amp; Evaluation System
+      </h2>
+      <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;">
+        Initializing demographic cloaking shields, AST vector parsers, and EEOC neutrality audit tools...
+      </p>
+
+      <div class="intro-progress-track">
+        <div class="intro-progress-bar" id="intro-bar"></div>
+      </div>
+
+      <div class="flex-between" style="font-family:var(--font-mono);font-size:0.8rem;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;">
+        <span>STATUS: <span id="intro-status-num" style="color:#3cb371;font-weight:700;">0%</span></span>
+        <span>SYSTEM READY</span>
+      </div>
+
+      <div class="intro-tick-text" id="intro-tick">
+        ⚡ [01/04] Stripping Candidate Identifiers (Name, Gender, Age)...
+      </div>
+    </div>
+  </div>
+
+  <!-- Ambient Canvas Background -->
+  <canvas id="bg-particles" style="position:fixed;inset:0;z-index:-1;pointer-events:none;"></canvas>
+
+  <!-- Transparent Glassmorphic Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <div class="brand-logo-icon">EQ</div>
+          <div class="brand-text">
+            <span class="brand-name">Equi<span>Hire</span> AI</span>
+            <span class="brand-tag">Bias-Free Talent Engine</span>
+          </div>
+        </a>
+
+        <ul class="nav-menu"></ul>
+        <div class="nav-actions"></div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      
+      <!-- 1. HERO SECTION -->
+      <section class="hero-section animate-slide-up" id="hero">
+        <div class="hero-badge">
+          <span class="badge badge-primary">Demographic-Blind Talent Assessment &amp; Neutrality Engine</span>
+        </div>
+        <h1 class="hero-title">Evaluate Candidate Merit <mark>Free From Demographic Bias</mark></h1>
+        <p class="hero-subtitle">
+          EquiHire AI automatically redacts candidate identity markers, parses technical skill vectors, conducts objective timed evaluations, and generates verifiable EEOC compliance audit reports.
+        </p>
+
+        <div class="hero-ctas" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+          <a href="signup.html" class="btn btn-primary" style="height:3rem;padding:0 1.75rem;font-size:1rem;">
+            Create Candidate Account
+          </a>
+          <a href="login.html" class="btn btn-secondary" style="height:3rem;padding:0 1.5rem;font-size:1rem;">
+            Candidate Sign In
+          </a>
+          <a href="login.html?role=recruiter" class="btn btn-outline" style="height:3rem;padding:0 1.5rem;font-size:1rem;">
+            Recruiter Sign In
+          </a>
+        </div>
+
+        <!-- Statistics Counter Bar -->
+        <div class="stats-bar grid-4">
+          <div class="card text-center animate-on-scroll">
+            <div class="stat-number" data-target="14280">0</div>
+            <div class="stat-label">Profiles Anonymized</div>
+          </div>
+          <div class="card text-center animate-on-scroll">
+            <div class="stat-number" data-target="99.8">0</div>
+            <div class="stat-label">Objectivity Index (%)</div>
+          </div>
+          <div class="card text-center animate-on-scroll">
+            <div class="stat-number" data-target="57120">0</div>
+            <div class="stat-label">Demographic Markers Cloaked</div>
+          </div>
+          <div class="card text-center animate-on-scroll">
+            <div class="stat-number" data-target="3840">0</div>
+            <div class="stat-label">Recruitment Hours Saved</div>
+          </div>
+        </div>
+        <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">*Illustrative figures</p>
+      </section>
+
+      <!-- 2. HOW IT WORKS -->
+      <section style="margin-bottom: 4rem;" class="animate-on-scroll" id="how-it-works">
+        <div class="text-center" style="margin-bottom: 2.5rem;">
+          <span class="badge badge-primary" style="margin-bottom: 0.5rem;">THE PROCESS</span>
+          <h2 style="font-size:2.2rem;">How it works</h2>
+        </div>
+        <div class="grid-4" style="grid-template-columns: repeat(5, 1fr);">
+          <div class="card text-center animate-on-scroll">
+            <div class="badge badge-primary">1</div>
+            <h4>Upload Resume</h4>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Securely upload your resume for demographic redaction.</p>
+          </div>
+          <div class="card text-center animate-on-scroll">
+            <div class="badge badge-primary">2</div>
+            <h4>Select Domain</h4>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Choose the assessment domain relevant to your skills.</p>
+          </div>
+          <div class="card text-center animate-on-scroll">
+            <div class="badge badge-primary">3</div>
+            <h4>Take Assessment</h4>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Complete MCQ and coding challenges.</p>
+          </div>
+          <div class="card text-center animate-on-scroll">
+            <div class="badge badge-primary">4</div>
+            <h4>Get Results</h4>
+            <p style="font-size:0.8rem; color:var(--text-muted);">View transparent scores based on merit only.</p>
+          </div>
+          <div class="card text-center animate-on-scroll">
+            <div class="badge badge-primary">5</div>
+            <h4>Recruiter Review</h4>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Recruiters review anonymized profiles.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. PRIVACY SECTION -->
+      <section style="margin-bottom: 4rem;" class="animate-on-scroll" id="privacy-section">
+        <div class="card" style="padding: 2.5rem; background: var(--primary-soft); border-color: var(--border-dark);">
+          <h3 style="color: var(--primary);">Privacy & Data Retention Guarantee</h3>
+          <p style="margin-top: 1rem;">
+            Your original resume is stored securely and entirely separate from your profile during the evaluation process. It is heavily anonymized and only explicitly authorized individuals may access the original data after a hiring decision stage has been reached. Data is retained for standard compliance requirements only and deleted upon request.
+          </p>
+        </div>
+      </section>
+
+      <!-- 9. FREQUENTLY ASKED QUESTIONS (FAQ) -->
+      <section style="margin-bottom: 4rem;" class="animate-on-scroll" id="faq-section">
+        <div class="text-center" style="margin-bottom: 2.5rem;">
+          <span class="badge badge-primary" style="margin-bottom: 0.5rem;">GOT QUESTIONS?</span>
+          <h2 style="font-size:2.2rem;">Frequently Asked Questions</h2>
+        </div>
+
+        <div style="max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:1rem;">
+          <div class="card" style="cursor:pointer;" onclick="toggleFaq(this)">
+            <div class="flex-between">
+              <strong>Does EquiHire AI completely eliminate bias?</strong>
+              <span>▼</span>
+            </div>
+            <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.75rem;display:none;">
+              Bias reduction is a process support tool, not a guarantee. We provide systems that limit demographic leakage and create objective metrics, but hiring decisions still rely on contextual human judgment.
+            </p>
+          </div>
+
+          <div class="card" style="cursor:pointer;" onclick="toggleFaq(this)">
+            <div class="flex-between">
+              <strong>How does demographic redaction work?</strong>
+              <span>▼</span>
+            </div>
+            <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.75rem;display:none;">
+              Our AI parsing engine scans uploaded resumes and automatically redacts Name, Age, Gender pronouns, Photo, Address, and University prestige before evaluators or recruiters see the profile.
+            </p>
+          </div>
+
+          <div class="card" style="cursor:pointer;" onclick="toggleFaq(this)">
+            <div class="flex-between">
+              <strong>How is the composite merit score calculated?</strong>
+              <span>▼</span>
+            </div>
+            <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.75rem;display:none;">
+              Scores are calculated across MCQ accuracy, hands-on coding AST test case results, and resume skill vector alignment.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 EquiHire AI Inc. All rights reserved. · Demographic-Blind Recruitment Intelligence</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/animation.js"></script>
+  <script>
+    function toggleFaq(card) {
+      const p = card.querySelector('p');
+      if (p) {
+        p.style.display = p.style.display === 'none' ? 'block' : 'none';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Handle reduced motion
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        const intro = document.getElementById('intro-animation-overlay');
+        if (intro) intro.style.display = 'none';
+      } else {
+         // trigger standard animation, assuming animation.js provides triggerIntroAnimation if needed
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Color Palette - Calibrated Instrument */
+  --ink:        #0F1A1C;   /* page background */
+  --ink-2:      #152325;   /* card background */
+  --ink-3:      #1D3236;   /* recessed / track background */
+  --line:       #24393D;   /* borders, dividers */
+  --text:       #ECE8DE;   /* primary text */
+  --text-dim:   #8FA5A5;   /* secondary text */
+  --text-faint: #5C7576;   /* labels, captions */
+  --amber:      #E0A72E;   /* accent A — "skew A" */
+  --amber-dim:  #7A5F22;
+  --teal:       #4FD1C5;   /* accent B — "skew B" / positive / success */
+  --teal-dim:   #285D57;
+  --danger:     #E2574C;   /* errors, high-risk flags only */
+
+  /* Typography */
+  --serif: 'Instrument Serif', Georgia, serif;   /* headlines only */
+  --sans:  'Inter', sans-serif;                  /* body, UI */
+  --mono:  'IBM Plex Mono', monospace;           /* labels, data, timers, scores */
+
+  /* Radius & Shadows */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--line);
+  --shadow-glow-teal: 0 0 20px rgba(79, 209, 197, 0.15);
+  --shadow-glow-amber: 0 0 20px rgba(224, 167, 46, 0.15);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100vh;
+  background-color: var(--ink);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--teal-dim);
+  color: var(--teal);
+}
+
+a {
+  color: var(--teal);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--text);
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

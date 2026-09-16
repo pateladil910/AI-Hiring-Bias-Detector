@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Candidate Dashboard | EquiHire AI</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <script src="js/auth.js"></script>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <div class="brand-logo-icon">EQ</div>
+          <div class="brand-text">
+            <span class="brand-name">Equi<span>Hire</span> AI</span>
+          </div>
+        </a>
+        <ul class="nav-menu"></ul>
+        <div class="nav-actions">
+           <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      
+      <div class="card text-center" style="margin-bottom: 2rem;">
+        <h2 id="welcome-message">Welcome, [Candidate]</h2>
+        <p style="color:var(--text-muted);">Track your assessment progress</p>
+      </div>
+
+      <div class="card" id="stepper-container" style="padding: 2rem;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:2rem;" class="stepper-visual">
+          <div class="step">
+             <div class="circle" id="circle-1">1</div>
+             <div class="label">Resume Upload</div>
+          </div>
+          <div class="step">
+             <div class="circle" id="circle-2">2</div>
+             <div class="label">Domain Selection</div>
+          </div>
+          <div class="step">
+             <div class="circle" id="circle-3">3</div>
+             <div class="label">MCQ Assessment</div>
+          </div>
+          <div class="step">
+             <div class="circle" id="circle-4">4</div>
+             <div class="label">Coding Challenge</div>
+          </div>
+          <div class="step">
+             <div class="circle" id="circle-5">5</div>
+             <div class="label">Results</div>
+          </div>
+        </div>
+
+        <div id="current-step-details" class="text-center" style="margin-top: 2rem; padding: 2rem; background: var(--primary-soft); border-radius: var(--radius-md);">
+           <!-- Content injected by js -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+  
+  <script src="js/navbar.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

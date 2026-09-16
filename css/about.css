@@ -1,0 +1,34 @@
+.about-hero {
+  text-align: center;
+  padding: 3rem 0;
+}
+.mission-card {
+  border-left: 4px solid var(--primary);
+  padding: 2rem;
+  background: var(--surface);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+.methodology-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.timeline-step {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+.step-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

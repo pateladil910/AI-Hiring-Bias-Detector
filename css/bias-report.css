@@ -1,0 +1,27 @@
+.bias-meter-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+.bias-gauge-svg {
+  width: 240px;
+  height: 130px;
+}
+.bias-score-val {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-top: -1.25rem;
+}
+.audit-log-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  background: var(--background);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.65rem;
+  font-size: 0.9rem;
+}

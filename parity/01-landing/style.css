@@ -1,0 +1,125 @@
+/* Landing Page Styles */
+.hero-instrument {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 80px;
+}
+
+.hero-left p {
+  max-width: 520px;
+  margin-bottom: 28px;
+}
+
+.hero-ctas {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hero-gauge-card {
+  padding: 32px 24px;
+}
+
+.gauge-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.g-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.text-teal { color: var(--teal); }
+.text-amber { color: var(--amber); }
+
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+
+/* Flow Blueprint */
+.flow-blueprint {
+  margin-top: 40px;
+}
+
+.section-title-wrap {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.text-2xl { font-size: 32px; }
+
+.pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.pipe-step-card {
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mono-step {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--teal);
+  background: var(--ink-3);
+  padding: 2px 8px;
+  border-radius: 3px;
+  width: fit-content;
+  border: 1px solid var(--line);
+}
+
+.pipe-step-card h3 {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pipe-step-card p {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.landing-footer {
+  border-top: 1px solid var(--line);
+  background: var(--ink-2);
+  padding: 24px 0;
+  margin-top: auto;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+@media (max-width: 900px) {
+  .hero-instrument { grid-template-columns: 1fr; }
+  .pipeline-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .pipeline-grid { grid-template-columns: 1fr; }
+}

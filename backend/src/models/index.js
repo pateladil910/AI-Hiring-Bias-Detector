@@ -3,15 +3,52 @@ const { sequelize } = require('../config/db');
 
 // ─── Enums ────────────────────────────────────────────────────────────────────
 const USER_ROLES = ['admin', 'hr_lead', 'recruiter', 'compliance', 'candidate'];
+const ORG_STATUS = ['pending', 'active', 'suspended'];
+const RECRUITER_REQUEST_STATUS = ['pending', 'approved', 'rejected'];
 const JOB_STATUS = ['draft', 'published', 'closed'];
 const APPLICATION_STATUS = ['applied', 'test_sent', 'test_completed', 'eligible', 'not_eligible', 'needs_review', 'interview', 'rejected', 'hired'];
 const VERDICT = ['eligible', 'not_eligible', 'needs_review'];
+
+const AUDIT_ACTIONS = {
+  RECRUITER_REQUEST_SUBMITTED: 'RECRUITER_REQUEST_SUBMITTED',
+  RECRUITER_REQUEST_APPROVED: 'RECRUITER_REQUEST_APPROVED',
+  RECRUITER_REQUEST_REJECTED: 'RECRUITER_REQUEST_REJECTED',
+  USER_REGISTERED: 'USER_REGISTERED',
+  USER_EMAIL_VERIFIED: 'USER_EMAIL_VERIFIED',
+  JOB_CREATED: 'JOB_CREATED',
+  JOB_PUBLISHED: 'JOB_PUBLISHED',
+  JOB_UPDATED: 'JOB_UPDATED',
+  BIAS_SCAN_COMPLETED: 'BIAS_SCAN_COMPLETED',
+  BIAS_SUGGESTION_ACCEPTED: 'BIAS_SUGGESTION_ACCEPTED',
+  BIAS_FLAG_DISMISSED: 'BIAS_FLAG_DISMISSED',
+  RESUME_ANONYMIZED: 'RESUME_ANONYMIZED',
+  TEST_GENERATED: 'TEST_GENERATED',
+  TEST_SUBMITTED: 'TEST_SUBMITTED',
+  ELIGIBILITY_COMPUTED: 'ELIGIBILITY_COMPUTED',
+  ELIGIBILITY_OVERRIDDEN: 'ELIGIBILITY_OVERRIDDEN',
+};
 
 // ─── Organisation ─────────────────────────────────────────────────────────────
 const Organisation = sequelize.define('Organisation', {
   id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
   name: { type: DataTypes.STRING, allowNull: false },
+  workDomain: { type: DataTypes.STRING, allowNull: true },
+  status: { type: DataTypes.ENUM(...ORG_STATUS), defaultValue: 'active' },
 }, { tableName: 'organisations', timestamps: true });
+
+// ─── Recruiter Access Request ─────────────────────────────────────────────────
+const RecruiterRequest = sequelize.define('RecruiterRequest', {
+  id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  companyName: { type: DataTypes.STRING, allowNull: false },
+  workEmail: { type: DataTypes.STRING, allowNull: false, validate: { isEmail: true } },
+  companySize: { type: DataTypes.STRING, defaultValue: '1-50' },
+  useCase: { type: DataTypes.TEXT, allowNull: true },
+  status: { type: DataTypes.ENUM(...RECRUITER_REQUEST_STATUS), defaultValue: 'pending' },
+  inviteToken: { type: DataTypes.STRING, defaultValue: null },
+  tokenExpiresAt: { type: DataTypes.DATE, defaultValue: null },
+  reviewedBy: { type: DataTypes.UUID, defaultValue: null },
+  decisionNotes: { type: DataTypes.TEXT, defaultValue: null },
+}, { tableName: 'recruiter_requests', timestamps: true });
 
 // ─── User ─────────────────────────────────────────────────────────────────────
 const User = sequelize.define('User', {
@@ -21,6 +58,8 @@ const User = sequelize.define('User', {
   firstName: { type: DataTypes.STRING, allowNull: false },
   lastName: { type: DataTypes.STRING, allowNull: false },
   role: { type: DataTypes.ENUM(...USER_ROLES), allowNull: false, defaultValue: 'candidate' },
+  emailVerified: { type: DataTypes.BOOLEAN, defaultValue: false },
+  verificationToken: { type: DataTypes.STRING, defaultValue: null },
   isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
 }, { tableName: 'users', timestamps: true });
 
@@ -37,6 +76,7 @@ const Job = sequelize.define('Job', {
 // ─── Application ──────────────────────────────────────────────────────────────
 const Application = sequelize.define('Application', {
   id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  anonymousAlias: { type: DataTypes.STRING, defaultValue: null },
   resumeUrl: { type: DataTypes.STRING, defaultValue: null },
   anonymisedText: { type: DataTypes.TEXT, defaultValue: null },
   resumeBiasScore: { type: DataTypes.FLOAT, defaultValue: null },
@@ -97,6 +137,9 @@ User.belongsTo(Organisation, { foreignKey: 'orgId' });
 Organisation.hasMany(Job, { foreignKey: 'orgId' });
 Job.belongsTo(Organisation, { foreignKey: 'orgId' });
 
+Organisation.hasMany(RecruiterRequest, { foreignKey: 'orgId' });
+RecruiterRequest.belongsTo(Organisation, { foreignKey: 'orgId' });
+
 User.hasMany(Job, { foreignKey: 'createdBy', as: 'CreatedJobs' });
 Job.belongsTo(User, { foreignKey: 'createdBy', as: 'Creator' });
 
@@ -124,13 +167,14 @@ ChatbotSession.belongsTo(User, { foreignKey: 'userId' });
 // ─── Sync ─────────────────────────────────────────────────────────────────────
 const syncModels = async () => {
   await sequelize.sync({ alter: true });
-  console.log('✅ All database models synced');
+  console.log('✅ All database models synced (v2 schema)');
 };
 
 module.exports = {
   sequelize,
   syncModels,
   Organisation,
+  RecruiterRequest,
   User,
   Job,
   Application,
@@ -140,4 +184,7 @@ module.exports = {
   AuditLog,
   ChatbotSession,
   USER_ROLES,
+  ORG_STATUS,
+  RECRUITER_REQUEST_STATUS,
+  AUDIT_ACTIONS,
 };

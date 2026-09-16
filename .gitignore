@@ -28,8 +28,12 @@ ai-service/ml_models/
 *.ckpt
 *.safetensors
 
-# ─── Uploads ──────────────────────────────────────────────────────────────────
+# ─── Uploads & Databases ────────────────────────────────────────────────────────
 backend/uploads/
+Backend/uploads/
+*.sqlite
+*.sqlite3
+*.db
 
 # ─── Docker ───────────────────────────────────────────────────────────────────
 .docker/

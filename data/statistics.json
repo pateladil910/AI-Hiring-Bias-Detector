@@ -1,0 +1,20 @@
+{
+  "totalScreened": 14280,
+  "objectivityIndex": 99.8,
+  "biasSuppressedTotal": 57120,
+  "hoursSaved": 3840,
+  "eeocComplianceRate": 100.0,
+  "biasBreakdown": {
+    "genderBias": 0.00,
+    "ageBias": 0.00,
+    "ethnicityBias": 0.00,
+    "universityPrestigeBias": 0.02,
+    "locationBias": 0.00
+  },
+  "candidateDistribution": [
+    { "range": "90-100%", "count": 3420 },
+    { "range": "80-89%", "count": 6150 },
+    { "range": "70-79%", "count": 3210 },
+    { "range": "Below 70%", "count": 1500 }
+  ]
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Resume | EquiHire AI</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/upload.css"/>
+  <script src="js/auth.js"></script>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <div class="brand-logo-icon">EQ</div>
+          <div class="brand-text">
+            <span class="brand-name">Equi<span>Hire</span> AI</span>
+          </div>
+        </a>
+        <ul class="nav-menu"></ul>
+        <div class="nav-actions">
+           <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container" style="max-width: 800px;">
+      
+      <div class="card">
+        <h2 style="margin-bottom: 1rem;">1. Upload Your Resume</h2>
+        <div style="background:var(--primary-soft); padding:1rem; border-radius:var(--radius-md); margin-bottom:1.5rem;">
+           <p style="font-size:0.9rem; font-weight:600; color:var(--primary);">Privacy Notice</p>
+           <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.5rem;">Accepted formats: PDF, DOCX (Max 5MB). Your resume will be automatically anonymized before recruiter review.</p>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+           <label style="display:flex; align-items:flex-start; gap:0.5rem;">
+             <input type="checkbox" id="consent-check" onchange="toggleUpload()" style="margin-top:0.25rem;">
+             <span style="font-size:0.9rem; color:var(--text);">I consent to my resume being stored and processed for assessment purposes. I understand it will be anonymized before recruiter review.</span>
+           </label>
+        </div>
+
+        <div id="drop-zone" class="drop-zone" style="border: 2px dashed var(--border-dark); padding: 3rem; text-align: center; border-radius: var(--radius-md); margin-bottom: 1.5rem; transition: background 0.3s; opacity: 0.5; pointer-events: none;">
+           <div style="font-size: 2rem; margin-bottom: 1rem;">📄</div>
+           <h4>Drag and drop your file here</h4>
+           <p style="color:var(--text-muted); font-size:0.85rem; margin-top:0.5rem;">or click to select</p>
+           <input type="file" id="file-input" accept=".pdf,.docx" style="display:none;">
+        </div>
+
+        <div id="upload-progress-container" style="display:none; margin-bottom:1.5rem;">
+           <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.5rem;">
+             <span>Uploading...</span>
+             <span id="upload-percent">0%</span>
+           </div>
+           <div style="background:var(--border); height:8px; border-radius:4px; overflow:hidden;">
+             <div id="upload-progress-bar" style="background:var(--primary); height:100%; width:0%; transition:width 0.2s;"></div>
+           </div>
+        </div>
+        
+        <div id="error-msg" style="color:var(--danger); display:none; margin-bottom:1rem; font-size:0.9rem;"></div>
+
+        <div id="preview-panel" style="display:none; margin-top:2rem; border-top:1px solid var(--border); padding-top:2rem;">
+           <h3>Redaction Preview</h3>
+           
+           <div style="margin-top:1.5rem;">
+             <h4>Detected and removed:</h4>
+             <ul id="markers-list" style="color:var(--danger); font-size:0.85rem; padding-left:1.5rem; margin-top:0.5rem;">
+               <!-- Markers injected via JS -->
+             </ul>
+           </div>
+
+           <div style="margin-top:1.5rem;">
+             <h4>Anonymized Content Preview:</h4>
+             <div class="card" style="background:#f9f9f9; font-family:var(--font-mono); font-size:0.85rem; padding:1.5rem; margin-top:0.5rem; max-height:200px; overflow-y:auto;" id="redacted-text">
+               <!-- Text injected via JS -->
+             </div>
+           </div>
+
+           <div style="display:flex; gap:1rem; margin-top:2rem;">
+             <button class="btn btn-primary" onclick="confirmProfile()">Confirm Profile</button>
+             <button class="btn btn-secondary" onclick="reportIssue()">Report Issue</button>
+           </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+  
+  <script src="js/navbar.js"></script>
+  <script src="js/upload.js"></script>
+</body>
+</html>

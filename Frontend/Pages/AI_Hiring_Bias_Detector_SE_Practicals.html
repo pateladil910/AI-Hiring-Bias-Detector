@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI-Based Hiring Bias Detector — SE Practicals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+@page { margin: 20mm 18mm; size: A4; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --indigo: #4f46e5; --teal: #0d9488; --slate-9: #0f172a; --slate-7: #334155;
+  --slate-5: #64748b; --slate-3: #cbd5e1; --slate-1: #f1f5f9; --white: #fff;
+}
+html { font-size: 11.5px; }
+body { font-family: 'Inter', sans-serif; color: var(--slate-7); line-height: 1.7; background: var(--white); padding: 0 10px; }
+
+/* Cover */
+.cover { page-break-after: always; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; text-align: center; }
+.cover-logo { width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, var(--indigo), var(--teal)); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; color: white; margin-bottom: 24px; }
+.cover h1 { font-size: 28px; font-weight: 800; color: var(--slate-9); letter-spacing: -0.03em; margin-bottom: 6px; }
+.cover h2 { font-size: 16px; font-weight: 600; color: var(--indigo); margin-bottom: 30px; }
+.cover-meta { font-size: 12px; color: var(--slate-5); line-height: 2; }
+.cover-meta strong { color: var(--slate-7); }
+
+/* Headings */
+h1 { font-size: 22px; font-weight: 800; color: var(--slate-9); letter-spacing: -0.02em; margin: 32px 0 10px; padding-bottom: 8px; border-bottom: 2.5px solid var(--indigo); page-break-after: avoid; }
+h2 { font-size: 16px; font-weight: 700; color: var(--indigo); margin: 24px 0 8px; page-break-after: avoid; }
+h3 { font-size: 13.5px; font-weight: 700; color: var(--slate-9); margin: 18px 0 6px; page-break-after: avoid; }
+h4 { font-size: 12px; font-weight: 700; color: var(--teal); margin: 12px 0 4px; }
+
+p { margin: 6px 0; text-align: justify; }
+strong { color: var(--slate-9); }
+
+ul, ol { margin: 6px 0 6px 22px; }
+li { margin-bottom: 4px; }
+li::marker { color: var(--indigo); }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 10.5px; page-break-inside: auto; }
+thead { background: var(--slate-1); }
+th { font-weight: 700; color: var(--slate-9); text-align: left; padding: 7px 10px; border: 1px solid var(--slate-3); font-size: 10px; letter-spacing: 0.03em; }
+td { padding: 6px 10px; border: 1px solid var(--slate-3); vertical-align: top; }
+tr:nth-child(even) { background: #fafbff; }
+tr { page-break-inside: avoid; }
+
+/* Code blocks */
+code { font-family: 'JetBrains Mono', monospace; background: var(--slate-1); padding: 1px 5px; border-radius: 4px; font-size: 10px; color: var(--indigo); }
+pre { background: var(--slate-1); border: 1px solid var(--slate-3); border-radius: 8px; padding: 14px; margin: 10px 0; overflow-x: auto; font-size: 10px; line-height: 1.6; }
+pre code { background: none; padding: 0; }
+
+/* Callout box */
+.callout { background: #eef2ff; border-left: 4px solid var(--indigo); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 11px; }
+.callout-teal { background: #f0fdfa; border-left-color: var(--teal); }
+
+/* Divider */
+hr { border: none; height: 1.5px; background: linear-gradient(90deg, var(--indigo), var(--teal)); margin: 28px 0; opacity: 0.3; }
+
+/* Page break utility */
+.page-break { page-break-before: always; }
+
+/* Print styles */
+@media print {
+  body { padding: 0; }
+  .cover { min-height: 100vh; }
+  h1, h2, h3 { page-break-after: avoid; }
+  table, pre, .callout { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ COVER PAGE ═══════════════════════════════ -->
+<div class="cover">
+  <div class="cover-logo">EQ</div>
+  <h1>AI-Based Hiring Bias Detector</h1>
+  <h2>EquiHire AI — Software Engineering Lab Practicals</h2>
+  <div class="cover-meta">
+    <strong>Practical 1:</strong> Preparing Software Requirements Specifications<br/>
+    <strong>Practical 2:</strong> Identifying Domain Classes from the Problem Statement<br/>
+    <strong>Practical 3:</strong> Entity-Relationship (ER) Modeling<br/><br/>
+    <strong>Key Feature:</strong> Aptitude Test with AI-Powered Scoring &amp; Bias-Free Shortlisting<br/><br/>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PRACTICAL 1 ═══════════════════════════════ -->
+<h1>Practical 1: Preparing Software Requirements Specifications</h1>
+
+<h2>Objectives</h2>
+<ul>
+  <li>Identify ambiguities, inconsistencies, and incompleteness from a requirements specification</li>
+  <li>Identify and state functional requirements</li>
+  <li>Identify and state non-functional requirements</li>
+</ul>
+
+<h2>1.1 Requirements</h2>
+<p>Sommerville defines "requirement" as a specification of what should be implemented. Requirements specify how the target system should behave. It specifies <strong>what to do</strong>, but <strong>not how to do</strong>. Requirements engineering refers to the process of understanding what a customer expects from the system to be developed, and to document them in a standard and easily readable and understandable format. This documentation will serve as reference for the subsequent design, implementation, and verification of the system.</p>
+<p>It is necessary and important that before we start planning, design, and implementation of the software system for our client, we are clear about its requirements. If we don't have a clear vision of what is to be developed and what all features are expected, there would be serious problems and customer dissatisfaction as well.</p>
+
+<h2>1.2 Characteristics of Requirements</h2>
+<p>Requirements gathered for any new system to be developed should exhibit the following three properties:</p>
+
+<h3>Unambiguity</h3>
+<p>There should not be any ambiguity about what a system to be developed should do. For example, consider the AI-Based Hiring Bias Detector. A requirement states that the system should "fairly evaluate candidates." What does "fairly" mean? It could mean removing only gender bias to one stakeholder, but removing gender, age, ethnicity, and university-origin bias to another. There's an ambiguity. The requirement must explicitly define which bias categories are suppressed.</p>
+
+<h3>Consistency</h3>
+<p>To illustrate this, consider the bias threshold configuration. Suppose one stakeholder says that a candidate should be flagged if the bias confidence score exceeds 0.7, while another stakeholder insists the threshold should be 0.5. Thus, there is an inconsistency between the two end users regarding what they consider an acceptable bias leakage level.</p>
+
+<h3>Completeness</h3>
+<p>A particular requirement for a system should specify what the system should do and also what it should not. For example, consider the AI screening module. If a candidate's resume contains demographic markers (name, age, gender), the system should automatically redact those markers before scoring — and it should <strong>not</strong> allow any evaluator to view the original unredacted resume during the screening phase.</p>
+
+<h2>1.3 Categorization of Requirements</h2>
+<p>Based on the target audience or subject matter, requirements can be classified into different types:</p>
+<ul>
+  <li><strong>User requirements:</strong> Written in natural language so that both customers and developers can verify their requirements have been correctly identified.</li>
+  <li><strong>System requirements:</strong> Written involving technical terms and/or specifications, meant for the development or testing teams.</li>
+</ul>
+<p>Requirements can also be classified into two groups based on what they describe:</p>
+<ul>
+  <li><strong>Functional requirements (FRs):</strong> Describe the functionality of a system — how a system should react to a particular set of inputs and what should be the corresponding output.</li>
+  <li><strong>Non-functional requirements (NFRs):</strong> Not directly related to what functionalities are expected from the system. However, NFRs could typically define how the system should behave under certain situations.</li>
+</ul>
+<p>Non-functional requirements could be further classified into:</p>
+<ul>
+  <li><strong>Product requirements:</strong> e.g., the web application should use HTML5 and responsive CSS</li>
+  <li><strong>Performance requirements:</strong> e.g., the system should handle concurrent screening of 100 resumes</li>
+  <li><strong>Organizational requirements:</strong> e.g., the development process should follow Agile methodology</li>
+</ul>
+
+<h2>1.4 Case Study: AI-Based Hiring Bias Detector (EquiHire AI)</h2>
+<h3>Problem Statement</h3>
+<p>Organizations across industries face significant challenges in ensuring fair and unbiased hiring practices. Traditional resume screening processes are prone to unconscious human biases related to a candidate's name, gender, age, ethnicity, university origin, and other demographic identifiers. These biases lead to unfair rejection of qualified candidates and reduce workplace diversity.</p>
+<p>The <strong>AI-Based Hiring Bias Detector</strong> (EquiHire AI) has been proposed to address this problem. The system enables job-seeking candidates to register, upload their resumes, and undergo an AI-powered screening process where all demographic identifiers are automatically stripped before evaluation. The AI evaluates candidates purely on the basis of their skills, experience, and qualifications.</p>
+<p>Additionally, the system conducts an <strong>online aptitude test</strong> for registered candidates. The AI scores the aptitude test responses and generates an objective performance report. Based on the combined resume screening score and aptitude test score, the system produces a <strong>bias-free shortlist</strong> of candidates ranked by merit.</p>
+<p>Candidates can view their screening status, aptitude test scores, and shortlisting results through their personal dashboard. The system provides <strong>explainable AI audit logs</strong> that justify each ranking decision, ensuring transparency and accountability.</p>
+<p>An <strong>administrator</strong> has complete control over the system — they can manage job postings, configure bias detection parameters, view audit reports, and manage user accounts. The system must be accessible as a web application and should ensure that no confidential information (e.g., passwords) is stored in plain text.</p>
+
+<div class="page-break"></div>
+<h2>1.5 Identification of Functional Requirements</h2>
+
+<h3>FR-01: New User Registration</h3>
+<p>Any job-seeking candidate who wishes to use the AI-Based Hiring Bias Detector must register with the system. During registration, the candidate provides: Full Name, Email Address, Mobile Number, Age, and Password (with confirmation). On successful registration, the candidate receives a unique User ID. The system stores age and mobile number in encrypted form, and these details are <strong>cloaked</strong> (hidden) from any evaluator or screening algorithm to prevent bias.</p>
+
+<h3>FR-02: User Login</h3>
+<p>A registered candidate can log in by providing their email address and password. After successful login, the candidate's personal dashboard is displayed, from where they can access: upload resume, take aptitude test, view screening results, and view shortlist status. If incorrect credentials are provided three consecutive times, the account is temporarily locked for 30 minutes. The user is prompted with a "Forgot Password?" option that sends a password reset link to their registered email address.</p>
+
+<h3>FR-03: Resume Upload</h3>
+<p>A registered and logged-in candidate can upload their resume in supported formats (PDF, DOCX). The system parses the resume to extract: technical skills and proficiencies, work experience duration and roles, educational qualifications, and certifications. The system automatically <strong>identifies and redacts</strong> demographic identifiers such as candidate name, gender indicators, age, photo, university name, and geographic location before the resume is processed by the AI screening engine.</p>
+
+<h3>FR-04: AI-Powered Resume Screening</h3>
+<p>Once a resume is uploaded and anonymized, the AI screening engine evaluates the candidate based on: skill match percentage against the job requirements, relevance of work experience, depth of technical competencies, and quality of certifications. The system generates a <strong>Resume Screening Score</strong> (0–100%) for each candidate. The scoring algorithm does not have access to any demographic data. An explainable AI audit log is generated for each score, documenting the factors that contributed to the ranking.</p>
+
+<h3>FR-05: Online Aptitude Test</h3>
+<p>The system conducts an online aptitude test for registered candidates. The test includes: logical reasoning questions, quantitative aptitude questions, verbal ability questions, and domain-specific technical questions (based on the job role). The test is time-bound (e.g., 60 minutes for 50 questions). The AI scores the test automatically and generates an <strong>Aptitude Test Score</strong> (0–100%). Questions are randomized for each candidate to prevent cheating. Once submitted, the test cannot be retaken for the same job posting.</p>
+
+<h3>FR-06: Bias Detection &amp; Reporting</h3>
+<p>The system continuously monitors the screening pipeline for bias leakage. If any demographic pattern is detected in the scoring distribution (e.g., candidates from a particular age group consistently scoring lower), the system flags it as a <strong>bias alert</strong> and generates a detailed bias detection report. The report includes: category of bias detected, confidence level, number of affected candidates, and recommended corrective actions.</p>
+
+<h3>FR-07: Candidate Shortlisting</h3>
+<p>Based on the combined <strong>Resume Screening Score</strong> and <strong>Aptitude Test Score</strong>, the system generates a bias-free shortlist of candidates. The shortlisting algorithm assigns configurable weightage (default: 60% resume, 40% aptitude), ranks candidates in descending order of combined score, and allows the administrator to set a minimum threshold score. Shortlisted candidates are notified via email.</p>
+
+<h3>FR-08: Candidate Dashboard</h3>
+<p>Each registered candidate has access to a personal dashboard that displays: profile information (with cloaked sensitive fields), resume upload status and screening progress, aptitude test availability and scores, shortlisting status for each applied job posting, and explainable AI feedback on their screening.</p>
+
+<h3>FR-09: Administrator Panel</h3>
+<p>The administrator has elevated privileges to: create, edit, and delete job postings; configure bias detection parameters and thresholds; view system-wide bias audit reports; manage user accounts; set aptitude test question banks and configure test parameters; and export shortlists and screening reports.</p>
+
+<h3>FR-10: Search &amp; Browse Jobs</h3>
+<p>Any visitor (registered or unregistered) can browse and search available job postings by job title, required skills, or experience level. However, applying for a job is restricted to registered and logged-in candidates only.</p>
+
+<div class="page-break"></div>
+<h2>1.6 Functional Requirements Summary Table</h2>
+<table>
+  <thead><tr><th>#</th><th>Requirement</th><th>Description</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td>FR-01</td><td>New User Registration</td><td>Candidate registers with name, email, mobile, age, password</td><td>High</td></tr>
+    <tr><td>FR-02</td><td>User Login</td><td>Secure login with email and password; account lockout after 3 failed attempts</td><td>High</td></tr>
+    <tr><td>FR-03</td><td>Resume Upload</td><td>Upload and parse resume; auto-redact demographic identifiers</td><td>High</td></tr>
+    <tr><td>FR-04</td><td>AI Resume Screening</td><td>Score candidate on skills, experience, qualifications (bias-free)</td><td>High</td></tr>
+    <tr><td>FR-05</td><td>Online Aptitude Test</td><td>Time-bound aptitude test; AI auto-scoring</td><td>High</td></tr>
+    <tr><td>FR-06</td><td>Bias Detection &amp; Reporting</td><td>Monitor screening pipeline for bias leakage; generate alerts</td><td>High</td></tr>
+    <tr><td>FR-07</td><td>Candidate Shortlisting</td><td>Combine resume + aptitude scores; generate ranked shortlist</td><td>High</td></tr>
+    <tr><td>FR-08</td><td>Candidate Dashboard</td><td>Personal dashboard with scores, status, and AI feedback</td><td>Medium</td></tr>
+    <tr><td>FR-09</td><td>Administrator Panel</td><td>Manage jobs, users, bias parameters, question banks, reports</td><td>High</td></tr>
+    <tr><td>FR-10</td><td>Search &amp; Browse Jobs</td><td>Public job search by title, skills, experience level</td><td>Medium</td></tr>
+  </tbody>
+</table>
+
+<h2>1.7 Identification of Non-Functional Requirements</h2>
+
+<h3>Performance Requirements</h3>
+<ul>
+  <li>The system should remain accessible 24×7 with a minimum uptime of 99.5%</li>
+  <li>At least 100 candidates should be able to access the system simultaneously</li>
+  <li>The AI screening engine should process a single resume within 10 seconds</li>
+  <li>The aptitude test interface should have a response latency of less than 2 seconds</li>
+</ul>
+
+<h3>Security Requirements</h3>
+<ul>
+  <li>All passwords must be stored as salted hashes (bcrypt or equivalent) — never in plain text</li>
+  <li>Candidate demographic data (age, mobile number) must be encrypted at rest using AES-256</li>
+  <li>All data transmission must use HTTPS (TLS 1.2 or higher)</li>
+  <li>Session tokens must expire after 30 minutes of inactivity</li>
+  <li>The bias detection audit logs must be tamper-proof and append-only</li>
+</ul>
+
+<h3>Software Quality Attributes</h3>
+<ul>
+  <li><strong>Reliability:</strong> The AI scoring algorithm must produce consistent results for identical inputs</li>
+  <li><strong>Usability:</strong> Candidates should be able to complete registration in under 3 minutes</li>
+  <li><strong>Maintainability:</strong> Modular architecture allowing individual component updates</li>
+  <li><strong>Scalability:</strong> Horizontal scaling to handle increasing candidate volumes</li>
+</ul>
+
+<h3>Design Constraints</h3>
+<ul>
+  <li>Responsive web application compatible with Firefox, Chrome, Edge, and Safari</li>
+  <li>Front-end must use HTML5, CSS3, and JavaScript</li>
+  <li>AI/ML models must provide explainable outputs (no black-box decisions)</li>
+  <li>System must comply with data protection principles (data minimization, purpose limitation)</li>
+</ul>
+
+<h2>1.8 Non-Functional Requirements Summary Table</h2>
+<table>
+  <thead><tr><th>#</th><th>Category</th><th>Requirement</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td>NFR-01</td><td>Performance</td><td>99.5% uptime, 24×7 availability</td><td>High</td></tr>
+    <tr><td>NFR-02</td><td>Performance</td><td>Support 100 concurrent users</td><td>High</td></tr>
+    <tr><td>NFR-03</td><td>Performance</td><td>Resume screening within 10 seconds</td><td>High</td></tr>
+    <tr><td>NFR-04</td><td>Security</td><td>Passwords stored as salted hashes</td><td>High</td></tr>
+    <tr><td>NFR-05</td><td>Security</td><td>Demographic data encrypted (AES-256)</td><td>High</td></tr>
+    <tr><td>NFR-06</td><td>Security</td><td>HTTPS for all data transmission</td><td>High</td></tr>
+    <tr><td>NFR-07</td><td>Quality</td><td>Consistent AI scoring for identical inputs</td><td>High</td></tr>
+    <tr><td>NFR-08</td><td>Quality</td><td>Registration completable within 3 minutes</td><td>Medium</td></tr>
+    <tr><td>NFR-09</td><td>Design</td><td>Responsive web app (HTML5, CSS3, JS)</td><td>High</td></tr>
+    <tr><td>NFR-10</td><td>Design</td><td>Explainable AI — no black-box decisions</td><td>High</td></tr>
+    <tr><td>NFR-11</td><td>Database</td><td>ACID transactions for all critical data</td><td>High</td></tr>
+    <tr><td>NFR-12</td><td>Database</td><td>Automated daily backups</td><td>Medium</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">Once all the functional and non-functional requirements have been identified, they are documented formally in the SRS, which then serves as a legal agreement between the client and the service provider.</div>
+
+<!-- ═══════════════════════════════ PRACTICAL 2 ═══════════════════════════════ -->
+<div class="page-break"></div>
+<h1>Practical 2: Identifying Domain Classes from the Problem Statement</h1>
+
+<h2>Objectives</h2>
+<ul>
+  <li>Understand the concept of domain classes</li>
+  <li>Identify a list of potential domain classes from a given problem statement</li>
+</ul>
+
+<h2>2.1 Domain Class</h2>
+<p>In Object Oriented paradigm, the Domain Object Model has become a subject of interest for its excellent problem comprehending capabilities towards the goal of designing a good software system. Domain Model, as a conceptual model, gives proper understanding of the problem description through its highly effective component — the <strong>Domain Classes</strong>.</p>
+<p>Domain classes are the abstraction of key entities, concepts, or ideas presented in the problem statement. Domain classes are used for representing business activities during the analysis phase.</p>
+
+<h2>2.2 Techniques for Identification of Classes</h2>
+<h3>Grammatical Approach Using Nouns</h3>
+<p>This object identification technique was proposed by <strong>Russell J. Abbott</strong>, and <strong>Grady Booch</strong> made the technique popular. This technique involves grammatical analysis of the problem statement to identify a list of potential classes. The logical steps are:</p>
+<ol>
+  <li>Obtain the user requirements (problem statement) as a simple, descriptive English text</li>
+  <li>Identify and mark the nouns, pronouns, and noun phrases from the problem statement</li>
+  <li>List of potential classes is obtained based on the category of the nouns</li>
+</ol>
+<p><strong>Advantages:</strong> This is one of the simplest approaches that could be easily understood and applied by a larger section of the user base.</p>
+<p><strong>Disadvantages:</strong> The problem statement may not always help towards correct identification of a class. At times it could give us redundant classes, or the identified class may actually point to an aggregate of classes.</p>
+
+<h2>2.3 Case Study: AI-Based Hiring Bias Detector</h2>
+<h3>Step 1: Identify Nouns and Noun Phrases</h3>
+<table>
+  <thead><tr><th>#</th><th>Noun / Noun Phrase</th><th>#</th><th>Noun / Noun Phrase</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Organizations</td><td>19</td><td>Questions</td></tr>
+    <tr><td>2</td><td>Hiring practices</td><td>20</td><td>Aptitude test score</td></tr>
+    <tr><td>3</td><td>Resume</td><td>21</td><td>Resume screening score</td></tr>
+    <tr><td>4</td><td>Screening process</td><td>22</td><td>Performance report</td></tr>
+    <tr><td>5</td><td>Human biases</td><td>23</td><td>Shortlist</td></tr>
+    <tr><td>6</td><td>Candidate</td><td>24</td><td>Dashboard</td></tr>
+    <tr><td>7</td><td>Name</td><td>25</td><td>Administrator</td></tr>
+    <tr><td>8</td><td>Gender</td><td>26</td><td>Job posting</td></tr>
+    <tr><td>9</td><td>Age</td><td>27</td><td>Bias detection parameters</td></tr>
+    <tr><td>10</td><td>Ethnicity</td><td>28</td><td>Audit reports</td></tr>
+    <tr><td>11</td><td>University</td><td>29</td><td>User accounts</td></tr>
+    <tr><td>12</td><td>Demographic identifiers</td><td>30</td><td>Web application</td></tr>
+    <tr><td>13</td><td>AI-Based Hiring Bias Detector</td><td>31</td><td>Passwords</td></tr>
+    <tr><td>14</td><td>System</td><td>32</td><td>Email address</td></tr>
+    <tr><td>15</td><td>Skills</td><td>33</td><td>Mobile number</td></tr>
+    <tr><td>16</td><td>Experience</td><td>34</td><td>Bias alert</td></tr>
+    <tr><td>17</td><td>Qualifications</td><td>35</td><td>Question bank</td></tr>
+    <tr><td>18</td><td>Online aptitude test</td><td></td><td></td></tr>
+  </tbody>
+</table>
+
+<h3>Step 2: Categorize Nouns</h3>
+<table>
+  <thead><tr><th>Category</th><th>Identified Nouns</th></tr></thead>
+  <tbody>
+    <tr><td><strong>People</strong></td><td>Candidate, Administrator</td></tr>
+    <tr><td><strong>Places</strong></td><td>— (Web-based, no physical places)</td></tr>
+    <tr><td><strong>Things</strong></td><td>Resume, Questions, Passwords, Email address, Mobile number, Skills, Qualifications</td></tr>
+    <tr><td><strong>Organizations</strong></td><td>Organizations (hiring companies)</td></tr>
+    <tr><td><strong>Concepts</strong></td><td>AI-Based Hiring Bias Detector, Screening process, Hiring practices, Human biases, Demographic identifiers, Gender, Age, Ethnicity, Bias detection parameters, Web application, Performance report</td></tr>
+    <tr><td><strong>Events</strong></td><td>Online aptitude test, Shortlist, Bias alert, Audit reports</td></tr>
+  </tbody>
+</table>
+
+<h3>Step 3: Filter Redundant or Irrelevant Classes</h3>
+<table>
+  <thead><tr><th>Filtered Noun</th><th>Reason</th></tr></thead>
+  <tbody>
+    <tr><td>Organizations</td><td>Too generic; outside system boundary</td></tr>
+    <tr><td>Hiring practices</td><td>Abstract concept, not a system entity</td></tr>
+    <tr><td>Human biases</td><td>Conceptual; represented by Bias Detection module</td></tr>
+    <tr><td>System</td><td>Generic term referring to the software itself</td></tr>
+    <tr><td>Web application</td><td>Implementation detail, not a domain class</td></tr>
+    <tr><td>Passwords</td><td>Attribute of Candidate/Administrator, not a class</td></tr>
+    <tr><td>Email address</td><td>Attribute of Candidate, not a class</td></tr>
+    <tr><td>Mobile number</td><td>Attribute of Candidate, not a class</td></tr>
+    <tr><td>Name, Gender, Age, Ethnicity</td><td>Attributes of Candidate, not independent classes</td></tr>
+    <tr><td>University</td><td>Attribute within Resume, not an independent class</td></tr>
+    <tr><td>Dashboard</td><td>UI component, not a domain class</td></tr>
+    <tr><td>Screening process</td><td>Behavioral process, not a data entity</td></tr>
+  </tbody>
+</table>
+
+<div class="page-break"></div>
+<h3>Step 4: Final List of Domain Classes</h3>
+<table>
+  <thead><tr><th>#</th><th>Domain Class</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><strong>Candidate</strong></td><td>A job-seeking user who registers, uploads resume, and takes aptitude tests</td></tr>
+    <tr><td>2</td><td><strong>Administrator</strong></td><td>A privileged user who manages job postings, configures bias parameters, and manages accounts</td></tr>
+    <tr><td>3</td><td><strong>Resume</strong></td><td>The document uploaded by a candidate, containing skills, experience, and qualifications</td></tr>
+    <tr><td>4</td><td><strong>Job Posting</strong></td><td>A job listing created by the administrator with title, description, required skills</td></tr>
+    <tr><td>5</td><td><strong>Aptitude Test</strong></td><td>A time-bound online test assigned to candidates for a specific job posting</td></tr>
+    <tr><td>6</td><td><strong>Question</strong></td><td>An individual question within the aptitude test question bank</td></tr>
+    <tr><td>7</td><td><strong>Question Bank</strong></td><td>A categorized collection of aptitude test questions managed by the administrator</td></tr>
+    <tr><td>8</td><td><strong>Screening Result</strong></td><td>The AI-generated evaluation result containing resume score and bias audit log</td></tr>
+    <tr><td>9</td><td><strong>Aptitude Score</strong></td><td>The AI-generated score for a candidate's aptitude test performance</td></tr>
+    <tr><td>10</td><td><strong>Shortlist</strong></td><td>A ranked list of candidates based on combined resume and aptitude scores</td></tr>
+    <tr><td>11</td><td><strong>Bias Report</strong></td><td>A system-generated report documenting any detected bias patterns</td></tr>
+    <tr><td>12</td><td><strong>Audit Log</strong></td><td>An explainable AI trail justifying each screening and ranking decision</td></tr>
+  </tbody>
+</table>
+
+<h3>Step 5: Generalization Hierarchy</h3>
+<p>Among the identified domain classes, <strong>Candidate</strong> and <strong>Administrator</strong> share common characteristics — both have a name, email address, and password; both can log in to the system. Therefore, a generalized superclass <strong>User</strong> can be defined:</p>
+<pre><code>User (Superclass)
+├── Candidate (Subclass) — can upload resume, take test, view scores
+└── Administrator (Subclass) — can manage jobs, questions, users, reports</code></pre>
+<p>This generalization follows the <strong>ISA relationship</strong> in object-oriented modeling.</p>
+
+<!-- ═══════════════════════════════ PRACTICAL 3 ═══════════════════════════════ -->
+<div class="page-break"></div>
+<h1>Practical 3: Entity-Relationship (ER) Modeling</h1>
+
+<h2>Objectives</h2>
+<ul>
+  <li>Identify entity sets, their attributes, and various relationships</li>
+  <li>Represent the data model through ER diagram</li>
+</ul>
+
+<h2>3.1 Entity Relationship Model</h2>
+<p>Entity-Relationship model is used to represent a logical design of a database to be created. In the ER model, real-world objects (or concepts) are abstracted as <strong>entities</strong>, and different possible associations among them are modeled as <strong>relationships</strong>.</p>
+<p>For example, <strong>Candidate</strong> and <strong>Aptitude Test</strong> are two entities. Candidates take aptitude tests. So, these two entities are associated with the relationship <strong>"Takes"</strong>.</p>
+
+<h2>3.2 Entity Sets and Attributes</h2>
+
+<h3>Entity Set 1: Candidate</h3>
+<table>
+  <thead><tr><th>Attribute</th><th>Type</th><th>Constraint</th></tr></thead>
+  <tbody>
+    <tr><td>candidate_id</td><td>INT</td><td>Primary Key, Auto-increment</td></tr>
+    <tr><td>full_name</td><td>VARCHAR(100)</td><td>NOT NULL</td></tr>
+    <tr><td>email</td><td>VARCHAR(150)</td><td>UNIQUE, NOT NULL</td></tr>
+    <tr><td>mobile_number</td><td>VARCHAR(20)</td><td>Encrypted</td></tr>
+    <tr><td>age</td><td>INT</td><td>Encrypted</td></tr>
+    <tr><td>password_hash</td><td>VARCHAR(255)</td><td>NOT NULL (bcrypt)</td></tr>
+    <tr><td>registration_date</td><td>DATETIME</td><td>NOT NULL</td></tr>
+    <tr><td>account_status</td><td>ENUM</td><td>Default: 'active'</td></tr>
+  </tbody>
+</table>
+
+<h3>Entity Set 2: Administrator</h3>
+<table>
+  <thead><tr><th>Attribute</th><th>Type</th><th>Constraint</th></tr></thead>
+  <tbody>
+    <tr><td>admin_id</td><td>INT</td><td>Primary Key, Auto-increment</td></tr>
+    <tr><td>full_name</td><td>VARCHAR(100)</td><td>NOT NULL</td></tr>
+    <tr><td>email</td><td>VARCHAR(150)</td><td>UNIQUE, NOT NULL</td></tr>
+    <tr><td>password_hash</td><td>VARCHAR(255)</td><td>NOT NULL</td></tr>
+    <tr><td>role</td><td>ENUM</td><td>Default: 'moderator'</td></tr>
+  </tbody>
+</table>
+
+<h3>Entity Set 3: Job Posting</h3>
+<table>
+  <thead><tr><th>Attribute</th><th>Type</th><th>Constraint</th></tr></thead>
+  <tbody>
+    <tr><td>job_id</td><td>INT</td><td>Primary Key, Auto-increment</td></tr>
+    <tr><td>title</td><td>VARCHAR(200)</td><td>NOT NULL</td></tr>
+    <tr><td>description</td><td>TEXT</td><td>NOT NULL</td></tr>
+    <tr><td>required_skills</td><td>TEXT</td><td>NOT NULL</td></tr>
+    <tr><td>experience_level</td><td>ENUM</td><td>NOT NULL</td></tr>
+    <tr><td>created_by</td><td>INT</td><td>FK → Administrator</td></tr>
+    <tr><td>status</td><td>ENUM</td><td>Default: 'open'</td></tr>
+  </tbody>
+</table>
+
+<h3>Entity Set 4: Resume</h3>
+<table>
+  <thead><tr><th>Attribute</th><th>Type</th><th>Constraint</th></tr></thead>
+  <tbody>
+    <tr><td>resume_id</td><td>INT</td><td>Primary Key, Auto-increment</td></tr>
+    <tr><td>candidate_id</td><td>INT</td><td>FK → Candidate</td></tr>
+    <tr><td>job_id</td><td>INT</td><td>FK → Job Posting</td></tr>
+    <tr><td>file_path</td><td>VARCHAR(500)</td><td>NOT NULL</td></tr>
+    <tr><td>extracted_skills</td><td>TEXT</td><td>Parsed by AI</td></tr>
+    <tr><td>anonymized</td><td>BOOLEAN</td><td>Default: TRUE</td></tr>
+  </tbody>
+</table>
+
+<h3>Entity Set 5: Screening Result</h3>
+<table>
+  <thead><tr><th>Attribute</th><th>Type</th><th>Constraint</th></tr></thead>
+  <tbody>
+    <tr><td>screening_id</td><td>INT</td><td>Primary Key, Auto-increment</td></tr>
+    <tr><td>resume_id</td><td>INT</td><td>FK → Resume</td></tr>
+    <tr><td>skill_match_score</td><td>DECIMAL(5,2)</td><td>0.00 to 100.00</td></tr>
+    <tr><td>overall_resume_score</td><td>DECIMAL(5,2)</td><td>0.00 to 100.00</td></tr>
+    <tr><td>bias_leakage_pct</td><td>DECIMAL(5,4)</td><td>0.0000 to 1.0000</td></tr>
+    <tr><td>audit_log</td><td>TEXT</td><td>Explainable AI justification</td></tr>
+  </tbody>
+</table>
+
+<h3>Entity Set 6: Aptitude Test</h3>
+<table>
+  <thead><tr><th>Attribute</th><th>Type</th><th>Constraint</th></tr></thead>
+  <tbody>
+    <tr><td>test_id</td><td>INT</td><td>Primary Key, Auto-increment</td></tr>
+    <tr><td>candidate_id</td><td>INT</td><td>FK → Candidate</td></tr>
+    <tr><td>job_id</td><td>INT</td><td>FK → Job Posting</td></tr>
+    <tr><td>duration_minutes</td><td>INT</td><td>Default: 60</td></tr>
+    <tr><td>total_questions</td><td>INT</td><td>NOT NULL</td></tr>
+    <tr><td>status</td><td>ENUM</td><td>NOT NULL</td></tr>
+  </tbody>
+</table>
+
+<h3>Entity Set 7: Question</h3>
+<table>
+  <thead><tr><th>Attribute</th><th>Type</th><th>Constraint</th></tr></thead>
+  <tbody>
+    <tr><td>question_id</td><td>INT</td><td>Primary Key, Auto-increment</td></tr>
+    <tr><td>category</td><td>ENUM</td><td>logical / quantitative / verbal / technical</td></tr>
+    <tr><td>difficulty</td><td>ENUM</td><td>easy / medium / hard</td></tr>
+    <tr><td>question_text</td><td>TEXT</td><td>NOT NULL</td></tr>
+    <tr><td>option_a, b, c, d</td><td>VARCHAR(500)</td><td>NOT NULL</td></tr>
+    <tr><td>correct_option</td><td>ENUM</td><td>a / b / c / d</td></tr>
+  </tbody>
+</table>
+
+<h3>Entity Set 8: Aptitude Score</h3>
+<table>
+  <thead><tr><th>Attribute</th><th>Type</th><th>Constraint</th></tr></thead>
+  <tbody>
+    <tr><td>score_id</td><td>INT</td><td>Primary Key, Auto-increment</td></tr>
+    <tr><td>test_id</td><td>INT</td><td>FK → Aptitude Test</td></tr>
+    <tr><td>correct_answers</td><td>INT</td><td>NOT NULL</td></tr>
+    <tr><td>wrong_answers</td><td>INT</td><td>NOT NULL</td></tr>
+    <tr><td>aptitude_score_pct</td><td>DECIMAL(5,2)</td><td>0.00 to 100.00</td></tr>
+  </tbody>
+</table>
+
+<h3>Entity Set 9: Shortlist</h3>
+<table>
+  <thead><tr><th>Attribute</th><th>Type</th><th>Constraint</th></tr></thead>
+  <tbody>
+    <tr><td>shortlist_id</td><td>INT</td><td>Primary Key, Auto-increment</td></tr>
+    <tr><td>candidate_id</td><td>INT</td><td>FK → Candidate</td></tr>
+    <tr><td>job_id</td><td>INT</td><td>FK → Job Posting</td></tr>
+    <tr><td>combined_score</td><td>DECIMAL(5,2)</td><td>Weighted combination</td></tr>
+    <tr><td>rank</td><td>INT</td><td>NOT NULL</td></tr>
+    <tr><td>shortlisted</td><td>BOOLEAN</td><td>Default: FALSE</td></tr>
+  </tbody>
+</table>
+
+<h3>Entity Set 10: Bias Report</h3>
+<table>
+  <thead><tr><th>Attribute</th><th>Type</th><th>Constraint</th></tr></thead>
+  <tbody>
+    <tr><td>report_id</td><td>INT</td><td>Primary Key, Auto-increment</td></tr>
+    <tr><td>job_id</td><td>INT</td><td>FK → Job Posting</td></tr>
+    <tr><td>bias_category</td><td>ENUM</td><td>gender / age / ethnicity / university / other</td></tr>
+    <tr><td>confidence_level</td><td>DECIMAL(5,4)</td><td>0.0000 to 1.0000</td></tr>
+    <tr><td>affected_candidates</td><td>INT</td><td>NOT NULL</td></tr>
+    <tr><td>recommendation</td><td>TEXT</td><td>Corrective actions</td></tr>
+  </tbody>
+</table>
+
+<div class="page-break"></div>
+<h2>3.3 Relationships Among Entity Sets</h2>
+<table>
+  <thead><tr><th>#</th><th>Relationship</th><th>Entity A</th><th>Entity B</th><th>Mapping</th></tr></thead>
+  <tbody>
+    <tr><td>R1</td><td>Uploads</td><td>Candidate</td><td>Resume</td><td>One-to-Many</td></tr>
+    <tr><td>R2</td><td>Takes</td><td>Candidate</td><td>Aptitude Test</td><td>One-to-Many</td></tr>
+    <tr><td>R3</td><td>Creates</td><td>Administrator</td><td>Job Posting</td><td>One-to-Many</td></tr>
+    <tr><td>R4</td><td>Produces</td><td>Resume</td><td>Screening Result</td><td>One-to-One</td></tr>
+    <tr><td>R5</td><td>Evaluated To</td><td>Aptitude Test</td><td>Aptitude Score</td><td>One-to-One</td></tr>
+    <tr><td>R6</td><td>Contains</td><td>Aptitude Test</td><td>Question</td><td>Many-to-Many</td></tr>
+    <tr><td>R7</td><td>Generates</td><td>Screening Result + Aptitude Score</td><td>Shortlist</td><td>Many-to-One</td></tr>
+    <tr><td>R8</td><td>Triggers</td><td>Screening Result</td><td>Bias Report</td><td>Many-to-One</td></tr>
+  </tbody>
+</table>
+
+<h2>3.4 Design Considerations</h2>
+<ol>
+  <li><strong>ISA Relationship:</strong> Both <code>Candidate</code> and <code>Administrator</code> share common attributes (name, email, password). A generalized <strong>User</strong> superclass can be introduced, with <code>Candidate</code> and <code>Administrator</code> as specialized subclasses.</li>
+  <li><strong>Weak Entity:</strong> The <code>Aptitude Score</code> entity is existentially dependent on <code>Aptitude Test</code> — it cannot exist without a corresponding test record. This makes it a <strong>weak entity</strong>.</li>
+  <li><strong>Derived Attributes:</strong> The <code>combined_score</code> in the <code>Shortlist</code> entity is a derived attribute, calculated from <code>resume_score</code> and <code>aptitude_score</code> using configurable weightage.</li>
+  <li><strong>Data Integrity:</strong> The ER model ensures that demographic attributes (age, mobile number) stored in the <code>Candidate</code> entity are never referenced by the <code>Screening Result</code> entity, maintaining the bias-free guarantee at the database schema level.</li>
+</ol>
+
+<h2>3.5 Normalization Notes</h2>
+<p>The baseline ER model prepared above should be revised by considering the business model to ensure all necessary information can be captured. Once finalized, the next logical step would be to:</p>
+<ol>
+  <li>Create table structures for each identified entity set</li>
+  <li>Define foreign key constraints for all relationships</li>
+  <li>Normalize the relations to <strong>Third Normal Form (3NF)</strong> to eliminate redundancy</li>
+  <li>Create indexes on frequently queried columns (e.g., <code>candidate_id</code>, <code>job_id</code>, <code>email</code>)</li>
+</ol>
+
+<hr/>
+
+<h2>Summary</h2>
+<table>
+  <thead><tr><th>Practical</th><th>Deliverable</th><th>Key Outputs</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Practical 1</strong></td><td>Software Requirements Specification</td><td>10 Functional Requirements, 12 Non-Functional Requirements</td></tr>
+    <tr><td><strong>Practical 2</strong></td><td>Domain Class Identification</td><td>12 Domain Classes with generalization hierarchy</td></tr>
+    <tr><td><strong>Practical 3</strong></td><td>ER Modeling</td><td>10 Entity Sets, 8 Relationships</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-teal">
+  <strong>Project:</strong> AI-Based Hiring Bias Detector (EquiHire AI)<br/>
+  <strong>Key Feature:</strong> Aptitude test with AI-powered scoring and bias-free candidate shortlisting<br/>
+  <strong>Principle:</strong> Every screening decision is explainable, auditable, and free from demographic bias
+</div>
+
+</body>
+</html>

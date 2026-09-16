@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Authentication — Parity AI Platform</title>
+  <link rel="stylesheet" href="../shared/tokens.css"/>
+  <link rel="stylesheet" href="../shared/components.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-viewport">
+
+  <header id="parity-header" class="parity-header"></header>
+
+  <main class="main-content">
+
+    <div class="auth-card-wrap">
+      <div class="parity-card auth-card">
+        
+        <!-- Auth Tab Switcher -->
+        <div class="auth-tabs">
+          <button class="auth-tab-btn active" id="tab-login" onclick="switchAuthTab('login')">Sign In</button>
+          <button class="auth-tab-btn" id="tab-signup" onclick="switchAuthTab('signup')">Create Account</button>
+        </div>
+
+        <div class="auth-header">
+          <h1 class="headline-serif" id="auth-title">Candidate Calibration Access</h1>
+          <p class="headline-sub" id="auth-sub">Sign in to initialize demographic-blind assessment environment.</p>
+        </div>
+
+        <!-- Inline Error Banner -->
+        <div class="auth-error-banner" id="auth-error" style="display: none;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          <span id="auth-error-text">Validation error message</span>
+        </div>
+
+        <!-- Auth Form -->
+        <form class="auth-form" id="auth-form" onsubmit="handleAuthSubmit(event)" novalidate>
+          
+          <!-- Name field (Sign up only) -->
+          <div class="form-group" id="group-name" style="display: none;">
+            <label class="form-label" for="input-name">Full Candidate Name</label>
+            <input type="text" class="input-text" id="input-name" placeholder="e.g. Alex Vance"/>
+            <span class="field-error" id="err-name"></span>
+          </div>
+
+          <!-- Email field -->
+          <div class="form-group">
+            <label class="form-label" for="input-email">Email Address</label>
+            <input type="email" class="input-text" id="input-email" placeholder="alex.vance@example.com" value="alex.vance@example.com"/>
+            <span class="field-error" id="err-email"></span>
+          </div>
+
+          <!-- Password field -->
+          <div class="form-group">
+            <label class="form-label" for="input-password">Password</label>
+            <input type="password" class="input-text" id="input-password" placeholder="••••••••••••" value="Password123!"/>
+            <span class="field-error" id="err-password"></span>
+          </div>
+
+          <!-- Confirm Password field (Sign up only) -->
+          <div class="form-group" id="group-confirm" style="display: none;">
+            <label class="form-label" for="input-confirm">Confirm Password</label>
+            <input type="password" class="input-text" id="input-confirm" placeholder="••••••••••••"/>
+            <span class="field-error" id="err-confirm"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-full" id="btn-submit">
+            Initialize Assessment Session
+          </button>
+        </form>
+
+        <div class="auth-divider">
+          <span>OR CONTINUE WITH DEMO CREDENTIALS</span>
+        </div>
+
+        <button type="button" class="btn btn-ghost w-full" onclick="quickDemoAuth()">
+          ⚡ One-Click Candidate Demo Auth
+        </button>
+
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

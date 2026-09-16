@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Final Score | EquiHire AI</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <script src="js/auth.js"></script>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <div class="brand-logo-icon">EQ</div>
+          <div class="brand-text">
+            <span class="brand-name">Equi<span>Hire</span> AI</span>
+          </div>
+        </a>
+        <div class="nav-actions">
+           <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container" style="max-width:800px;">
+      
+      <div class="text-center" style="margin-bottom:2rem;">
+        <span class="badge" style="background:var(--primary-soft); color:var(--primary); margin-bottom:1rem; padding:0.5rem 1rem; font-size:0.9rem;">
+           Assessment complete — recruiter review pending
+        </span>
+        <h2 style="font-size:2.2rem; margin-top:0.5rem;">Your Assessment Results</h2>
+        <p style="color:var(--text-muted); margin-top:0.5rem;">Objective merit evaluation based on technical requirements</p>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:2rem;">
+        <div class="card text-center">
+           <div style="font-size:0.85rem; color:var(--text-muted); font-weight:700; margin-bottom:0.5rem;">MCQ & Aptitude</div>
+           <div style="font-size:2rem; font-weight:800; color:var(--primary);">85<span style="font-size:1rem; color:var(--text-muted);">/100</span></div>
+        </div>
+        <div class="card text-center">
+           <div style="font-size:0.85rem; color:var(--text-muted); font-weight:700; margin-bottom:0.5rem;">Coding Challenge</div>
+           <div style="font-size:2rem; font-weight:800; color:var(--primary);">92<span style="font-size:1rem; color:var(--text-muted);">/100</span></div>
+        </div>
+        <div class="card text-center">
+           <div style="font-size:0.85rem; color:var(--text-muted); font-weight:700; margin-bottom:0.5rem;">Resume Match</div>
+           <div style="font-size:2rem; font-weight:800; color:var(--primary);">78<span style="font-size:1rem; color:var(--text-muted);">/100</span></div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:2rem; margin-bottom:2rem; background:linear-gradient(135deg, var(--surface), var(--primary-soft));">
+         <h3 style="margin-bottom:1rem; text-align:center;">Composite Score Formula</h3>
+         <div style="background:var(--surface); border:1px solid var(--border); padding:1.5rem; border-radius:var(--radius-md); font-family:var(--font-mono); font-size:0.9rem; line-height:1.8; text-align:center;">
+            <div>Composite Score = (MCQ × 0.4) + (Coding × 0.4) + (Resume Match × 0.2)</div>
+            <div style="color:var(--text-muted); margin-top:0.5rem;">= (85 × 0.4) + (92 × 0.4) + (78 × 0.2)</div>
+            <div style="font-size:1.5rem; font-weight:700; color:var(--primary); margin-top:1rem;">= 86.4 / 100</div>
+         </div>
+      </div>
+
+      <div class="card" style="background:#fffbeb; border-color:#fef3c7; padding:1.5rem; margin-bottom:2rem;">
+         <p style="color:#b45309; font-size:0.9rem; font-weight:600; margin:0;">
+            ⚠️ Limitations Note: This score is one input for recruiter review. Hiring decisions must consider job requirements, context, and human judgment.
+         </p>
+      </div>
+
+      <div class="text-center">
+         <p style="font-size:1rem; font-weight:600; color:var(--text); margin-bottom:1.5rem;">
+            Your results have been shared with the recruiter pool. You will be contacted regarding next steps.
+         </p>
+         <a href="candidate-dashboard.html" class="btn btn-secondary">Return to Dashboard</a>
+      </div>
+
+    </div>
+  </main>
+  
+</body>
+</html>

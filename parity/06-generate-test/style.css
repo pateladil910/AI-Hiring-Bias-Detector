@@ -1,0 +1,125 @@
+/* Generate Test Styles */
+.generate-header {
+  margin-bottom: 32px;
+}
+
+.generate-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.spec-card-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.spec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.spec-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--ink-3);
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+}
+
+.s-icon {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal);
+  background: var(--ink-2);
+  border: 1px solid var(--teal-dim);
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
+.s-name {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.s-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.spec-meta-bar {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+}
+
+.prog-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.gen-step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.gen-step-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-faint);
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.gen-step-item.active {
+  opacity: 1;
+  color: var(--teal);
+}
+
+.gen-step-item.completed {
+  opacity: 0.8;
+  color: var(--text-dim);
+}
+
+.g-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.gen-step-item.active .g-dot {
+  background: var(--teal);
+  box-shadow: 0 0 8px var(--teal);
+}
+
+.gen-step-item.completed .g-dot {
+  background: var(--teal-dim);
+}
+
+.text-teal { color: var(--teal); }
+.text-amber { color: var(--amber); }
+.w-full { width: 100%; }
+
+@media (max-width: 768px) {
+  .generate-grid { grid-template-columns: 1fr; }
+}

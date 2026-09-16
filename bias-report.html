@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assessment Process Audit Report | EquiHire AI</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/bias-report.css"/>
+  <script src="js/auth.js"></script>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <div class="brand-logo-icon">EQ</div>
+          <div class="brand-text">
+            <span class="brand-name">Equi<span>Hire</span> AI</span>
+          </div>
+        </a>
+        <div class="nav-actions">
+           <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container" style="max-width: 900px;">
+      
+      <div style="margin-bottom:2rem;">
+        <span class="badge badge-warning" style="margin-bottom:1rem;">⚠️ Audit Notice</span>
+        <div class="card" style="background:#fffbeb; border-color:#fef3c7; padding:1.5rem;">
+          <p style="color:#b45309; font-size:0.9rem; font-weight:600; margin:0;">
+            These metrics reflect process checks recorded during assessment. They do not prove zero bias, 100% demographic neutrality, or legal compliance. All results are demo/test data.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+         <h2 style="font-size:2rem;">Assessment Process Audit Report</h2>
+         <p style="color:var(--text-muted); margin-top:0.5rem;">Detailed event logs for compliance verification</p>
+      </div>
+
+      <div id="audit-cards-container" style="display:flex; flex-direction:column; gap:1.5rem;">
+         <!-- Injected by js/bias.js -->
+      </div>
+
+    </div>
+  </main>
+  
+  <script src="js/bias.js"></script>
+</body>
+</html>

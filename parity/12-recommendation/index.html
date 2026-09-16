@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Final Hiring Recommendation — Parity AI Platform</title>
+  <link rel="stylesheet" href="../shared/tokens.css"/>
+  <link rel="stylesheet" href="../shared/components.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-viewport">
+
+  <header id="parity-header" class="parity-header"></header>
+
+  <main class="main-content">
+
+    <div class="rec-header">
+      <span class="mono-label">STEP 12 / 12 — FINAL VERDICT INSTRUMENT</span>
+      <h1 class="headline-serif">Final Calibrated Hiring Recommendation</h1>
+      <p class="headline-sub">
+        Merit-based decision synthesis based on objective test scores, skill graph matching, and demographic-blind bias auditing.
+      </p>
+    </div>
+
+    <!-- Verdict-First Hero Card -->
+    <div class="parity-card verdict-hero-card" id="verdict-card">
+      <div class="vh-top">
+        <span class="mono-label">SYNTHESIZED HIRING VERDICT</span>
+        <div class="status-pill pill-teal verdict-main-pill" id="rec-verdict-pill">
+          STRONG FIT — RECOMMEND FOR TECHNICAL ONSITE
+        </div>
+      </div>
+
+      <div class="vh-main-grid">
+        <div>
+          <span class="mono-label">EVALUATED CANDIDATE</span>
+          <h2 class="vh-cand-name" id="cand-name-display">Alex Vance</h2>
+          <div class="vh-domain-tag" id="domain-name-display">Full Stack Engineering Specialist</div>
+        </div>
+
+        <div class="vh-score-badge">
+          <span class="mono-label">COMPOSITE MERIT SCORE</span>
+          <div class="mono-val text-teal vh-score-num" id="cand-composite-num">91 / 100</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supporting Evidence & Audit References -->
+    <div class="rec-grid">
+      
+      <!-- Concrete Supporting Evidence -->
+      <div class="parity-card evidence-card">
+        <div class="bd-card-title">
+          <span class="mono-label">3–4 CONCRETE SUPPORTING EVIDENCE REASONS</span>
+        </div>
+
+        <div class="evidence-reasons-list">
+          
+          <div class="reason-item">
+            <div class="r-bullet text-teal">01</div>
+            <div>
+              <strong style="color: var(--text);">Verified High Technical MCQ Accuracy (92%)</strong>
+              <p style="font-size: 13px; color: var(--text-dim); margin-top: 2px;">
+                Demonstrated core mastery in React 18 concurrent features, LSM database indexing, and Node event loop thread pool mechanics.
+              </p>
+            </div>
+          </div>
+
+          <div class="reason-item">
+            <div class="r-bullet text-teal">02</div>
+            <div>
+              <strong style="color: var(--text);">Optimal Algorithmic Code Solution (88%)</strong>
+              <p style="font-size: 13px; color: var(--text-dim); margin-top: 2px;">
+                Passed all 12 test cases for LRU eviction policy with verified O(1) time complexity using Map pointer deletion.
+              </p>
+            </div>
+          </div>
+
+          <div class="reason-item">
+            <div class="r-bullet text-teal">03</div>
+            <div>
+              <strong style="color: var(--text);">Logical Reasoning &amp; Analytical Strength (95%)</strong>
+              <p style="font-size: 13px; color: var(--text-dim); margin-top: 2px;">
+                Achieved 95% on aptitude reasoning, calculating concurrent request Little's Law latency correctly.
+              </p>
+            </div>
+          </div>
+
+          <div class="reason-item">
+            <div class="r-bullet text-teal">04</div>
+            <div>
+              <strong style="color: var(--text);">Verifiable Resume Work Evidence (90%)</strong>
+              <p style="font-size: 13px; color: var(--text-dim); margin-top: 2px;">
+                Extracted resume evidence confirms experience architecting high-throughput microservices handling 2M daily requests.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Links to Full Report Pages -->
+      <div class="parity-card audit-links-card">
+        <div class="bd-card-title">
+          <span class="mono-label">VERIFIABLE REPORT AUDIT TRAIL</span>
+        </div>
+
+        <div class="report-link-list">
+          <a href="../09-resume-analysis/index.html" class="report-nav-row">
+            <div>
+              <div class="rn-title">Skill Alignment Report</div>
+              <div class="rn-sub">8 / 10 Domain Match · Gaps &amp; Resume Phrases</div>
+            </div>
+            <span class="mono-val text-teal">View →</span>
+          </a>
+
+          <a href="../10-bias-detection/index.html" class="report-nav-row">
+            <div>
+              <div class="rn-title">Assessment Neutrality Audit</div>
+              <div class="rn-sub">99.8% EEOC Neutrality · Zero Demographic Leakage</div>
+            </div>
+            <span class="mono-val text-teal">View →</span>
+          </a>
+
+          <a href="../11-candidate-score/index.html" class="report-nav-row">
+            <div>
+              <div class="rn-title">Full Candidate Score Matrix</div>
+              <div class="rn-sub">MCQ, Coding, Aptitude &amp; Composite Breakdown</div>
+            </div>
+            <span class="mono-val text-teal">View →</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Final Actions -->
+    <div class="rec-footer-actions">
+      <button class="btn btn-ghost" onclick="downloadReportPdf()">
+        📄 Download PDF Report
+      </button>
+
+      <button class="btn btn-primary" onclick="restartAssessmentFlow()">
+        ↺ Complete Assessment &amp; Return to Landing
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </button>
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

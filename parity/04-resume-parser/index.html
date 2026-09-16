@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Resume Parser — Parity AI Platform</title>
+  <link rel="stylesheet" href="../shared/tokens.css"/>
+  <link rel="stylesheet" href="../shared/components.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-viewport">
+
+  <header id="parity-header" class="parity-header"></header>
+
+  <main class="main-content">
+
+    <!-- Processing State Box -->
+    <div class="parity-card processing-box" id="processing-view">
+      <div class="proc-header">
+        <span class="mono-label">PARSING INSTRUMENT STREAM</span>
+        <span class="mono-val text-teal" id="proc-percent">33%</span>
+      </div>
+      
+      <div class="proc-log" id="proc-log">
+        <div class="log-line active">[0.00s] Reading document stream...</div>
+      </div>
+    </div>
+
+    <!-- Parsed Instrument Readout View -->
+    <div class="parser-result-wrap" id="result-view" style="display: none;">
+      
+      <div class="parser-header">
+        <div>
+          <span class="mono-label">STEP 04 / 12 — PARSED PROFILE READOUT</span>
+          <h1 class="headline-serif">Verify Extracted Profile Data</h1>
+          <p class="headline-sub">
+            Review parsed attributes. Demographic indicators have been redacted. You can edit any field below before proceeding.
+          </p>
+        </div>
+
+        <button class="btn btn-primary" onclick="saveParsedAndContinue()">
+          Confirm &amp; Select Assessment Domain
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </div>
+
+      <div class="readout-grid">
+        
+        <!-- Left Panel: Identity & Contact -->
+        <div class="parity-card readout-card">
+          <div class="readout-card-title">
+            <span class="mono-label">CONTACT &amp; IDENTIFIER</span>
+            <button class="btn-icon-edit" onclick="editSection('contact')">Edit</button>
+          </div>
+
+          <div class="readout-field">
+            <span class="field-lbl">Candidate Name:</span>
+            <input type="text" class="input-text field-val" id="val-name" value="Alex Vance"/>
+          </div>
+
+          <div class="readout-field">
+            <span class="field-lbl">Email Address:</span>
+            <input type="email" class="input-text field-val" id="val-email" value="alex.vance@example.com"/>
+          </div>
+
+          <div class="readout-field">
+            <span class="field-lbl">Phone Number:</span>
+            <input type="text" class="input-text field-val" id="val-phone" value="+1 (555) 234-8901"/>
+          </div>
+
+          <div class="sanitization-notice">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Address, Gender, Age &amp; Photo redacted per Parity EEOC calibration protocol.
+          </div>
+        </div>
+
+        <!-- Right Panel: Extracted Skills & Tags -->
+        <div class="parity-card readout-card">
+          <div class="readout-card-title">
+            <span class="mono-label">PARSED TECHNICAL SKILLS</span>
+            <button class="btn-icon-edit" onclick="addSkillPrompt()">+ Add Skill</button>
+          </div>
+
+          <div class="skills-tag-grid" id="skills-container">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Full Width: Work Experience Timeline -->
+        <div class="parity-card readout-card col-span-2">
+          <div class="readout-card-title">
+            <span class="mono-label">WORK EXPERIENCE TIMELINE</span>
+            <span class="mono-val text-teal">2 Positions Extracted</span>
+          </div>
+
+          <div class="timeline-list" id="experience-container">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Full Width: Education -->
+        <div class="parity-card readout-card col-span-2">
+          <div class="readout-card-title">
+            <span class="mono-label">EDUCATION &amp; QUALIFICATIONS</span>
+          </div>
+
+          <input type="text" class="input-text" id="val-education" value="B.S. in Computer Science — State University (2018)"/>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

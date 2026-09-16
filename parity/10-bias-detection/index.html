@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assessment Calibration &amp; Bias Audit — Parity AI Platform</title>
+  <link rel="stylesheet" href="../shared/tokens.css"/>
+  <link rel="stylesheet" href="../shared/components.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-viewport">
+
+  <header id="parity-header" class="parity-header"></header>
+
+  <main class="main-content">
+
+    <div class="bias-header">
+      <span class="mono-label">STEP 10 / 12 — ASSESSMENT BIAS AUDIT</span>
+      <h1 class="headline-serif">Test &amp; Evaluation Calibration Audit</h1>
+      <p class="headline-sub">
+        Parity audits the test questions and scoring rules themselves for skew (gendered phrasing, difficulty variance, non-inclusive wording), reassuring candidates of 100% fair assessment.
+      </p>
+    </div>
+
+    <div class="bias-grid">
+      
+      <!-- Gauge: Assessment Neutrality Index -->
+      <div class="parity-card gauge-card-wrap">
+        <span class="mono-label mb-16" style="text-align: center; display: block;">TEST NEUTRALITY INDEX</span>
+        <div id="bias-audit-gauge"></div>
+
+        <div class="bias-verdict-box">
+          <span class="status-pill pill-teal">PASSED EEOC CALIBRATION</span>
+          <p style="font-size: 12px; color: var(--text-dim); margin-top: 8px;">
+            The generated MCQ, Coding, and Aptitude questions contain 0% gendered phrasing, zero demographic bias leakage, and verified difficulty balance.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Column: Skew Audit Breakdown Bars -->
+      <div class="bias-right-col">
+        <div class="parity-card breakdown-card">
+          <div class="bd-card-title">
+            <span class="mono-label">QUESTION &amp; EVALUATOR SKEW METRICS</span>
+          </div>
+
+          <div class="skew-metrics-list">
+            
+            <!-- Metric 1 -->
+            <div class="skew-item">
+              <div class="skew-label-row">
+                <span class="mono-label">Linguistic Neutrality (No Gendered Terms)</span>
+                <span class="mono-val text-teal">100% BALANCED</span>
+              </div>
+              <div class="skew-bar-track">
+                <div class="skew-bar-fill fill-teal" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <!-- Metric 2 -->
+            <div class="skew-item">
+              <div class="skew-label-row">
+                <span class="mono-label">Demographic Attribute Anonymization</span>
+                <span class="mono-val text-teal">100% MASKED</span>
+              </div>
+              <div class="skew-bar-track">
+                <div class="skew-bar-fill fill-teal" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <!-- Metric 3 -->
+            <div class="skew-item">
+              <div class="skew-label-row">
+                <span class="mono-label">Section Difficulty Imbalance Variance</span>
+                <span class="mono-val text-teal">0.02% (LOW VARIANCE)</span>
+              </div>
+              <div class="skew-bar-track">
+                <div class="skew-bar-fill fill-teal" style="width: 98%;"></div>
+              </div>
+            </div>
+
+            <!-- Metric 4 -->
+            <div class="skew-item">
+              <div class="skew-label-row">
+                <span class="mono-label">University / Employer Prestige Skew</span>
+                <span class="mono-val text-teal">0.00% SKEW</span>
+              </div>
+              <div class="skew-bar-track">
+                <div class="skew-bar-fill fill-teal" style="width: 100%;"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="parity-card callout-card">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <div>
+            <strong style="color: var(--text);">Candidate Reassurance Guarantee:</strong>
+            <div style="font-size: 12.5px; color: var(--text-dim); margin-top: 2px;">
+              Your test score is calculated strictly on technical proficiency and logic accuracy. Neither your name, gender, location, nor background affected your rating.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bias-footer-actions">
+      <a href="../09-resume-analysis/index.html" class="btn btn-ghost">← Back to Skill Analysis</a>
+      
+      <button class="btn btn-primary" onclick="window.location.href='../11-candidate-score/index.html'">
+        View Composite Score Matrix
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </button>
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generate AI Assessment — Parity AI Platform</title>
+  <link rel="stylesheet" href="../shared/tokens.css"/>
+  <link rel="stylesheet" href="../shared/components.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-viewport">
+
+  <header id="parity-header" class="parity-header"></header>
+
+  <main class="main-content">
+
+    <div class="generate-header">
+      <span class="mono-label">STEP 06 / 12 — TEST SYNTHESIS</span>
+      <h1 class="headline-serif">Generating Domain Assessment</h1>
+      <p class="headline-sub">
+        Synthesizing adaptive problem sets calibrated specifically for <strong id="domain-name-sub" class="text-teal">Full Stack Engineering</strong>.
+      </p>
+    </div>
+
+    <div class="generate-grid">
+      
+      <!-- Test Specification Breakdown -->
+      <div class="parity-card spec-card">
+        <div class="spec-card-title">
+          <span class="mono-label">ASSESSMENT STRUCTURE SPECIFICATION</span>
+          <span class="status-pill pill-teal">CALIBRATED</span>
+        </div>
+
+        <div class="spec-list">
+          <div class="spec-item">
+            <div class="s-icon">MCQ</div>
+            <div>
+              <div class="s-name">Section 1: Technical MCQ</div>
+              <div class="s-sub">5 Questions · Single-choice objective knowledge</div>
+            </div>
+          </div>
+
+          <div class="spec-item">
+            <div class="s-icon">CODE</div>
+            <div>
+              <div class="s-name">Section 2: Hands-On Coding</div>
+              <div class="s-sub">1 Practical Problem · Monospace Editor &amp; Constraints</div>
+            </div>
+          </div>
+
+          <div class="spec-item">
+            <div class="s-icon">APT</div>
+            <div>
+              <div class="s-name">Section 3: Logical Aptitude</div>
+              <div class="s-sub">3 Reasoning Questions · Analytical problem solving</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="spec-meta-bar">
+          <div>
+            <span class="mono-label">TOTAL TIME ALLOCATION</span>
+            <div class="mono-val text-amber" style="font-size: 18px;">20 MINUTES</div>
+          </div>
+          <div>
+            <span class="mono-label">QUESTIONS TOTAL</span>
+            <div class="mono-val text-teal" style="font-size: 18px;">9 PROBLEMS</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generation Progress Card -->
+      <div class="parity-card progress-card">
+        <div class="prog-card-header">
+          <span class="mono-label">SYNTHESIS ENGINE STATUS</span>
+          <span class="mono-val text-teal" id="gen-percent">0%</span>
+        </div>
+
+        <div class="prog-track">
+          <div class="prog-fill" id="gen-fill" style="width: 0%;"></div>
+        </div>
+
+        <div class="gen-step-list" id="gen-steps">
+          <div class="gen-step-item active" id="g-step-1">
+            <span class="g-dot"></span>
+            Fetching domain competency matrix...
+          </div>
+          <div class="gen-step-item" id="g-step-2">
+            <span class="g-dot"></span>
+            Generating 5 MCQ questions for <span id="gen-domain-lbl">Full Stack</span>...
+          </div>
+          <div class="gen-step-item" id="g-step-3">
+            <span class="g-dot"></span>
+            Building interactive coding challenge &amp; edge cases...
+          </div>
+          <div class="gen-step-item" id="g-step-4">
+            <span class="g-dot"></span>
+            Calibrating timed test environment...
+          </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <button class="btn btn-primary w-full btn-disabled" id="btn-begin-test" disabled onclick="beginAssessmentNow()">
+            Begin Timed Assessment
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assessment | EquiHire AI</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/assessment.css"/>
+  <script src="js/auth.js"></script>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <div class="brand-logo-icon">EQ</div>
+          <div class="brand-text">
+            <span class="brand-name">Equi<span>Hire</span> AI</span>
+          </div>
+        </a>
+        <div class="nav-actions">
+           <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container" style="max-width: 800px;">
+
+      <!-- INSTRUCTIONS SCREEN -->
+      <div id="instructions-screen" class="card" style="padding: 2.5rem;">
+        <div class="text-center" style="margin-bottom: 2rem;">
+           <span class="badge badge-primary">ASSESSMENT INSTRUCTIONS</span>
+           <h2>3. Multiple Choice & Aptitude</h2>
+        </div>
+        
+        <ul style="font-size:0.95rem; line-height:1.8; margin-bottom: 2rem; padding-left:1.5rem; color:var(--text);">
+           <li><strong>Total duration:</strong> 30 minutes</li>
+           <li><strong>Questions:</strong> 5 MCQ + 3 Aptitude</li>
+           <li>Answers can be changed before submission.</li>
+           <li>Progress is autosaved every 30 seconds.</li>
+           <li>Timer continues running even if you navigate away.</li>
+        </ul>
+
+        <div style="background:var(--primary-soft); padding:1rem; border-radius:var(--radius-md); margin-bottom:2rem; font-size:0.85rem; color:var(--primary);">
+           Accessibility Notice: Contact support if you need accommodations for this timed assessment.
+        </div>
+
+        <div class="text-center">
+           <button class="btn btn-primary" onclick="startTimerAndAssessment()">Start Assessment</button>
+        </div>
+      </div>
+
+      <!-- ASSESSMENT SCREEN -->
+      <div id="assessment-screen" style="display:none;">
+        <div class="flex-between" style="margin-bottom: 1.5rem;">
+           <div>
+              <div style="font-size:0.85rem; color:var(--text-muted); font-weight:700;">PROGRESS</div>
+              <div id="progress-text" style="font-size:1.1rem; font-weight:700;">Question 1 of 8</div>
+           </div>
+           <div class="text-right">
+              <div style="font-size:0.85rem; color:var(--text-muted); font-weight:700;">TIME REMAINING</div>
+              <div id="timer-text" style="font-size:1.4rem; font-weight:700; color:var(--danger); font-family:var(--font-mono);">30:00</div>
+           </div>
+        </div>
+        
+        <div style="background:var(--border); height:6px; border-radius:3px; margin-bottom:2rem; overflow:hidden;">
+           <div id="progress-bar" style="background:var(--primary); height:100%; width:12.5%; transition:width 0.3s;"></div>
+        </div>
+
+        <div id="question-container" class="card" style="padding: 2rem; margin-bottom: 1.5rem;">
+           <!-- Questions injected via JS -->
+        </div>
+
+        <div class="flex-between" style="align-items:center;">
+           <div id="autosave-indicator" style="font-size:0.8rem; color:var(--text-muted);">Saved 0s ago</div>
+           <div style="display:flex; gap:1rem;">
+             <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()" disabled>Previous</button>
+             <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Save & Next</button>
+             <button class="btn btn-primary" id="submit-btn" onclick="submitAssessment()" style="display:none; background:var(--primary);">Submit All</button>
+           </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  
+  <script src="js/assessment.js"></script>
+</body>
+</html>

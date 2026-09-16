@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Timed Assessment Interface — Parity AI Platform</title>
+  <link rel="stylesheet" href="../shared/tokens.css"/>
+  <link rel="stylesheet" href="../shared/components.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-viewport">
+
+  <!-- Header with Global Timer -->
+  <header id="parity-header" class="parity-header"></header>
+
+  <main class="main-content">
+
+    <!-- Section Navigation Track -->
+    <div class="test-section-bar">
+      <div class="sec-tab active" id="tab-sec-1" onclick="switchSection(1)">
+        <span class="mono-label">SEC 01</span>
+        <span class="sec-title">Technical MCQ (5 Qs)</span>
+      </div>
+
+      <div class="sec-tab" id="tab-sec-2" onclick="switchSection(2)">
+        <span class="mono-label">SEC 02</span>
+        <span class="sec-title">Hands-On Coding (1 Problem)</span>
+      </div>
+
+      <div class="sec-tab" id="tab-sec-3" onclick="switchSection(3)">
+        <span class="mono-label">SEC 03</span>
+        <span class="sec-title">Logical Aptitude (3 Qs)</span>
+      </div>
+    </div>
+
+    <!-- Quiet Timer Warning Toast -->
+    <div class="timer-warning-toast" id="timer-toast" style="display: none;">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span id="toast-text">Notice: 5 minutes remaining in test duration.</span>
+    </div>
+
+    <!-- SECTION 1: TECHNICAL MCQ -->
+    <div class="section-container" id="section-1">
+      <div class="sec-hdr">
+        <div>
+          <span class="mono-label" id="mcq-q-num">QUESTION 1 OF 5</span>
+          <h2 class="headline-serif" style="font-size: 26px;" id="mcq-question-text">Loading question...</h2>
+        </div>
+      </div>
+
+      <div class="mcq-options-grid" id="mcq-options-container">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="test-bottom-nav">
+        <button class="btn btn-ghost" id="btn-mcq-prev" onclick="navMcqQuestion(-1)">← Previous Q</button>
+        
+        <div class="q-dots-wrap" id="mcq-dots">
+          <!-- Dots rendered by JS -->
+        </div>
+
+        <button class="btn btn-primary" id="btn-mcq-next" onclick="navMcqQuestion(1)">
+          Next Question →
+        </button>
+      </div>
+    </div>
+
+    <!-- SECTION 2: HANDS-ON CODING (SPLIT PANE) -->
+    <div class="section-container" id="section-2" style="display: none;">
+      <div class="coding-split-grid">
+        
+        <!-- Left Pane: Problem Statement & Constraints -->
+        <div class="parity-card code-problem-pane">
+          <span class="mono-label">CHALLENGE #01 — SYSTEM ALGORITHM</span>
+          <h2 class="headline-serif" style="font-size: 24px; margin-top: 4px;">Optimized LRU Cache Eviction Policy</h2>
+          
+          <div class="problem-body">
+            <p>Implement a Least Recently Used (LRU) Cache structure supporting <code>get(key)</code> and <code>put(key, value)</code> in O(1) time complexity.</p>
+            
+            <h4>Input Constraints:</h4>
+            <ul>
+              <li><code>capacity</code> &gt; 0</li>
+              <li>Keys and values are positive integers</li>
+              <li>Maximum 10^5 operations per test execution</li>
+            </ul>
+
+            <h4>Example:</h4>
+            <pre class="code-block">LRUCache cache = new LRUCache(2);
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);       // returns 1
+cache.put(3, 3);    // evicts key 2
+cache.get(2);       // returns -1 (not found)</pre>
+          </div>
+        </div>
+
+        <!-- Right Pane: Monospace Code Editor & Line Numbers -->
+        <div class="parity-card code-editor-pane">
+          <div class="editor-top-bar">
+            <span class="mono-label">MONOSPACE EDITOR (.TS / .JS)</span>
+            <span class="status-pill pill-teal">AUTO-SAVING TO SESSION</span>
+          </div>
+
+          <div class="editor-area-wrap">
+            <div class="line-numbers" id="line-numbers">1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12</div>
+            <textarea class="code-textarea" id="code-input" spellcheck="false" oninput="handleCodeInput(event)"></textarea>
+          </div>
+
+          <div class="editor-bottom-bar">
+            <button class="btn btn-ghost" onclick="mockRunCode()">⚡ Test Execution (Mock)</button>
+            <span class="mono-val text-teal" id="run-status">Ready</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="test-bottom-nav" style="margin-top: 20px;">
+        <button class="btn btn-ghost" onclick="switchSection(1)">← Back to Section 1 (MCQ)</button>
+        <button class="btn btn-primary" onclick="switchSection(3)">Continue to Section 3 (Aptitude) →</button>
+      </div>
+    </div>
+
+    <!-- SECTION 3: LOGICAL APTITUDE -->
+    <div class="section-container" id="section-3" style="display: none;">
+      <div class="sec-hdr">
+        <div>
+          <span class="mono-label" id="apt-q-num">LOGICAL REASONING — QUESTION 1 OF 3</span>
+          <h2 class="headline-serif" style="font-size: 26px;" id="apt-question-text">Loading question...</h2>
+        </div>
+      </div>
+
+      <div class="mcq-options-grid" id="apt-options-container">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="test-bottom-nav">
+        <button class="btn btn-ghost" id="btn-apt-prev" onclick="navAptQuestion(-1)">← Previous</button>
+        
+        <div class="q-dots-wrap" id="apt-dots">
+          <!-- Dots -->
+        </div>
+
+        <button class="btn btn-primary" id="btn-submit-test" onclick="submitFullAssessment()">
+          Submit Complete Assessment
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

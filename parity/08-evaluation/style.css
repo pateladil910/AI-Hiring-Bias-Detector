@@ -1,0 +1,92 @@
+/* Auto Evaluation Styles */
+.eval-card-wrap {
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+.eval-card {
+  padding: 32px;
+}
+
+.eval-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.mb-24 { margin-bottom: 24px; }
+
+.eval-section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.eval-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--ink-3);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.eval-item.active {
+  opacity: 1;
+  border-color: var(--teal-dim);
+}
+
+.eval-item.completed {
+  opacity: 1;
+  border-color: var(--line);
+  background: var(--ink-2);
+}
+
+.e-icon {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal);
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
+.e-title {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.e-status {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.eval-item.active .e-status {
+  color: var(--amber);
+}
+
+.eval-item.completed .e-status {
+  color: var(--teal);
+}
+
+.eval-footer-note {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+  font-size: 12px;
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.text-teal { color: var(--teal); }

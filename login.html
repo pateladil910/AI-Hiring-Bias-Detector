@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In | EquiHire AI</title>
+  <meta name="description" content="Sign in to EquiHire AI portal.">
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/footer.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;">
+
+  <main class="main-content" style="padding-top:2.5rem;padding-bottom:2.5rem;">
+    <div class="container flex-center" style="flex-direction:column;">
+      
+      <!-- Clean Top Brand Header -->
+      <div style="margin-bottom:1.5rem;text-align:center;">
+        <a href="index.html" class="navbar-brand" style="display:inline-flex;align-items:center;gap:0.75rem;text-decoration:none;">
+          <div class="brand-logo-icon" style="width:48px;height:48px;font-size:1.3rem;">EQ</div>
+          <div class="brand-text" style="display:flex;flex-direction:column;text-align:left;">
+            <span class="brand-name" style="font-size:1.4rem;">Equi<span>Hire</span> AI</span>
+            <span class="brand-tag">Bias-Free Talent Engine</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="card animate-slide-up" style="max-width:480px;width:100%;padding:2.5rem 2rem;">
+        <div class="text-center" style="margin-bottom:1.75rem;">
+          <span class="badge badge-primary">AUTHENTICATION</span>
+          <h2 style="margin-top:0.35rem;">Sign In to EquiHire AI</h2>
+          <p style="color:var(--text-muted);font-size:0.9rem;">Access your dashboard</p>
+        </div>
+
+        <!-- Role Selector Tab Strip -->
+        <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:6px;background:var(--primary-soft);padding:4px;border-radius:var(--radius-md);margin-bottom:1.5rem;border:1px solid var(--border-dark);">
+          <button type="button" class="btn role-tab active-role" id="tab-candidate" onclick="setRole('candidate')" style="height:2.4rem;padding:0;font-size:0.8rem;background:var(--primary);color:#fff;">
+            🎓 Candidate
+          </button>
+          <button type="button" class="btn role-tab" id="tab-recruiter" onclick="setRole('recruiter')" style="height:2.4rem;padding:0;font-size:0.8rem;background:transparent;color:var(--text-muted);">
+            💼 Recruiter / Admin
+          </button>
+        </div>
+
+        <form id="login-form" onsubmit="handleLoginSubmit(event)">
+          <div id="error-message" style="color:var(--danger);margin-bottom:1rem;display:none;"></div>
+          
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input type="email" class="form-input" id="email" placeholder="user@example.com" required/>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" class="form-input" id="password" placeholder="••••••••••••" required/>
+          </div>
+          
+          <div style="text-align: right; margin-bottom: 1rem;">
+             <a href="#" style="font-size: 0.8rem;">Forgot password?</a>
+          </div>
+
+          <div class="card" id="recruiter-note" style="display:none;background:var(--primary-soft);border-color:var(--border-dark);padding:0.75rem 1rem;margin-bottom:1.25rem;">
+            <div style="font-size:0.82rem;color:var(--primary);font-weight:600;">
+              💼 <strong>Recruiter Note:</strong> Recruiter accounts are provisioned by administrators.
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;height:3rem;font-size:1rem;" id="submit-btn">
+            Sign In →
+          </button>
+        </form>
+
+        <div style="margin-top:1.5rem;text-align:center;font-size:0.88rem;color:var(--text-muted);display:flex;flex-direction:column;gap:8px;">
+          <div>Don't have an account? <a href="signup.html" style="font-weight:700;color:var(--primary);">Create Account</a></div>
+          <div style="margin-top:0.5rem;"><a href="index.html" style="color:var(--text-muted);font-weight:600;">← Return to Home Page</a></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 EquiHire AI Inc. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script>
+    let selectedTab = 'candidate';
+
+    // Parse query params for role selection
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryRole = urlParams.get('role');
+    if (queryRole === 'recruiter') {
+      setRole('recruiter');
+    }
+
+    function setRole(role) {
+      selectedTab = role;
+      const btnCandidate = document.getElementById('tab-candidate');
+      const btnRecruiter = document.getElementById('tab-recruiter');
+      const recruiterNote = document.getElementById('recruiter-note');
+
+      if (role === 'candidate') {
+        btnCandidate.style.background = 'var(--primary)';
+        btnCandidate.style.color = '#ffffff';
+        btnRecruiter.style.background = 'transparent';
+        btnRecruiter.style.color = 'var(--text-muted)';
+        recruiterNote.style.display = 'none';
+      } else {
+        btnRecruiter.style.background = 'var(--primary)';
+        btnRecruiter.style.color = '#ffffff';
+        btnCandidate.style.background = 'transparent';
+        btnCandidate.style.color = 'var(--text-muted)';
+        recruiterNote.style.display = 'block';
+      }
+    }
+
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+      document.getElementById('error-message').style.display = 'none';
+
+      try {
+        const data = await login(email, password);
+        const user = getUser();
+        
+        if (user.role === 'recruiter' || user.role === 'admin') {
+            window.location.href = 'recruiter-dashboard.html';
+        } else {
+            window.location.href = 'candidate-dashboard.html';
+        }
+      } catch (err) {
+        document.getElementById('error-message').textContent = 'Invalid credentials';
+        document.getElementById('error-message').style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Sign In →';
+      }
+    }
+  </script>
+</body>
+</html>

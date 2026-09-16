@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Candidate Registration | EquiHire AI</title>
+  <meta name="description" content="Register as a candidate on EquiHire AI.">
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/footer.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;">
+
+  <main class="main-content" style="padding-top:2.5rem;padding-bottom:2.5rem;">
+    <div class="container flex-center" style="flex-direction:column;">
+      
+      <!-- Clean Top Brand Header -->
+      <div style="margin-bottom:1.5rem;text-align:center;">
+        <a href="index.html" class="navbar-brand" style="display:inline-flex;align-items:center;gap:0.75rem;text-decoration:none;">
+          <div class="brand-logo-icon" style="width:48px;height:48px;font-size:1.3rem;">EQ</div>
+          <div class="brand-text" style="display:flex;flex-direction:column;text-align:left;">
+            <span class="brand-name" style="font-size:1.4rem;">Equi<span>Hire</span> AI</span>
+            <span class="brand-tag">Bias-Free Talent Engine</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="card animate-slide-up" style="max-width:500px;width:100%;padding:2.5rem 2rem;">
+        <div class="text-center" style="margin-bottom:1.75rem;">
+          <span class="badge badge-primary">REGISTER ACCOUNT</span>
+          <h2 style="margin-top:0.35rem;">Create Your Account</h2>
+          <p style="color:var(--text-muted);font-size:0.9rem;">Creating a candidate account. Recruiter access is provisioned by system administrators.</p>
+        </div>
+
+        <form id="signup-form" onsubmit="handleSignupSubmit(event)">
+          <div id="error-message" style="color:var(--danger);margin-bottom:1rem;display:none;"></div>
+
+          <div class="form-group">
+            <label class="form-label" for="name">Full Name</label>
+            <input type="text" class="form-input" id="name" placeholder="Alex Vance" required/>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input type="email" class="form-input" id="email" placeholder="alex@example.com" required/>
+            <span id="email-error" style="color:var(--danger);font-size:0.8rem;display:none;">Invalid email format.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" class="form-input" id="password" placeholder="••••••••••••" required/>
+            <span id="password-error" style="color:var(--danger);font-size:0.8rem;display:none;">Password must be at least 8 chars with uppercase, lowercase, and number.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="confirm_password">Confirm Password</label>
+            <input type="password" class="form-input" id="confirm_password" placeholder="••••••••••••" required/>
+            <span id="confirm-error" style="color:var(--danger);font-size:0.8rem;display:none;">Passwords do not match.</span>
+          </div>
+
+          <div class="card" style="background:var(--primary-soft);border-color:var(--border-dark);padding:0.75rem 1rem;margin-bottom:1.25rem;">
+            <p style="font-size:0.8rem;color:var(--primary);margin:0;font-weight:600;">
+              🛡️ Privacy Guarantee: Name, Age, Gender &amp; Mobile numbers are encrypted and cloaked from evaluators per EEOC guidelines.
+            </p>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;height:3rem;font-size:1rem;" id="submit-btn">
+            Create Account &amp; Proceed →
+          </button>
+        </form>
+
+        <div style="margin-top:1.5rem;text-align:center;font-size:0.88rem;color:var(--text-muted);display:flex;flex-direction:column;gap:8px;">
+          <div>Already have an account? <a href="login.html" style="font-weight:700;color:var(--primary);">Sign In</a></div>
+          <div style="margin-top:0.5rem;"><a href="index.html" style="color:var(--text-muted);font-weight:600;">← Return to Home Page</a></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 EquiHire AI Inc. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script>
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function validatePassword(password) {
+      return password.length >= 8 && 
+             /[A-Z]/.test(password) && 
+             /[a-z]/.test(password) && 
+             /[0-9]/.test(password);
+    }
+
+    async function handleSignupSubmit(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm_password').value;
+
+      let isValid = true;
+
+      if (!validateEmail(email)) {
+        document.getElementById('email-error').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('email-error').style.display = 'none';
+      }
+
+      if (!validatePassword(password)) {
+        document.getElementById('password-error').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('password-error').style.display = 'none';
+      }
+
+      if (password !== confirmPassword) {
+        document.getElementById('confirm-error').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('confirm-error').style.display = 'none';
+      }
+
+      if (!isValid) return;
+
+      document.getElementById('error-message').style.display = 'none';
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Registering...';
+
+      try {
+        await register(name, email, password);
+        window.location.href = 'candidate-dashboard.html';
+      } catch (err) {
+        document.getElementById('error-message').textContent = 'An error occurred during registration. Please try again.';
+        document.getElementById('error-message').style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Create Account & Proceed →';
+      }
+    }
+  </script>
+</body>
+</html>

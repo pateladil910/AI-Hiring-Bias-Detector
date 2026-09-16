@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recruiter Dashboard | EquiHire AI</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <script src="js/auth.js"></script>
+  <style>
+    .table-container { width:100%; overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:1rem; text-align:left; border-bottom:1px solid var(--border); font-size:0.9rem; }
+    th { font-weight:700; color:var(--text-muted); background:var(--primary-soft); }
+    tr:hover { background:var(--background); cursor:pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <div class="brand-logo-icon">EQ</div>
+          <div class="brand-text">
+            <span class="brand-name">Equi<span>Hire</span> AI</span>
+          </div>
+        </a>
+        <div class="nav-actions">
+           <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      
+      <div class="flex-between" style="margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+        <div>
+           <h2 style="margin-bottom:0.5rem;">Recruiter Dashboard</h2>
+           <p style="color:var(--text-muted);">Anonymized Candidate Pool</p>
+        </div>
+        <div style="display:flex; gap:1rem;">
+           <span class="badge" style="background:var(--success-soft); color:var(--success); padding:0.5rem 1rem;">Identity concealed during blind review</span>
+        </div>
+      </div>
+
+      <!-- FILTER BAR -->
+      <div class="card" style="padding:1.5rem; margin-bottom:2rem; display:flex; gap:1rem; flex-wrap:wrap; align-items:flex-end;">
+         <div class="form-group" style="margin-bottom:0; flex:1; min-width:200px;">
+            <label class="form-label" for="filter-domain">Domain</label>
+            <select id="filter-domain" class="form-select" onchange="loadCandidates()">
+               <option value="all">All Domains</option>
+               <option value="d1">Frontend React</option>
+               <option value="d2">Backend Node.js</option>
+            </select>
+         </div>
+         <div class="form-group" style="margin-bottom:0; flex:1; min-width:200px;">
+            <label class="form-label" for="filter-status">Status</label>
+            <select id="filter-status" class="form-select" onchange="loadCandidates()">
+               <option value="all">All Statuses</option>
+               <option value="pending">Review Pending</option>
+               <option value="advance">Advanced</option>
+               <option value="hold">Hold</option>
+            </select>
+         </div>
+         <div class="form-group" style="margin-bottom:0; flex:1; min-width:200px;">
+            <label class="form-label" for="search-ref">Search Reference ID</label>
+            <input type="text" id="search-ref" class="form-input" placeholder="e.g. REF-8921" oninput="loadCandidates()"/>
+         </div>
+      </div>
+
+      <!-- CANDIDATE TABLE -->
+      <div class="card" style="padding:0; overflow:hidden;">
+         <div class="table-container">
+            <table>
+               <thead>
+                  <tr>
+                     <th>Reference ID</th>
+                     <th>Domain</th>
+                     <th>Status</th>
+                     <th>Composite Score</th>
+                     <th>Submitted</th>
+                     <th>Action</th>
+                  </tr>
+               </thead>
+               <tbody id="candidates-tbody">
+                  <!-- Injected via js -->
+               </tbody>
+            </table>
+         </div>
+         <div id="empty-state" style="display:none; padding:3rem; text-align:center; color:var(--text-muted);">
+            No candidates match your filters.
+         </div>
+      </div>
+
+      <!-- REVIEW MODAL / PANEL (Hidden by default) -->
+      <div id="review-panel" class="card" style="display:none; margin-top:2rem; padding:2rem; border-color:var(--primary);">
+         <div class="flex-between" style="margin-bottom:1.5rem; border-bottom:1px solid var(--border); padding-bottom:1rem;">
+            <h3 id="panel-ref-id">Candidate REF-####</h3>
+            <button class="btn btn-secondary" onclick="closeReviewPanel()">Close</button>
+         </div>
+         
+         <div class="grid-2" style="margin-bottom:2rem;">
+            <div>
+               <h4 style="margin-bottom:1rem; color:var(--text-muted);">Score Breakdown</h4>
+               <div style="font-family:var(--font-mono); font-size:0.9rem; background:var(--surface); border:1px solid var(--border); padding:1rem; border-radius:var(--radius-sm);">
+                  <div>MCQ: 85/100 (40%)</div>
+                  <div>Coding: 92/100 (40%)</div>
+                  <div>Resume Match: 78/100 (20%)</div>
+                  <div style="margin-top:0.5rem; padding-top:0.5rem; border-top:1px dashed var(--border); font-weight:700; color:var(--primary);">Composite: 86.4/100</div>
+               </div>
+            </div>
+            <div>
+               <h4 style="margin-bottom:1rem; color:var(--text-muted);">Skills Evidence</h4>
+               <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                  <span class="badge" style="background:var(--primary-soft); color:var(--primary);">React (4 yrs)</span>
+                  <span class="badge" style="background:var(--primary-soft); color:var(--primary);">JavaScript</span>
+                  <span class="badge" style="background:var(--primary-soft); color:var(--primary);">Redux</span>
+               </div>
+               <div style="margin-top:1rem; font-size:0.85rem; color:var(--text-muted);">
+                  Audit: No EEOC flags detected. Rubric v2.4 used.
+               </div>
+            </div>
+         </div>
+
+         <div style="background:var(--background); padding:1.5rem; border-radius:var(--radius-md); border:1px solid var(--border);">
+            <h4 style="margin-bottom:1rem;">Record Human Review</h4>
+            <form id="review-form" onsubmit="submitReview(event)">
+               <input type="hidden" id="review-ref-id" value=""/>
+               <div style="display:flex; gap:1.5rem; margin-bottom:1.5rem;">
+                  <label style="display:flex; align-items:center; gap:0.5rem;"><input type="radio" name="outcome" value="Advance" required> Advance</label>
+                  <label style="display:flex; align-items:center; gap:0.5rem;"><input type="radio" name="outcome" value="Hold" required> Hold</label>
+                  <label style="display:flex; align-items:center; gap:0.5rem;"><input type="radio" name="outcome" value="More Info Needed" required> More Info</label>
+                  <label style="display:flex; align-items:center; gap:0.5rem;"><input type="radio" name="outcome" value="Decline" required> Decline</label>
+               </div>
+               <div class="form-group">
+                  <label class="form-label">Review Reason / Notes</label>
+                  <textarea class="form-textarea" id="review-notes" rows="3" required placeholder="Objective reasons for decision based on merit scores..."></textarea>
+               </div>
+               <button type="submit" class="btn btn-primary">Save Review</button>
+            </form>
+         </div>
+      </div>
+
+    </div>
+  </main>
+  
+  <script src="js/recruiter.js"></script>
+</body>
+</html>

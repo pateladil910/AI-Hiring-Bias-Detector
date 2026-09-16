@@ -1,0 +1,28 @@
+{
+  "name": "ai-hiring-bias-detector",
+  "version": "2.4.0",
+  "description": "Enterprise Production-Ready AI Hiring Bias Detection & Talent Evaluation Platform",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js"
+  },
+  "keywords": [
+    "ai",
+    "hiring",
+    "bias-detection",
+    "eeoc-compliance",
+    "resume-anonymizer",
+    "recruitment-platform"
+  ],
+  "author": "EquiHire AI Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongoose": "^9.9.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

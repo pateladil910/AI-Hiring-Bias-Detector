@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Parity — Calibrated AI Hiring & Bias Detection Platform</title>
+  <link rel="stylesheet" href="../shared/tokens.css"/>
+  <link rel="stylesheet" href="../shared/components.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-viewport">
+
+  <!-- Shared Header -->
+  <header id="parity-header" class="parity-header"></header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Hero Section -->
+    <section class="hero-instrument">
+      <div class="hero-left">
+        <div class="status-pill pill-teal mb-12">CALIBRATED ASSESSMENT ENGINE</div>
+        <h1 class="headline-serif">Hiring evaluated as a precision instrument, not a black box.</h1>
+        <p class="headline-sub">
+          Parity isolates true technical capability by running automated demographic-blind screening, objective domain assessments, and continuous bias auditing.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="../02-login/index.html" class="btn btn-primary" id="btn-start">
+            Start Candidate Assessment
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+          <a href="#how-it-works" class="btn btn-ghost">View Instrument Spec</a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="parity-card hero-gauge-card">
+          <div class="mono-label mb-16" style="text-align: center;">LIVE CALIBRATION DEMO</div>
+          <div id="landing-gauge"></div>
+          
+          <div class="gauge-meta-grid">
+            <div class="g-meta-item">
+              <span class="mono-label">Demographic Leakage</span>
+              <span class="mono-val text-teal">0.00%</span>
+            </div>
+            <div class="g-meta-item">
+              <span class="mono-label">Evaluation Confidence</span>
+              <span class="mono-val text-teal">99.4%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12-Step Assessment Flow Blueprint -->
+    <section class="flow-blueprint" id="how-it-works">
+      <div class="section-title-wrap">
+        <span class="mono-label">END-TO-END EVALUATION PIPELINE</span>
+        <h2 class="headline-serif text-2xl">The 12-Stage Calibration Sequence</h2>
+      </div>
+
+      <div class="pipeline-grid">
+        <div class="pipe-step-card">
+          <span class="mono-step">01–02</span>
+          <h3>Identity Masking</h3>
+          <p>Candidates register and upload credentials. All demographic markers are sanitized before parsing.</p>
+        </div>
+
+        <div class="pipe-step-card">
+          <span class="mono-step">03–06</span>
+          <h3>Domain Generation</h3>
+          <p>Selects target tech stack and synthesizes tailored MCQ, Coding, and Aptitude problem sets.</p>
+        </div>
+
+        <div class="pipe-step-card">
+          <span class="mono-step">07–08</span>
+          <h3>Timed Execution</h3>
+          <p>Candidate completes adaptive timed test. Real-time auto-evaluation scores responses on merit.</p>
+        </div>
+
+        <div class="pipe-step-card">
+          <span class="mono-step">09–12</span>
+          <h3>Bias Audit & Verdict</h3>
+          <p>Instruments test questions for skew, maps skill graphs, and outputs a verifiable hiring recommendation.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="landing-footer">
+    <div class="footer-inner">
+      <span>© 2026 Parity Instrument Systems Inc. · Demographic-Blind AI Assessment</span>
+      <span class="mono-label">EEOC &amp; GDPR Compliant</span>
+    </div>
+  </footer>
+
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

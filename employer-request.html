@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request Recruiter Access — FairHire AI</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/footer.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+
+  <!-- Sticky Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <div class="brand-logo-icon">FH</div>
+          <div class="brand-text">
+            <span class="brand-name">Fair<span>Hire</span> AI</span>
+          </div>
+        </a>
+
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="features.html" class="nav-link">Features</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="login.html" class="btn btn-ghost">Sign In</a>
+          <a href="signup.html" class="btn btn-primary">Find a Job</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content" style="padding: 60px 0;">
+    <div class="container" style="max-width: 960px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; align-items: center;">
+      
+      <!-- Left Form Column -->
+      <div class="card animate-slide-up" style="padding: 2.5rem 2rem;">
+        <div style="margin-bottom: 1.5rem;">
+          <span class="badge badge-primary">ENTERPRISE INTAKE</span>
+          <h2 style="margin-top: 0.5rem; font-size: 1.75rem;">Request Employer Access</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">
+            Every organization is verified by our compliance team before access is granted.
+          </p>
+        </div>
+
+        <form id="employer-request-form" onsubmit="handleEmployerSubmit(event)">
+          <div class="form-group">
+            <label class="form-label" for="companyName">Company / Organization Name</label>
+            <input type="text" class="form-input" id="companyName" placeholder="Acme Technologies Inc." required/>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="workEmail">Work Email (Corporate Domain)</label>
+            <input type="email" class="form-input" id="workEmail" placeholder="name@company.com" required/>
+            <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 4px;">
+              Personal emails (@gmail, @yahoo) are not accepted for recruiter accounts.
+            </span>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="companySize">Company Size</label>
+              <select class="form-select" id="companySize">
+                <option value="1-50">1–50 employees</option>
+                <option value="51-200">51–200 employees</option>
+                <option value="201-1000">201–1,000 employees</option>
+                <option value="1000+">1,000+ employees</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="hiringVolume">Monthly Roles</label>
+              <select class="form-select" id="hiringVolume">
+                <option value="1-5">1–5 roles / mo</option>
+                <option value="5-20">5–20 roles / mo</option>
+                <option value="20+">20+ roles / mo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="useCase">Recruiting & Diversity Goals</label>
+            <textarea class="form-input" id="useCase" rows="3" placeholder="Briefly describe your hiring goals..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" style="width: 100%; margin-top: 1rem;">
+            Submit Request for Review →
+          </button>
+        </form>
+
+        <div id="success-state" style="display: none; text-align: center; padding: 20px 0;">
+          <div style="font-size: 3rem; margin-bottom: 12px;">✅</div>
+          <h3 style="color: var(--color-success, #34C77B);">Request Submitted</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">
+            Thank you! Our compliance team will review your organization within 1 business day.
+          </p>
+          <a href="index.html" class="btn btn-primary" style="margin-top: 16px;">Return to Home</a>
+        </div>
+      </div>
+
+      <!-- Right Trust Column -->
+      <div class="card" style="padding: 2.5rem 2rem; background: var(--color-surface-alt, #1B2233); border: 1px solid var(--color-border, #262E42);">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(91,127,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem;">
+          🛡️
+        </div>
+        <h3 style="font-size: 1.35rem; margin-bottom: 0.75rem;">Why We Vet Every Employer</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+          To protect candidate anonymity and maintain ethical evaluation standards, all employer accounts require verification before accessing blind candidate profiles.
+        </p>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; font-size: 0.85rem; color: var(--text-primary);">
+          <li>✅ <strong>Domain Matching:</strong> Verifies genuine organizational identity.</li>
+          <li>✅ <strong>Blind Candidate Shield:</strong> PII is stripped until the interview stage.</li>
+          <li>✅ <strong>Single-Use Invites:</strong> Secure 72-hour tokens for authorized hiring teams.</li>
+        </ul>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <p>© 2026 FairHire AI — Demographic-Blind Hiring &amp; Audit Engine.</p>
+    </div>
+  </footer>
+
+  <script>
+    function handleEmployerSubmit(e) {
+      e.preventDefault();
+      document.getElementById('employer-request-form').style.display = 'none';
+      document.getElementById('success-state').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

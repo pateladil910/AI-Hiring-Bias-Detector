@@ -1,0 +1,42 @@
+.assessment-layout {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.q-card {
+  margin-bottom: 2rem;
+}
+.opt-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.opt-row:hover {
+  border-color: var(--primary-light);
+  background: var(--primary-soft);
+}
+.opt-row.selected {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+.opt-letter {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--background);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.opt-row.selected .opt-letter {
+  background: var(--primary);
+  color: #ffffff;
+}

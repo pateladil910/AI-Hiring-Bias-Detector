@@ -17,14 +17,22 @@ import {
 import { auditAPI } from '../../lib/api';
 
 const ACTION_CONFIG = {
-  ELIGIBILITY_OVERRIDDEN: { label: 'Verdict Overridden', badge: 'badge-warning', icon: '⚠️' },
-  ELIGIBILITY_COMPUTED:   { label: 'Verdict Computed',   badge: 'badge-success', icon: '🤖' },
-  TEST_SUBMITTED:         { label: 'Test Submitted',     badge: 'badge-primary', icon: '📝' },
-  TEST_GENERATED:         { label: 'Test Generated',     badge: 'badge-primary', icon: '⚙️' },
-  JOB_PUBLISHED:          { label: 'Job Published',      badge: 'badge-success', icon: '📢' },
-  JOB_UNPUBLISHED:        { label: 'Job Unpublished',    badge: 'badge-neutral', icon: '🔒' },
-  JD_ANALYZED:            { label: 'Bias Scanned',       badge: 'badge-primary', icon: '🛡️' },
-  JD_CREATED:             { label: 'Job Created',        badge: 'badge-neutral', icon: '📄' },
+  ELIGIBILITY_OVERRIDDEN:      { label: 'Verdict Overridden',        badge: 'badge-warning', icon: '⚠️' },
+  ELIGIBILITY_COMPUTED:        { label: 'Verdict Computed',          badge: 'badge-success', icon: '🤖' },
+  TEST_SUBMITTED:              { label: 'Test Submitted',            badge: 'badge-primary', icon: '📝' },
+  TEST_GENERATED:              { label: 'Test Generated',            badge: 'badge-primary', icon: '⚙️' },
+  JOB_PUBLISHED:               { label: 'Job Published',             badge: 'badge-success', icon: '📢' },
+  JOB_UNPUBLISHED:             { label: 'Job Unpublished',           badge: 'badge-neutral', icon: '🔒' },
+  JOB_CREATED:                 { label: 'Job Created',               badge: 'badge-neutral', icon: '📄' },
+  JD_ANALYZED:                 { label: 'Bias Scanned',              badge: 'badge-primary', icon: '🛡️' },
+  BIAS_SCAN_COMPLETED:         { label: 'Bias Deep Scanned',         badge: 'badge-primary', icon: '🛡️' },
+  BIAS_SUGGESTION_ACCEPTED:    { label: 'Bias Word Replaced',        badge: 'badge-success', icon: '✨' },
+  BIAS_FLAG_DISMISSED:         { label: 'Bias Flag Dismissed',       badge: 'badge-neutral', icon: '👁️' },
+  RECRUITER_REQUEST_SUBMITTED: { label: 'Employer Request Filed',    badge: 'badge-warning', icon: '🏢' },
+  RECRUITER_REQUEST_APPROVED:  { label: 'Employer Request Approved', badge: 'badge-success', icon: '✅' },
+  RECRUITER_REQUEST_REJECTED:  { label: 'Employer Request Rejected', badge: 'badge-danger',  icon: '❌' },
+  USER_REGISTERED:             { label: 'Candidate Registered',      badge: 'badge-primary', icon: '👤' },
+  USER_EMAIL_VERIFIED:         { label: 'Email Verified',            badge: 'badge-success', icon: '✉️' },
 };
 
 function AuditDetailModal({ log, onClose }) {

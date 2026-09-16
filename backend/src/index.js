@@ -8,6 +8,8 @@ const { attachWebSocketServer } = require('./websocket/biasScoreWS');
 
 // ─── Route Imports ────────────────────────────────────────────────────────────
 const authRoutes = require('./routes/auth');
+const employersRoutes = require('./routes/employers');
+const adminRoutes = require('./routes/admin');
 const jobRoutes = require('./routes/jobs');
 const applicationRoutes = require('./routes/applications');
 const testsRoutes = require('./routes/tests');
@@ -48,6 +50,8 @@ app.get('/health', (_req, res) => {
 
 // ─── API Routes ───────────────────────────────────────────────────────────────
 app.use('/api/auth', authRoutes);
+app.use('/api/employers', employersRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/tests', testsRoutes);

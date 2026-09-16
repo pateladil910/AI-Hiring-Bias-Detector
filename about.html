@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Platform | EquiHire AI — Demographic-Blind Hiring</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/footer.css"/>
+  <link rel="stylesheet" href="css/about.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/responsive.css"/>
+</head>
+<body>
+
+  <!-- Fullscreen Intro Animation Page -->
+  <div id="intro-animation-overlay">
+    <div class="intro-card">
+      <div class="intro-shield-box pulse-shield">EQ</div>
+      <span class="badge" style="background:rgba(255,255,255,0.15);color:#ffffff;border:1px solid rgba(255,255,255,0.25);margin-bottom:0.75rem;">
+        EQUIPROCESS AI ENGINE 2.4
+      </span>
+      <h2 style="color:#ffffff;font-size:1.75rem;font-weight:800;margin-bottom:0.5rem;">
+        AI Hiring Bias Detection &amp; Evaluation System
+      </h2>
+      <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;">
+        Initializing demographic cloaking shields, AST vector parsers, and EEOC neutrality audit tools...
+      </p>
+
+      <div class="intro-progress-track">
+        <div class="intro-progress-bar" id="intro-bar"></div>
+      </div>
+
+      <div class="flex-between" style="font-family:var(--font-mono);font-size:0.8rem;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;">
+        <span>STATUS: <span id="intro-status-num" style="color:#3cb371;font-weight:700;">0%</span></span>
+        <span>SYSTEM READY</span>
+      </div>
+
+      <div class="intro-tick-text" id="intro-tick">
+        ⚡ [01/04] Stripping Candidate Identifiers (Name, Gender, Age)...
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="container navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <div class="brand-logo-icon">EQ</div>
+          <div class="brand-text">
+            <span class="brand-name">Equi<span>Hire</span> AI</span>
+            <span class="brand-tag">Bias-Free Talent Engine</span>
+          </div>
+        </a>
+
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link active">About</a></li>
+          <li><a href="features.html" class="nav-link">Features</a></li>
+          <li><a href="select-domain.html" class="nav-link">Domains</a></li>
+          <li><a href="recruiter-dashboard.html" class="nav-link">Recruiter Console</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button class="btn btn-secondary" onclick="triggerIntroAnimation(true)" style="height:2.4rem;padding:0 0.85rem;font-size:0.8rem;">
+            ✨ Replay Intro
+          </button>
+          <a href="login.html" class="btn btn-secondary" style="height:2.4rem;padding:0 1rem;font-size:0.85rem;">Sign In</a>
+          <a href="signup.html" class="btn btn-primary" style="height:2.4rem;padding:0 1rem;font-size:0.85rem;">Sign Up</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <div class="about-hero animate-slide-up">
+        <span class="badge badge-primary">OUR MISSION &amp; PHILOSOPHY</span>
+        <h1 style="margin-top:0.75rem;">Building Objective &amp; Verifiable Hiring Pipelines</h1>
+        <p style="color:var(--text-muted);max-width:660px;margin:0.5rem auto 0;line-height:1.6;">
+          EquiHire AI was founded on the core principle that hiring decisions should be based purely on technical skill, experience, and logical problem-solving ability — without demographic bias.
+        </p>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:3rem;">
+        <div class="mission-card">
+          <h2>The Problem with Traditional Screening</h2>
+          <p style="color:var(--text-muted);margin-top:0.5rem;line-height:1.6;">
+            Unconscious human bias leads to systemic rejection of qualified candidates based on name origin, gender indicators, age, geographic location, or university brand names.
+          </p>
+        </div>
+
+        <div class="mission-card" style="border-left-color:var(--primary);">
+          <h2>The EquiHire AI Solution</h2>
+          <p style="color:var(--text-muted);margin-top:0.5rem;line-height:1.6;">
+            We implement automated demographic isolation engines, objective timed skill sandboxes, and explainable audit trails compliant with EEOC Guidelines and GDPR data protection laws.
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:3rem;">
+        <h2>Evaluation Methodology Timeline</h2>
+        <div class="methodology-timeline">
+          <div class="timeline-step">
+            <div class="step-num">1</div>
+            <div>
+              <h3>Demographic Anonymization Engine</h3>
+              <p style="color:var(--text-muted);">Parsing algorithms strip candidate names, photos, gender pronouns, addresses, and university names prior to skill graph extraction.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="step-num">2</div>
+            <div>
+              <h3>Domain Skill Graph Vectoring</h3>
+              <p style="color:var(--text-muted);">Technical proficiencies and years of experience are mapped against domain requirements to calculate objective skill match percentages.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="step-num">3</div>
+            <div>
+              <h3>Timed Candidate Assessment</h3>
+              <p style="color:var(--text-muted);">Timed MCQ, logical reasoning, and hands-on coding challenges are scored deterministically by automated AST parsers.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="step-num">4</div>
+            <div>
+              <h3>EEOC &amp; Bias Audit Reporting</h3>
+              <p style="color:var(--text-muted);">Every candidate evaluation generates a tamper-proof audit log verifying 0.00% demographic leakage and fair distribution.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 EquiHire AI Inc. All rights reserved. · Demographic-Blind Recruitment Intelligence</div>
+        <div class="badge badge-success">All Systems Operational</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/loader.js"></script>
+</body>
+</html>

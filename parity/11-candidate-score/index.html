@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Composite Candidate Score — Parity AI Platform</title>
+  <link rel="stylesheet" href="../shared/tokens.css"/>
+  <link rel="stylesheet" href="../shared/components.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-viewport">
+
+  <header id="parity-header" class="parity-header"></header>
+
+  <main class="main-content">
+
+    <div class="score-header">
+      <span class="mono-label">STEP 11 / 12 — COMPOSITE MERIT MATRIX</span>
+      <h1 class="headline-serif">Candidate Performance Matrix</h1>
+      <p class="headline-sub">
+        Aggregated score synthesized across MCQ, Coding, Aptitude, and Resume Alignment parameters.
+      </p>
+    </div>
+
+    <!-- Main Score Composite Gauge -->
+    <div class="parity-card composite-hero-card">
+      <div class="comp-gauge-wrap">
+        <div id="composite-gauge"></div>
+      </div>
+
+      <div class="comp-score-meta">
+        <span class="mono-label">CANDIDATE EVALUATED</span>
+        <h2 class="comp-cand-name" id="cand-name-txt">Alex Vance</h2>
+        <div class="status-pill pill-teal" id="comp-verdict-pill">STRONG FIT · 91 COMPOSITE SCORE</div>
+      </div>
+    </div>
+
+    <!-- Breakdown Table with Mini Bars -->
+    <div class="parity-card breakdown-card">
+      <div class="bd-card-title">
+        <span class="mono-label">EVALUATION SECTION MATRIX BREAKDOWN</span>
+      </div>
+
+      <div class="score-matrix-list">
+        
+        <!-- Row 1: MCQ -->
+        <div class="matrix-row">
+          <div class="m-info">
+            <span class="m-icon">MCQ</span>
+            <div>
+              <div class="m-title">Technical MCQ Section</div>
+              <div class="m-sub">5 Domain Knowledge Questions</div>
+            </div>
+          </div>
+          <div class="m-bar-wrap">
+            <div class="m-bar-track">
+              <div class="m-bar-fill" id="bar-mcq" style="width: 92%;"></div>
+            </div>
+            <span class="mono-val text-teal" id="score-mcq">92%</span>
+          </div>
+        </div>
+
+        <!-- Row 2: Coding -->
+        <div class="matrix-row">
+          <div class="m-info">
+            <span class="m-icon">CODE</span>
+            <div>
+              <div class="m-title">Hands-On Coding Challenge</div>
+              <div class="m-sub">LRU Cache Implementation (O(1) Memory)</div>
+            </div>
+          </div>
+          <div class="m-bar-wrap">
+            <div class="m-bar-track">
+              <div class="m-bar-fill" id="bar-coding" style="width: 88%;"></div>
+            </div>
+            <span class="mono-val text-teal" id="score-coding">88%</span>
+          </div>
+        </div>
+
+        <!-- Row 3: Aptitude -->
+        <div class="matrix-row">
+          <div class="m-info">
+            <span class="m-icon">APT</span>
+            <div>
+              <div class="m-title">Logical Aptitude Section</div>
+              <div class="m-sub">3 Reasoning &amp; Analytical Problems</div>
+            </div>
+          </div>
+          <div class="m-bar-wrap">
+            <div class="m-bar-track">
+              <div class="m-bar-fill" id="bar-apt" style="width: 95%;"></div>
+            </div>
+            <span class="mono-val text-teal" id="score-apt">95%</span>
+          </div>
+        </div>
+
+        <!-- Row 4: Resume Match -->
+        <div class="matrix-row">
+          <div class="m-info">
+            <span class="m-icon">RES</span>
+            <div>
+              <div class="m-title">Resume &amp; Skill Vector Alignment</div>
+              <div class="m-sub">Domain Experience &amp; Capability Graph</div>
+            </div>
+          </div>
+          <div class="m-bar-wrap">
+            <div class="m-bar-track">
+              <div class="m-bar-fill" id="bar-res" style="width: 90%;"></div>
+            </div>
+            <span class="mono-val text-teal" id="score-res">90%</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="score-footer-actions">
+      <a href="../10-bias-detection/index.html" class="btn btn-ghost">← Back to Bias Audit</a>
+      
+      <button class="btn btn-primary" onclick="window.location.href='../12-recommendation/index.html'">
+        Generate Final Hiring Recommendation
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </button>
+    </div>
+
+  </main>
+
+</div>
+
+<script src="../shared/utils.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
