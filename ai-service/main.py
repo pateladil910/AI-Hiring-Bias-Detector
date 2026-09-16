@@ -11,6 +11,7 @@ FastAPI entrypoint wiring all AI capabilities:
 
 import os
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
@@ -60,7 +61,57 @@ class ChatbotMessageRequest(BaseModel):
     context: Optional[Dict[str, Any]] = None
 
 
-# ─── Health Check ─────────────────────────────────────────────────────────────
+# ─── Root & Health Check ──────────────────────────────────────────────────────
+@app.get("/", response_class=HTMLResponse)
+def root():
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FairHire AI Microservice</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #09121a; color: #e2e8f0; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 1rem; }
+    .card { background: #0f1d2a; border: 1px solid #1e354a; border-radius: 16px; padding: 2.5rem; max-width: 580px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .badge { background: #1e3a5f; color: #93c5fd; padding: 4px 12px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 1rem; }
+    h1 { margin: 0 0 0.5rem; color: #fff; font-size: 1.8rem; }
+    p { color: #94a3b8; line-height: 1.6; margin: 0.5rem 0 1.5rem; }
+    .actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .btn { display: inline-block; background: #3b82f6; color: #ffffff; font-weight: 600; text-decoration: none; padding: 10px 20px; border-radius: 8px; transition: all 0.2s; }
+    .btn:hover { background: #60a5fa; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: #93c5fd; border: 1px solid #2563eb; }
+    .btn-outline:hover { background: #1e3a5f; }
+    .endpoints { border-top: 1px solid #1e354a; padding-top: 1.2rem; font-size: 0.9rem; }
+    code { background: #071018; padding: 2px 6px; border-radius: 4px; color: #93c5fd; font-family: monospace; }
+    ul { padding-left: 1.2rem; margin: 0.5rem 0 0; color: #94a3b8; }
+    li { margin-bottom: 0.4rem; }
+    a { color: #60a5fa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="badge">● AI Microservice Active</span>
+    <h1>FairHire AI Microservice</h1>
+    <p>FastAPI engine delivering hybrid bias detection, blind resume anonymization, and algorithmic fairness audits.</p>
+    <div class="actions">
+      <a class="btn" href="/docs">Open Swagger API Docs →</a>
+      <a class="btn btn-outline" href="/health">View /health Status</a>
+    </div>
+    <div class="endpoints">
+      <div style="color: #93c5fd; font-weight: 600; margin-bottom: 0.3rem;">Service Resources:</div>
+      <ul>
+        <li>Interactive Swagger UI: <a href="/docs"><code>/docs</code></a></li>
+        <li>ReDoc Documentation: <a href="/redoc"><code>/redoc</code></a></li>
+        <li>Health Check: <a href="/health"><code>/health</code></a></li>
+        <li>Main Frontend: <a href="http://localhost:5173" target="_blank">http://localhost:5173</a></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>"""
+
+
 @app.get("/health")
 def health():
     return {

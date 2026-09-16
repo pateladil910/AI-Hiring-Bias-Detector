@@ -45,7 +45,74 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// ─── Health Check ─────────────────────────────────────────────────────────────
+// ─── Root & Health Check ──────────────────────────────────────────────────────
+app.get('/', (req, res) => {
+  if (req.accepts('html')) {
+    res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FairHire Backend API</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0b1512; color: #e1ede7; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 1rem; }
+    .card { background: #12211c; border: 1px solid #1e382f; border-radius: 16px; padding: 2.5rem; max-width: 580px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .badge { background: #166534; color: #bbf7d0; padding: 4px 12px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 1rem; }
+    h1 { margin: 0 0 0.5rem; color: #fff; font-size: 1.8rem; }
+    p { color: #94a3b8; line-height: 1.6; margin: 0.5rem 0 1.5rem; }
+    .actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .btn { display: inline-block; background: #10b981; color: #022c22; font-weight: 600; text-decoration: none; padding: 10px 20px; border-radius: 8px; transition: all 0.2s; }
+    .btn:hover { background: #34d399; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: #a7f3d0; border: 1px solid #059669; }
+    .btn-outline:hover { background: #064e3b; }
+    .endpoints { border-top: 1px solid #1e382f; padding-top: 1.2rem; font-size: 0.9rem; }
+    code { background: #0a1310; padding: 2px 6px; border-radius: 4px; color: #6ee7b7; font-family: monospace; }
+    ul { padding-left: 1.2rem; margin: 0.5rem 0 0; color: #94a3b8; }
+    li { margin-bottom: 0.4rem; }
+    a { color: #34d399; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="badge">● Online & Ready</span>
+    <h1>FairHire Backend API</h1>
+    <p>The Express REST API and real-time WebSocket service are operational.</p>
+    <div class="actions">
+      <a class="btn" href="http://localhost:5173" target="_blank">Open Web App (Port 5173) →</a>
+      <a class="btn btn-outline" href="/health">View /health Status</a>
+    </div>
+    <div class="endpoints">
+      <div style="color: #6ee7b7; font-weight: 600; margin-bottom: 0.3rem;">Service Information:</div>
+      <ul>
+        <li>Frontend UI: <a href="http://localhost:5173" target="_blank">http://localhost:5173</a></li>
+        <li>Health Endpoint: <a href="/health"><code>/health</code></a></li>
+        <li>WebSocket Server: <code>ws://localhost:5000/ws/bias-score</code></li>
+        <li>AI Microservice: <a href="http://localhost:8000" target="_blank">http://localhost:8000</a></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>`);
+  } else {
+    res.json({
+      status: 'ok',
+      service: 'hiring-bias-backend',
+      version: '2.0.0',
+      message: 'FairHire AI Backend API is running',
+      frontendUrl: 'http://localhost:5173',
+      endpoints: {
+        health: '/health',
+        auth: '/api/auth',
+        jobs: '/api/jobs',
+        applications: '/api/applications',
+        bias: '/api/bias',
+        websocket: '/ws/bias-score'
+      }
+    });
+  }
+});
+
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'hiring-bias-backend', timestamp: new Date().toISOString() });
 });
