@@ -1,26 +1,41 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Briefcase, Search, ChevronRight, AlertTriangle } from 'lucide-react';
-import { jobsAPI } from '../../lib/api';
+import { Briefcase, Search, ChevronRight, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { jobsAPI, applicationsAPI } from '../../lib/api';
 
 export default function CandidateJobs() {
   const [jobs, setJobs] = useState([]);
+  const [appliedJobIds, setAppliedJobIds] = useState(new Set());
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchJobs = async () => {
+    const fetchData = async () => {
       try {
-        const { data } = await jobsAPI.list();
-        setJobs(data.jobs);
-      } catch (err) {
-        setError('Failed to load open positions. Please try again later.');
+        // Fetch jobs + candidate's own applications in parallel
+        const [jobsRes, appsRes] = await Promise.allSettled([
+          jobsAPI.list(),
+          applicationsAPI.myApplications(),
+        ]);
+
+        if (jobsRes.status === 'fulfilled') {
+          setJobs(jobsRes.value.data.jobs);
+        } else {
+          setError('Failed to load open positions. Please try again later.');
+        }
+
+        if (appsRes.status === 'fulfilled') {
+          const ids = new Set(
+            (appsRes.value.data.applications || []).map((a) => a.jobId)
+          );
+          setAppliedJobIds(ids);
+        }
       } finally {
         setLoading(false);
       }
     };
-    fetchJobs();
+    fetchData();
   }, []);
 
   const filtered = jobs.filter((j) =>
@@ -86,60 +101,93 @@ export default function CandidateJobs() {
       {/* Job cards */}
       {!loading && filtered.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {filtered.map((job) => (
-            <div key={job.id} className="card" style={{
-              padding: '20px 24px',
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              gap: 16, flexWrap: 'wrap',
-              transition: 'border-color 150ms',
-            }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--color-primary)'}
-              onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--color-border)'}
-            >
-              <div style={{ flex: 1, minWidth: 200 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-                  <div style={{
-                    width: 36, height: 36, borderRadius: 8,
-                    background: 'rgba(91,127,255,0.1)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'var(--color-primary)', flexShrink: 0,
-                  }}>
-                    <Briefcase size={16} />
-                  </div>
-                  <h3 style={{ margin: 0, fontSize: 15 }}>{job.title}</h3>
-                </div>
-                <div style={{ display: 'flex', gap: 12, fontSize: 12, color: 'var(--color-text-muted)' }}>
-                  <span>Posted {new Date(job.createdAt).toLocaleDateString()}</span>
-                  {job.skillProfileJson?.primary_field && (
-                    <span style={{ textTransform: 'capitalize' }}>
-                      {job.skillProfileJson.primary_field.replace('_', ' ')}
-                    </span>
-                  )}
-                  {job.skillProfileJson?.experience_level && (
-                    <span style={{ textTransform: 'capitalize' }}>
-                      {job.skillProfileJson.experience_level}-level
-                    </span>
-                  )}
-                  {job.biasScore !== null && (
-                    <span style={{
-                      color: job.biasScore >= 70 ? 'var(--color-success)' : job.biasScore >= 40 ? 'var(--color-warning)' : 'var(--color-danger)',
-                      fontWeight: 500,
-                    }}>
-                      Bias score: {Math.round(job.biasScore)}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <Link
-                to={`/candidate/apply/${job.id}`}
-                className="btn btn-primary btn-sm"
-                style={{ flexShrink: 0 }}
+          {filtered.map((job) => {
+            const alreadyApplied = appliedJobIds.has(job.id);
+            return (
+              <div
+                key={job.id}
+                className="card"
+                style={{
+                  padding: '20px 24px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  gap: 16, flexWrap: 'wrap',
+                  transition: 'border-color 150ms',
+                  borderColor: alreadyApplied ? 'rgba(52,199,123,0.35)' : undefined,
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.borderColor = alreadyApplied ? 'var(--color-success)' : 'var(--color-primary)'}
+                onMouseLeave={(e) => e.currentTarget.style.borderColor = alreadyApplied ? 'rgba(52,199,123,0.35)' : 'var(--color-border)'}
               >
-                Apply <ChevronRight size={14} />
-              </Link>
-            </div>
-          ))}
+                <div style={{ flex: 1, minWidth: 200 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                    <div style={{
+                      width: 36, height: 36, borderRadius: 8,
+                      background: alreadyApplied ? 'rgba(52,199,123,0.1)' : 'rgba(91,127,255,0.1)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      color: alreadyApplied ? 'var(--color-success)' : 'var(--color-primary)',
+                      flexShrink: 0,
+                    }}>
+                      <Briefcase size={16} />
+                    </div>
+                    <h3 style={{ margin: 0, fontSize: 15 }}>{job.title}</h3>
+                    {alreadyApplied && (
+                      <span className="badge badge-success" style={{ fontSize: 11 }}>
+                        Applied
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ display: 'flex', gap: 12, fontSize: 12, color: 'var(--color-text-muted)', flexWrap: 'wrap' }}>
+                    <span>Posted {new Date(job.createdAt).toLocaleDateString()}</span>
+                    {job.skillProfileJson?.primary_field && (
+                      <span style={{ textTransform: 'capitalize' }}>
+                        {job.skillProfileJson.primary_field.replace('_', ' ')}
+                      </span>
+                    )}
+                    {job.skillProfileJson?.experience_level && (
+                      <span style={{ textTransform: 'capitalize' }}>
+                        {job.skillProfileJson.experience_level}-level
+                      </span>
+                    )}
+                    {job.biasScore !== null && job.biasScore !== undefined && (
+                      <span style={{
+                        color: job.biasScore >= 70 ? 'var(--color-success)' : job.biasScore >= 40 ? 'var(--color-warning)' : 'var(--color-danger)',
+                        fontWeight: 500,
+                      }}>
+                        🛡️ Fairness: {Math.round(job.biasScore)}%
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* CTA: View My Status if applied, else Apply Blindly */}
+                {alreadyApplied ? (
+                  <Link
+                    to="/candidate/status"
+                    id={`view-status-${job.id}`}
+                    className="btn btn-sm"
+                    style={{
+                      flexShrink: 0,
+                      background: 'rgba(52,199,123,0.12)',
+                      border: '1px solid rgba(52,199,123,0.3)',
+                      color: 'var(--color-success)',
+                      display: 'flex', alignItems: 'center', gap: 6,
+                      textDecoration: 'none',
+                    }}
+                  >
+                    <CheckCircle2 size={14} /> View My Status
+                  </Link>
+                ) : (
+                  <Link
+                    to={`/candidate/apply/${job.id}`}
+                    id={`apply-${job.id}`}
+                    className="btn btn-primary btn-sm"
+                    style={{ flexShrink: 0 }}
+                  >
+                    Apply Blindly <ChevronRight size={14} />
+                  </Link>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

@@ -12,8 +12,8 @@ from typing import Dict, Any, Optional
 
 # ─── PII patterns to strip before bias scoring ────────────────────────────────
 PII_PATTERNS = [
-    # Full name (standalone capitalized words at line start — heuristic)
-    (r'^[A-Z][a-z]+ [A-Z][a-z]+(?:\s[A-Z][a-z]+)?$', '[NAME]', re.MULTILINE),
+    # Full name heuristic
+    (r'\b[A-Z][a-z]+ [A-Z][a-z]+(?:\s[A-Z][a-z]+)?\b', '[NAME]', 0),
     # Email addresses
     (r'\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b', '[EMAIL]', 0),
     # Phone numbers (international + local formats)

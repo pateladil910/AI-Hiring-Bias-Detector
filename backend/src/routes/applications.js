@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const FormData = require('form-data');
 const axios = require('axios');
-const { Application, Job, AuditLog, User } = require('../models');
+const { Application, Job, AuditLog, User, AUDIT_ACTIONS } = require('../models');
 const { authenticate, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
@@ -180,7 +180,7 @@ router.get(
         where: { jobId: req.params.jobId },
         // IMPORTANT: Do NOT include PII (Candidate name/email) in this response.
         // Recruiter sees anonymised data only — per rules.md §3 (Anonymised Mode)
-        attributes: ['id', 'status', 'resumeBiasScore', 'createdAt'],
+        attributes: ['id', 'status', 'resumeBiasScore', 'anonymousAlias', 'recruiterNotes', 'createdAt'],
         order: [['createdAt', 'DESC']],
       });
 
@@ -219,5 +219,69 @@ router.get('/:id', authenticate, async (req, res) => {
     return res.status(500).json({ error: { code: 'FETCH_FAILED', message: 'Failed to fetch application' } });
   }
 });
+
+// ─── PATCH /api/applications/:id/status — Update candidate status & notes ────
+router.patch(
+  '/:id/status',
+  authenticate,
+  requireRole('recruiter', 'hr_lead', 'admin'),
+  async (req, res) => {
+    const { status, notes } = req.body;
+    const validStatuses = [
+      'applied', 'test_sent', 'test_completed', 'eligible',
+      'not_eligible', 'needs_review', 'interview', 'rejected', 'hired'
+    ];
+
+    if (status && !validStatuses.includes(status)) {
+      return res.status(400).json({
+        error: { code: 'INVALID_STATUS', message: `Invalid status '${status}'. Must be one of: ${validStatuses.join(', ')}` },
+      });
+    }
+
+    try {
+      const app = await Application.findByPk(req.params.id, {
+        include: [{ model: Job, attributes: ['id', 'createdBy', 'title'] }],
+      });
+      if (!app) {
+        return res.status(404).json({ error: { code: 'NOT_FOUND', message: 'Application not found' } });
+      }
+
+      if (app.Job && app.Job.createdBy !== req.user.id && !['admin', 'hr_lead'].includes(req.user.role)) {
+        return res.status(403).json({ error: { code: 'FORBIDDEN', message: 'Access denied' } });
+      }
+
+      const oldStatus = app.status;
+      if (status) app.status = status;
+      if (notes !== undefined) app.recruiterNotes = notes;
+      await app.save();
+
+      await AuditLog.create({
+        action: AUDIT_ACTIONS?.APPLICATION_STATUS_UPDATED || 'APPLICATION_STATUS_UPDATED',
+        entityType: 'application',
+        entityId: app.id,
+        userId: req.user.id,
+        meta: {
+          jobId: app.Job?.id,
+          jobTitle: app.Job?.title,
+          oldStatus,
+          newStatus: app.status,
+          notes: notes || app.recruiterNotes || null,
+        },
+      });
+
+      return res.json({
+        message: 'Application status and review notes updated successfully.',
+        application: {
+          id: app.id,
+          status: app.status,
+          recruiterNotes: app.recruiterNotes,
+        },
+      });
+    } catch (err) {
+      console.error('[UPDATE APPLICATION STATUS ERROR]', err);
+      return res.status(500).json({ error: { code: 'UPDATE_FAILED', message: 'Failed to update application status' } });
+    }
+  }
+);
 
 module.exports = router;

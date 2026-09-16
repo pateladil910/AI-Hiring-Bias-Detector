@@ -1,7 +1,47 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, UserPlus, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Eye, EyeOff, UserPlus, ShieldCheck, CheckCircle2, Check } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+
+const evaluatePassword = (pwd) => {
+  if (!pwd) {
+    return {
+      checks: { length: false, hasLower: false, hasUpper: false, hasNumber: false, hasSpecial: false },
+      score: 0,
+      label: 'Enter password',
+      color: 'var(--color-text-muted)',
+    };
+  }
+
+  const checks = {
+    length: pwd.length >= 8,
+    hasLower: /[a-z]/.test(pwd),
+    hasUpper: /[A-Z]/.test(pwd),
+    hasNumber: /[0-9]/.test(pwd),
+    hasSpecial: /[^A-Za-z0-9]/.test(pwd),
+  };
+
+  let score = 0;
+  if (checks.length) score++;
+  if (checks.hasLower && checks.hasUpper) score++;
+  if (checks.hasNumber) score++;
+  if (checks.hasSpecial) score++;
+
+  let label = 'Weak';
+  let color = '#ef4444';
+  if (score === 2) {
+    label = 'Fair';
+    color = '#f59e0b';
+  } else if (score === 3) {
+    label = 'Good';
+    color = '#3b82f6';
+  } else if (score >= 4) {
+    label = 'Strong';
+    color = '#10b981';
+  }
+
+  return { checks, score, label, color };
+};
 
 export default function RegisterCandidate() {
   const navigate = useNavigate();
@@ -19,6 +59,8 @@ export default function RegisterCandidate() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const pwdEval = useMemo(() => evaluatePassword(form.password), [form.password]);
+
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setError('');
@@ -26,6 +68,14 @@ export default function RegisterCandidate() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (form.password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+    if (pwdEval.score < 2) {
+      setError('Password is too weak. Please combine uppercase, lowercase, numbers, or symbols.');
+      return;
+    }
     if (form.password !== form.confirmPassword) {
       setError('Passwords do not match.');
       return;
@@ -166,6 +216,61 @@ export default function RegisterCandidate() {
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
+
+              {form.password && (
+                <div style={{ marginTop: 8 }}>
+                  {/* Visual 4-segment meter */}
+                  <div style={{ display: 'flex', gap: 6, marginBottom: 6 }}>
+                    {[1, 2, 3, 4].map((segment) => (
+                      <div
+                        key={segment}
+                        style={{
+                          flex: 1,
+                          height: 4,
+                          borderRadius: 2,
+                          background: segment <= pwdEval.score ? pwdEval.color : 'rgba(255,255,255,0.08)',
+                          transition: 'all 0.25s ease',
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Strength Label */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12, marginBottom: 8 }}>
+                    <span style={{ color: 'var(--color-text-muted)' }}>Password Strength:</span>
+                    <span style={{ fontWeight: 600, color: pwdEval.color }}>{pwdEval.label}</span>
+                  </div>
+
+                  {/* Checklist */}
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '4px 10px',
+                    padding: '8px 10px',
+                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid var(--color-border)',
+                    borderRadius: 8,
+                    fontSize: 11,
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: pwdEval.checks.length ? '#10b981' : 'var(--color-text-muted)' }}>
+                      <Check size={12} style={{ opacity: pwdEval.checks.length ? 1 : 0.3 }} />
+                      8+ characters
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: (pwdEval.checks.hasLower && pwdEval.checks.hasUpper) ? '#10b981' : 'var(--color-text-muted)' }}>
+                      <Check size={12} style={{ opacity: (pwdEval.checks.hasLower && pwdEval.checks.hasUpper) ? 1 : 0.3 }} />
+                      Upper & lowercase
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: pwdEval.checks.hasNumber ? '#10b981' : 'var(--color-text-muted)' }}>
+                      <Check size={12} style={{ opacity: pwdEval.checks.hasNumber ? 1 : 0.3 }} />
+                      At least 1 number
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: pwdEval.checks.hasSpecial ? '#10b981' : 'var(--color-text-muted)' }}>
+                      <Check size={12} style={{ opacity: pwdEval.checks.hasSpecial ? 1 : 0.3 }} />
+                      Special character
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="form-group">

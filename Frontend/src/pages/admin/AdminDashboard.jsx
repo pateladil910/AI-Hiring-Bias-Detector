@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ShieldCheck, Check, X, Building2, Mail, Users, RefreshCw } from 'lucide-react';
-import axios from 'axios';
+import { adminAPI } from '../../lib/api';
 
 export default function AdminDashboard() {
   const [requests, setRequests] = useState([]);
@@ -13,11 +13,7 @@ export default function AdminDashboard() {
     setLoading(true);
     setError('');
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const token = localStorage.getItem('fh_token');
-      const res = await axios.get(`${apiUrl}/api/admin/recruiter-requests`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await adminAPI.getRecruiterRequests();
       setRequests(res.data.requests || []);
     } catch (err) {
       setError(err.response?.data?.error?.message || 'Failed to load requests.');
@@ -35,13 +31,7 @@ export default function AdminDashboard() {
     setError('');
     setSuccessMsg('');
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const token = localStorage.getItem('fh_token');
-      await axios.post(
-        `${apiUrl}/api/admin/recruiter-requests/${id}/decision`,
-        { decision },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await adminAPI.decision(id, decision);
       setSuccessMsg(`Request successfully ${decision === 'approved' ? 'approved and invite sent' : 'rejected'}.`);
       await fetchRequests();
     } catch (err) {

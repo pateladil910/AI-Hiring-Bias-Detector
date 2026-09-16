@@ -1,7 +1,21 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Building2, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Building2, ShieldCheck, CheckCircle2, ArrowRight, AlertTriangle, Check } from 'lucide-react';
 import axios from 'axios';
+
+const BLOCKED_DOMAINS = new Set([
+  'gmail.com', 'googlemail.com', 'yahoo.com', 'ymail.com', 'rocketmail.com',
+  'hotmail.com', 'outlook.com', 'live.com', 'msn.com',
+  'icloud.com', 'me.com', 'mac.com',
+  'aol.com', 'mail.com', 'proton.me', 'protonmail.com',
+  'zoho.com', 'yandex.com', 'gmx.com', 'fastmail.com',
+]);
+
+const getEmailDomain = (email) => {
+  if (!email || !email.includes('@')) return '';
+  const parts = email.trim().toLowerCase().split('@');
+  return parts[parts.length - 1];
+};
 
 export default function EmployerRequest() {
   const [form, setForm] = useState({
@@ -16,6 +30,10 @@ export default function EmployerRequest() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const emailDomain = useMemo(() => getEmailDomain(form.workEmail), [form.workEmail]);
+  const isBlockedDomain = useMemo(() => BLOCKED_DOMAINS.has(emailDomain), [emailDomain]);
+  const isCorporateDomain = useMemo(() => Boolean(emailDomain && emailDomain.includes('.') && !isBlockedDomain), [emailDomain, isBlockedDomain]);
+
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setError('');
@@ -23,6 +41,11 @@ export default function EmployerRequest() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isBlockedDomain) {
+      setError(`Free email providers (@${emailDomain}) are not permitted. Please provide an official company email address.`);
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -120,19 +143,75 @@ export default function EmployerRequest() {
 
               <div className="form-group">
                 <label className="form-label" htmlFor="work-email">Work Email (Corporate Domain)</label>
-                <input
-                  id="work-email"
-                  className="form-input"
-                  type="email"
-                  name="workEmail"
-                  placeholder="name@company.com"
-                  value={form.workEmail}
-                  onChange={handleChange}
-                  required
-                />
-                <span style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 4 }}>
-                  Personal emails (@gmail, @yahoo) are not eligible for recruiter accounts.
-                </span>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    id="work-email"
+                    className="form-input"
+                    type="email"
+                    name="workEmail"
+                    placeholder="name@company.com"
+                    value={form.workEmail}
+                    onChange={handleChange}
+                    required
+                    style={{
+                      borderColor: isBlockedDomain
+                        ? 'var(--color-error, #ef4444)'
+                        : isCorporateDomain
+                        ? 'var(--color-success, #10b981)'
+                        : undefined,
+                      paddingRight: isCorporateDomain || isBlockedDomain ? 36 : undefined,
+                    }}
+                  />
+                  {isCorporateDomain && (
+                    <div style={{
+                      position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+                      color: 'var(--color-success, #10b981)', display: 'flex', alignItems: 'center', pointerEvents: 'none'
+                    }}>
+                      <Check size={16} />
+                    </div>
+                  )}
+                  {isBlockedDomain && (
+                    <div style={{
+                      position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+                      color: '#ef4444', display: 'flex', alignItems: 'center', pointerEvents: 'none'
+                    }}>
+                      <AlertTriangle size={16} />
+                    </div>
+                  )}
+                </div>
+
+                {/* Inline warning if consumer email provider */}
+                {isBlockedDomain ? (
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 8,
+                    padding: '8px 12px',
+                    background: 'rgba(239, 68, 68, 0.1)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    borderRadius: 8,
+                    marginTop: 6,
+                    color: '#ef4444',
+                    fontSize: 12,
+                    lineHeight: 1.4,
+                  }}>
+                    <AlertTriangle size={15} style={{ flexShrink: 0, marginTop: 2 }} />
+                    <div>
+                      <strong>Consumer email domain detected (@{emailDomain}).</strong>
+                      <div style={{ opacity: 0.9, marginTop: 2 }}>
+                        Employer workspaces require an official corporate email (e.g. <code>name@{form.companyName ? form.companyName.toLowerCase().replace(/[^a-z0-9]/g, '') + '.com' : 'company.com'}</code>).
+                      </div>
+                    </div>
+                  </div>
+                ) : isCorporateDomain ? (
+                  <span style={{ fontSize: 11, color: 'var(--color-success, #10b981)', marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <Check size={12} /> Company domain recognized: <strong>@{emailDomain}</strong>
+                  </span>
+                ) : (
+                  <span style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 4 }}>
+                    Personal emails (@gmail, @yahoo, @hotmail) are not eligible for recruiter accounts.
+                  </span>
+                )}
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
@@ -185,11 +264,11 @@ export default function EmployerRequest() {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={loading}
+                disabled={loading || isBlockedDomain}
                 style={{ width: '100%', justifyContent: 'center', marginTop: 4 }}
               >
                 {loading ? <span className="spinner" style={{ width: 16, height: 16 }} /> : <ArrowRight size={16} />}
-                {loading ? 'Submitting Request…' : 'Submit Access Request'}
+                {loading ? 'Submitting Request…' : isBlockedDomain ? 'Corporate Email Required' : 'Submit Access Request'}
               </button>
             </form>
           </div>

@@ -9,6 +9,34 @@ const STATUS_BADGE = {
   closed:     { label: 'Closed',    cls: 'badge-neutral' },
 };
 
+function FairnessBadge({ score }) {
+  if (score === null || score === undefined) {
+    return <span className="badge badge-neutral" style={{ fontSize: 11 }}>Unscanned</span>;
+  }
+  if (score >= 80) {
+    return (
+      <span className="badge badge-success" style={{ fontSize: 11, display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor', display: 'inline-block' }} />
+        {Math.round(score)}% — De-biased
+      </span>
+    );
+  }
+  if (score >= 50) {
+    return (
+      <span className="badge badge-warning" style={{ fontSize: 11, display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor', display: 'inline-block' }} />
+        {Math.round(score)}% — Review
+      </span>
+    );
+  }
+  return (
+    <span className="badge badge-error" style={{ fontSize: 11, display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+      <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor', display: 'inline-block' }} />
+      {Math.round(score)}% — High Bias
+    </span>
+  );
+}
+
 function ScoreBar({ score }) {
   if (score === null || score === undefined) {
     return <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Not scanned</span>;
@@ -95,9 +123,10 @@ export default function RecruiterJobs() {
               }}>
                 {/* Title + status */}
                 <div style={{ flex: 1, minWidth: 200 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
                     <h4 style={{ margin: 0, fontSize: 15 }}>{job.title}</h4>
                     <span className={`badge ${statusMeta.cls}`}>{statusMeta.label}</span>
+                    <FairnessBadge score={job.biasScore} />
                   </div>
                   <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
                     Created {new Date(job.createdAt).toLocaleDateString()}

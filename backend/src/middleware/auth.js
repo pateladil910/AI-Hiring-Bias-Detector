@@ -14,7 +14,8 @@ const authenticate = async (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const jwtSecret = process.env.JWT_SECRET || 'fairhire_super_secret_jwt_key_2026';
+    const decoded = jwt.verify(token, jwtSecret);
 
     const user = await User.findByPk(decoded.userId, {
       attributes: { exclude: ['passwordHash'] },

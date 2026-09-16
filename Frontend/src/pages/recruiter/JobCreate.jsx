@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Save, Zap, Eye, ChevronRight, AlertTriangle, CheckCircle, X } from 'lucide-react';
-import { jobsAPI } from '../../lib/api';
+import { jobsAPI, biasAPI } from '../../lib/api';
 import BiasScoreRing from '../../components/BiasScoreRing';
 import BiasFlagPanel from '../../components/BiasFlagPanel';
 
@@ -42,11 +42,19 @@ export default function JobCreate() {
         setRawText(data.job.rawText || '');
         setLiveScore(data.job.biasScore);
         setPublished(data.job.status === 'published');
+        if (data.job.skillProfileJson) {
+          setAnalysisResult((prev) => ({
+            ...prev,
+            score: data.job.biasScore,
+            skill_profile: data.job.skillProfileJson,
+          }));
+          setAnalyzed(true);
+        }
       }).catch(() => {});
     }
   }, [jobId]);
 
-  // ── WebSocket: connect on mount ────────────────────────────────────────────
+  // ── WebSocket: connect on mount ────────────────────────────────────
   useEffect(() => {
     const token = localStorage.getItem('token');
     const ws = new WebSocket(`${WS_URL}?token=${token}`);
@@ -71,7 +79,7 @@ export default function JobCreate() {
     return () => ws.close();
   }, []);
 
-  // ── Send text to WebSocket when rawText changes ────────────────────────────
+  // ── Send text to WebSocket when rawText changes ────────────────────
   useEffect(() => {
     if (wsRef.current?.readyState === WebSocket.OPEN && rawText) {
       wsRef.current.send(JSON.stringify({ type: 'score', text: rawText }));
@@ -84,7 +92,7 @@ export default function JobCreate() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawText]);
 
-  // ── Save draft ─────────────────────────────────────────────────────────────
+  // ── Save draft ─────────────────────────────────────────────────────
   const handleSave = async () => {
     if (!title.trim() || rawText.trim().length < 50) {
       setSaveError('Title and a description of at least 50 characters are required.');
@@ -108,18 +116,41 @@ export default function JobCreate() {
     }
   };
 
-  // ── Run full analysis ──────────────────────────────────────────────────────
+  // ── Run Deep Scan ──────────────────────────────────────────────────
   const handleAnalyze = async () => {
-    if (!savedJobId) {
-      await handleSave();
+    if (!rawText.trim() || rawText.trim().length < 10) {
+      setSaveError('Job description must have at least 10 characters to scan.');
       return;
     }
     setAnalyzing(true);
+    setSaveError('');
     try {
-      const { data } = await jobsAPI.analyze(savedJobId);
-      setAnalysisResult(data.analysis);
-      setLiveScore(data.analysis.score);
-      setLiveFlagCount(data.analysis.flag_count);
+      // Auto-save draft if title is provided and job is not saved yet
+      let currentJobId = savedJobId;
+      if (title.trim() && rawText.trim().length >= 50 && !currentJobId) {
+        try {
+          const { data } = await jobsAPI.create({ title, rawText });
+          currentJobId = data.job.id;
+          setSavedJobId(currentJobId);
+        } catch {}
+      } else if (currentJobId) {
+        try {
+          await jobsAPI.update(currentJobId, { title, rawText });
+        } catch {}
+      }
+
+      // Call deep scan (proxies to Python AI service or rich fallback)
+      const { data } = await biasAPI.deepScan({
+        text: rawText,
+        role_title: title,
+        job_id: currentJobId,
+      });
+
+      setAnalysisResult(data);
+      if (data.score !== null && data.score !== undefined) {
+        setLiveScore(data.score);
+      }
+      setLiveFlagCount(data.flag_count ?? data.flags?.length ?? 0);
       setAnalyzed(true);
     } catch (err) {
       setSaveError(err.response?.data?.error?.message || 'Analysis failed. Check that the AI service is running.');
@@ -128,7 +159,7 @@ export default function JobCreate() {
     }
   };
 
-  // ── Publish ────────────────────────────────────────────────────────────────
+  // ── Publish ────────────────────────────────────────────────────────
   const handlePublish = async () => {
     if (!savedJobId) return;
     setPublishing(true);
@@ -146,12 +177,70 @@ export default function JobCreate() {
   const wordCount = rawText.trim() ? rawText.trim().split(/\s+/).length : 0;
   const canPublish = analyzed && (analysisResult?.score ?? liveScore) !== null && savedJobId;
 
-  const handleReplaceWord = (oldWord, replacement) => {
+  // ── One-Click Replacement with Diff Hash Audit Log ─────────────────
+  const handleReplaceWord = async (oldWord, replacement, flag) => {
     if (!oldWord || !replacement) return;
-    const escaped = oldWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`\\b${escaped}\\b`, 'i');
-    const updated = rawText.replace(regex, replacement);
+
+    let updated = rawText;
+    if (flag && typeof flag.start === 'number' && typeof flag.end === 'number' && flag.end <= rawText.length) {
+      const slice = rawText.slice(flag.start, flag.end);
+      if (slice.toLowerCase() === oldWord.toLowerCase()) {
+        updated = rawText.slice(0, flag.start) + replacement + rawText.slice(flag.end);
+      } else {
+        const escaped = oldWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`\\b${escaped}\\b`, 'i');
+        updated = rawText.replace(regex, replacement);
+      }
+    } else {
+      const escaped = oldWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`\\b${escaped}\\b`, 'i');
+      updated = rawText.replace(regex, replacement);
+    }
+
+    const prevText = rawText;
     setRawText(updated);
+
+    // Filter flag from local state immediately
+    if (analysisResult?.flags) {
+      const remainingFlags = analysisResult.flags.filter(
+        (f) => f.id !== flag?.id && (f.phrase || f.token) !== oldWord
+      );
+      setAnalysisResult((prev) => prev ? { ...prev, flags: remainingFlags, flag_count: remainingFlags.length } : null);
+      setLiveFlagCount(remainingFlags.length);
+    }
+
+    // Fire audit event for suggestion acceptance
+    try {
+      await biasAPI.acceptSuggestion({
+        jobId: savedJobId,
+        originalText: prevText,
+        updatedText: updated,
+        flagPhrase: oldWord,
+        suggestion: replacement,
+      });
+    } catch (err) {
+      console.warn('Audit logging failed for suggestion acceptance:', err.message);
+    }
+  };
+
+  // ── Dismiss Flag with Audit Log ────────────────────────────────────
+  const handleDismissFlag = async (flag) => {
+    const phrase = flag.phrase || flag.token;
+    if (analysisResult?.flags) {
+      const remainingFlags = analysisResult.flags.filter((f) => f.id !== flag.id);
+      setAnalysisResult((prev) => prev ? { ...prev, flags: remainingFlags, flag_count: remainingFlags.length } : null);
+      setLiveFlagCount(remainingFlags.length);
+    }
+
+    try {
+      await biasAPI.dismissFlag({
+        jobId: savedJobId,
+        flagPhrase: phrase,
+        flagCategory: flag.category || flag.type || 'general',
+      });
+    } catch (err) {
+      console.warn('Dismiss flag logging failed:', err.message);
+    }
   };
 
   return (
@@ -367,6 +456,7 @@ export default function JobCreate() {
               loading={analyzing}
               analyzed={analyzed}
               onReplace={handleReplaceWord}
+              onDismiss={handleDismissFlag}
             />
           </div>
         </div>

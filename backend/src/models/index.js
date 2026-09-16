@@ -26,6 +26,7 @@ const AUDIT_ACTIONS = {
   TEST_SUBMITTED: 'TEST_SUBMITTED',
   ELIGIBILITY_COMPUTED: 'ELIGIBILITY_COMPUTED',
   ELIGIBILITY_OVERRIDDEN: 'ELIGIBILITY_OVERRIDDEN',
+  APPLICATION_STATUS_UPDATED: 'APPLICATION_STATUS_UPDATED',
 };
 
 // ─── Organisation ─────────────────────────────────────────────────────────────
@@ -81,6 +82,7 @@ const Application = sequelize.define('Application', {
   anonymisedText: { type: DataTypes.TEXT, defaultValue: null },
   resumeBiasScore: { type: DataTypes.FLOAT, defaultValue: null },
   status: { type: DataTypes.ENUM(...APPLICATION_STATUS), defaultValue: 'applied' },
+  recruiterNotes: { type: DataTypes.TEXT, defaultValue: null },
 }, { tableName: 'applications', timestamps: true });
 
 // ─── Aptitude Test ────────────────────────────────────────────────────────────
@@ -118,7 +120,7 @@ const AuditLog = sequelize.define('AuditLog', {
   id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
   action: { type: DataTypes.STRING, allowNull: false },
   entityType: { type: DataTypes.STRING, allowNull: false },
-  entityId: { type: DataTypes.UUID, allowNull: false },
+  entityId: { type: DataTypes.UUID, allowNull: true },
   reason: { type: DataTypes.TEXT, defaultValue: null },
   meta: { type: DataTypes.JSONB, defaultValue: null },
 }, { tableName: 'audit_logs', timestamps: true, updatedAt: false });
@@ -166,8 +168,24 @@ ChatbotSession.belongsTo(User, { foreignKey: 'userId' });
 
 // ─── Sync ─────────────────────────────────────────────────────────────────────
 const syncModels = async () => {
-  await sequelize.sync({ alter: true });
-  console.log('✅ All database models synced (v2 schema)');
+  try {
+    if (sequelize.getDialect() === 'sqlite') {
+      await sequelize.sync();
+      // Ensure recruiterNotes column exists in SQLite table
+      try {
+        await sequelize.query('ALTER TABLE applications ADD COLUMN recruiterNotes TEXT;');
+      } catch (colErr) {
+        // Column already exists or table fresh — safe to ignore
+      }
+    } else {
+      await sequelize.sync({ alter: true });
+    }
+    console.log('✅ All database models synced (v2 schema)');
+  } catch (err) {
+    console.warn('⚠️ sequelize.sync warning, falling back to basic sync:', err.message);
+    await sequelize.sync();
+    console.log('✅ Fallback database models synced');
+  }
 };
 
 module.exports = {
