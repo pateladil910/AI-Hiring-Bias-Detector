@@ -1,89 +1,90 @@
 const express = require('express');
 const { authenticate, requireRole } = require('../middleware/auth');
-const { AuditLog, AUDIT_ACTIONS } = require('../models');
+const { Interview, Application, Job, User, AuditLog } = require('../models');
 
 const router = express.Router();
 
-// Mock store for persistent interview state in dev
-let interviewsStore = [
-  {
-    id: 'int-101',
-    applicationId: 'app-1',
-    candidateRef: 'CAND-7A39',
-    jobTitle: 'Senior Full Stack Engineer',
-    companyName: 'Stripe Equity',
-    status: 'scheduled',
-    slots: [
-      { id: 's1', time: '2026-09-20T14:00:00Z', label: 'Sep 20, 2026 - 2:00 PM UTC', selected: true },
-      { id: 's2', time: '2026-09-21T16:00:00Z', label: 'Sep 21, 2026 - 4:00 PM UTC', selected: false }
-    ],
-    selectedSlot: '2026-09-20T14:00:00Z',
-    format: 'Technical Video Panel (Blind Evaluator)',
-    panellists: ['Engineering Lead (Evaluator A)', 'Principal Architect (Evaluator B)'],
-    notes: 'Please bring your dev environment ready for algorithmic pair programming.'
-  },
-  {
-    id: 'int-102',
-    applicationId: 'app-2',
-    candidateRef: 'CAND-9B12',
-    jobTitle: 'AI / ML Research Engineer',
-    companyName: 'Anthropic Labs',
-    status: 'pending_confirmation',
-    slots: [
-      { id: 's3', time: '2026-09-22T10:00:00Z', label: 'Sep 22, 2026 - 10:00 AM UTC', selected: false },
-      { id: 's4', time: '2026-09-23T11:30:00Z', label: 'Sep 23, 2026 - 11:30 AM UTC', selected: false }
-    ],
-    selectedSlot: null,
-    format: 'System Design & Model Evaluation',
-    panellists: ['Lead ML Engineer'],
-    notes: 'Review the candidate anonymized benchmark scores beforehand.'
-  }
-];
-
-// ─── GET /api/interviews ──────────────────────────────────────────────────────
-router.get('/', authenticate, async (req, res) => {
+// ─── GET /api/interviews/my (Candidate's Interviews) ───────────────────────────
+router.get('/my', authenticate, requireRole('candidate'), async (req, res) => {
   try {
-    // In production, filtered by req.user.id or orgId
-    return res.json({ success: true, interviews: interviewsStore });
+    const interviews = await Interview.findAll({
+      where: { candidateId: req.user.id },
+      include: [
+        {
+          model: Application,
+          include: [{ model: Job, attributes: ['id', 'title'] }],
+        },
+      ],
+      order: [['scheduledAt', 'ASC']],
+    });
+
+    // If candidate has no interviews in DB, provide standard active demo slot so UI isn't empty
+    if (interviews.length === 0) {
+      const demoDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000); // 2 days from now
+      return res.json({
+        interviews: [
+          {
+            id: 'demo-int-1',
+            jobTitle: 'Senior Full Stack Engineer',
+            companyName: 'FairHire Partner Network',
+            scheduledAt: demoDate.toISOString(),
+            durationMinutes: 45,
+            format: 'Technical Architecture & Blind Pair Review',
+            meetingLink: 'https://meet.google.com/equi-hire-interview',
+            status: 'scheduled',
+            panellists: ['Senior Tech Lead (Blind Evaluator)', 'Staff Architect'],
+            notes: 'Please ensure a working camera/mic and modern browser for the coding pair review.',
+          },
+        ],
+      });
+    }
+
+    return res.json({
+      interviews: interviews.map((i) => ({
+        id: i.id,
+        jobTitle: i.Application?.Job?.title || 'Engineering Role',
+        companyName: 'FairHire Partner Network',
+        scheduledAt: i.scheduledAt,
+        durationMinutes: i.durationMinutes,
+        meetingLink: i.meetingLink,
+        status: i.status,
+        notes: i.notes,
+        rescheduleReason: i.rescheduleReason,
+      })),
+    });
   } catch (err) {
-    console.error('[INTERVIEWS GET ERROR]', err.message);
-    return res.status(500).json({ error: { message: 'Failed to retrieve interviews' } });
+    console.error('[Candidate Interviews Error]', err.message);
+    return res.status(500).json({ error: { code: 'FETCH_FAILED', message: 'Failed to fetch candidate interviews' } });
   }
 });
 
-// ─── POST /api/interviews ─────────────────────────────────────────────────────
-router.post('/', authenticate, requireRole('recruiter', 'admin'), async (req, res) => {
+// ─── GET /api/interviews (Recruiter view) ──────────────────────────────────────
+router.get('/', authenticate, async (req, res) => {
   try {
-    const { candidateRef, jobTitle, slots, format, panellists, notes } = req.body;
-    const newInterview = {
-      id: `int-${Date.now()}`,
-      candidateRef: candidateRef || 'CAND-USER',
-      jobTitle: jobTitle || 'Software Engineer',
-      status: 'pending_confirmation',
-      slots: slots || [
-        { id: 's1', time: new Date(Date.now() + 86400000).toISOString(), label: 'Tomorrow 2:00 PM' }
+    const interviews = await Interview.findAll({
+      include: [
+        { model: Application, include: [{ model: Job, attributes: ['id', 'title'] }] },
+        { model: User, as: 'Candidate', attributes: ['id', 'email', 'firstName', 'lastName'] },
       ],
-      selectedSlot: null,
-      format: format || 'Video Call (Blind Technical)',
-      panellists: panellists || ['Technical Evaluator'],
-      notes: notes || '',
-      createdAt: new Date()
-    };
-
-    interviewsStore.unshift(newInterview);
-
-    await AuditLog.create({
-      actorRole: req.user.role,
-      actorId: req.user.id,
-      action: AUDIT_ACTIONS.RECRUITER_REVIEW,
-      targetRecord: newInterview.candidateRef,
-      details: `Scheduled interview slots for ${newInterview.jobTitle}`
+      order: [['scheduledAt', 'DESC']],
     });
 
-    return res.status(201).json({ success: true, interview: newInterview });
+    return res.json({
+      success: true,
+      interviews: interviews.map((i) => ({
+        id: i.id,
+        candidateRef: `CAND-${i.candidateId.slice(0, 6).toUpperCase()}`,
+        jobTitle: i.Application?.Job?.title || 'Software Engineer',
+        companyName: 'FairHire Partner Network',
+        scheduledAt: i.scheduledAt,
+        durationMinutes: i.durationMinutes,
+        status: i.status,
+        meetingLink: i.meetingLink,
+        notes: i.notes,
+      })),
+    });
   } catch (err) {
-    console.error('[INTERVIEWS CREATE ERROR]', err.message);
-    return res.status(500).json({ error: { message: 'Failed to schedule interview' } });
+    return res.status(500).json({ error: { message: 'Failed to retrieve interviews' } });
   }
 });
 
@@ -91,53 +92,63 @@ router.post('/', authenticate, requireRole('recruiter', 'admin'), async (req, re
 router.post('/:id/confirm', authenticate, async (req, res) => {
   try {
     const { id } = req.params;
-    const { slotId } = req.body;
-    const interview = interviewsStore.find(i => i.id === id);
 
+    if (id === 'demo-int-1') {
+      return res.json({ success: true, message: 'Interview attendance confirmed successfully' });
+    }
+
+    const interview = await Interview.findByPk(id);
     if (!interview) {
       return res.status(404).json({ error: { message: 'Interview record not found' } });
     }
 
     interview.status = 'confirmed';
-    if (slotId && interview.slots) {
-      interview.slots.forEach(s => { s.selected = (s.id === slotId); });
-      const picked = interview.slots.find(s => s.id === slotId);
-      if (picked) interview.selectedSlot = picked.time;
-    }
+    await interview.save();
 
-    return res.json({
-      success: true,
-      message: 'Interview slot confirmed successfully. Calendar invitation (.ics) dispatched.',
-      interview
+    await AuditLog.create({
+      action: 'INTERVIEW_CONFIRMED',
+      entityType: 'interview',
+      entityId: interview.id,
+      userId: req.user.id,
+      reason: 'Candidate confirmed interview attendance',
     });
+
+    return res.json({ success: true, message: 'Interview confirmed', interview });
   } catch (err) {
-    console.error('[INTERVIEWS CONFIRM ERROR]', err.message);
-    return res.status(500).json({ error: { message: 'Failed to confirm interview slot' } });
+    return res.status(500).json({ error: { message: 'Failed to confirm interview' } });
   }
 });
 
-// ─── POST /api/interviews/:id/reschedule ──────────────────────────────────────
+// ─── POST /api/interviews/:id/reschedule ───────────────────────────────────────
 router.post('/:id/reschedule', authenticate, async (req, res) => {
   try {
     const { id } = req.params;
-    const { reason } = req.body;
-    const interview = interviewsStore.find(i => i.id === id);
+    const { reason = 'Scheduling conflict' } = req.body;
 
+    if (id === 'demo-int-1') {
+      return res.json({ success: true, message: 'Reschedule request submitted to recruiter pool' });
+    }
+
+    const interview = await Interview.findByPk(id);
     if (!interview) {
       return res.status(404).json({ error: { message: 'Interview record not found' } });
     }
 
     interview.status = 'reschedule_requested';
-    interview.notes += ` | Reschedule requested: ${reason || 'Conflict with existing slot'}`;
+    interview.rescheduleReason = reason;
+    await interview.save();
 
-    return res.json({
-      success: true,
-      message: 'Reschedule request submitted. Recruiter has been notified.',
-      interview
+    await AuditLog.create({
+      action: 'INTERVIEW_RESCHEDULE_REQUESTED',
+      entityType: 'interview',
+      entityId: interview.id,
+      userId: req.user.id,
+      reason: `Reschedule requested: ${reason}`,
     });
+
+    return res.json({ success: true, message: 'Reschedule request recorded', interview });
   } catch (err) {
-    console.error('[INTERVIEWS RESCHEDULE ERROR]', err.message);
-    return res.status(500).json({ error: { message: 'Failed to submit reschedule request' } });
+    return res.status(500).json({ error: { message: 'Failed to request reschedule' } });
   }
 });
 

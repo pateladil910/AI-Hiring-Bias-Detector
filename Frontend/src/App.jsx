@@ -28,6 +28,7 @@ import Interviews from './pages/recruiter/Interviews';
 import Analytics from './pages/recruiter/Analytics';
 
 // Candidate pages
+import CandidateDashboard from './pages/candidate/Dashboard';
 import CandidateStatus from './pages/candidate/Status';
 import CandidateJobs from './pages/candidate/Jobs';
 import JobDetail from './pages/candidate/JobDetail';
@@ -35,6 +36,13 @@ import Applications from './pages/candidate/Applications';
 import Profile from './pages/candidate/Profile';
 import Apply from './pages/candidate/Apply';
 import TakeTest from './pages/candidate/TakeTest';
+import ResumeUpload from './pages/candidate/ResumeUpload';
+import RedactionReview from './pages/candidate/RedactionReview';
+import DomainSelection from './pages/candidate/DomainSelection';
+import Assessment from './pages/candidate/Assessment';
+import CodingSandbox from './pages/candidate/CodingSandbox';
+import AssessmentResult from './pages/candidate/AssessmentResult';
+import CandidateInterviews from './pages/candidate/Interviews';
 
 // Notifications & Admin pages
 import Notifications from './pages/Notifications';
@@ -87,7 +95,7 @@ const HomeRedirect = () => {
   if (!user) return <Landing />;
   if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />;
   if (isRecruiterSide) return <Navigate to="/recruiter/dashboard" replace />;
-  return <Navigate to="/candidate/status" replace />;
+  return <Navigate to="/candidate/dashboard" replace />;
 };
 
 // ─── App ──────────────────────────────────────────────────────────────────────
@@ -198,10 +206,21 @@ export default function App() {
                 </RequireCandidate>
               }
             >
-              <Route index element={<Navigate to="status" replace />} />
-              <Route path="status" element={<CandidateStatus />} />
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<CandidateDashboard />} />
+              <Route path="status" element={<CandidateDashboard />} />
               <Route path="jobs" element={<CandidateJobs />} />
               <Route path="apply/:jobId" element={<Apply />} />
+              <Route path="resume" element={<ResumeUpload />} />
+              <Route path="resume/review" element={<RedactionReview />} />
+              <Route path="domain" element={<DomainSelection />} />
+              <Route path="assessment/:id" element={<Assessment />} />
+              <Route path="coding/:id" element={<CodingSandbox />} />
+              <Route path="results/:id" element={<AssessmentResult />} />
+              <Route path="results" element={<AssessmentResult />} />
+              <Route path="applications" element={<Applications />} />
+              <Route path="interviews" element={<CandidateInterviews />} />
+              <Route path="profile" element={<Profile />} />
               <Route path="test/:testId" element={<TakeTest />} />
             </Route>
 

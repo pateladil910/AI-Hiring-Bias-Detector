@@ -22,6 +22,9 @@ const biasRoutes = require('./routes/bias');
 const interviewsRoutes = require('./routes/interviews');
 const notificationsRoutes = require('./routes/notifications');
 const billingRoutes = require('./routes/billing');
+const resumeRoutes = require('./routes/resume');
+const candidateRoutes = require('./routes/candidate');
+const assessmentRoutes = require('./routes/assessment');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -135,6 +138,10 @@ app.use('/api/bias', biasRoutes);
 app.use('/api/interviews', interviewsRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/billing', billingRoutes);
+app.use('/api/resume', resumeRoutes);
+app.use('/api/candidate', candidateRoutes);
+app.use('/api/assessment', assessmentRoutes);
+app.use('/api/domains', assessmentRoutes);
 
 // Serve uploaded resumes (so frontend can link to them)
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
@@ -179,6 +186,10 @@ const start = async () => {
       });
       console.log('👑 Default admin account seeded: admin@fairhire.io');
     }
+
+    // Seed sample published jobs if database has 0 published roles
+    const { seedJobsIfEmpty } = require('./seedJobs');
+    await seedJobsIfEmpty();
 
     // Use http.createServer so WebSocket can share the same port
     const httpServer = http.createServer(app);

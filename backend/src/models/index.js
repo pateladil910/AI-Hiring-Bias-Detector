@@ -85,17 +85,72 @@ const Application = sequelize.define('Application', {
   recruiterNotes: { type: DataTypes.TEXT, defaultValue: null },
 }, { tableName: 'applications', timestamps: true });
 
+// ─── Candidate Resume ────────────────────────────────────────────────────────
+const CandidateResume = sequelize.define('CandidateResume', {
+  id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  userId: { type: DataTypes.UUID, allowNull: false },
+  refId: { type: DataTypes.STRING, allowNull: false, unique: true },
+  fileName: { type: DataTypes.STRING, allowNull: true },
+  fileSize: { type: DataTypes.INTEGER, defaultValue: 0 },
+  redactedText: { type: DataTypes.TEXT, allowNull: true },
+  detectedMarkersJson: { type: DataTypes.JSONB, defaultValue: [] },
+  extractedSkillsJson: { type: DataTypes.JSONB, defaultValue: [] },
+  biasScore: { type: DataTypes.FLOAT, defaultValue: null },
+  confirmed: { type: DataTypes.BOOLEAN, defaultValue: false },
+  consentTimestamp: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+}, { tableName: 'candidate_resumes', timestamps: true });
+
+// ─── Interview ────────────────────────────────────────────────────────────────
+const INTERVIEW_STATUS = ['scheduled', 'confirmed', 'reschedule_requested', 'cancelled', 'completed'];
+const Interview = sequelize.define('Interview', {
+  id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  applicationId: { type: DataTypes.UUID, allowNull: true },
+  candidateId: { type: DataTypes.UUID, allowNull: false },
+  recruiterId: { type: DataTypes.UUID, allowNull: true },
+  scheduledAt: { type: DataTypes.DATE, allowNull: false },
+  durationMinutes: { type: DataTypes.INTEGER, defaultValue: 45 },
+  meetingLink: { type: DataTypes.STRING, defaultValue: 'https://meet.google.com/equi-hire-interview' },
+  interviewType: { type: DataTypes.STRING, defaultValue: 'Technical Round' },
+  status: { type: DataTypes.ENUM(...INTERVIEW_STATUS), defaultValue: 'scheduled' },
+  notes: { type: DataTypes.TEXT, defaultValue: null },
+  rescheduleReason: { type: DataTypes.TEXT, defaultValue: null },
+}, { tableName: 'interviews', timestamps: true });
+
+// ─── Notification ─────────────────────────────────────────────────────────────
+const Notification = sequelize.define('Notification', {
+  id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  userId: { type: DataTypes.UUID, allowNull: false },
+  type: { type: DataTypes.STRING, defaultValue: 'system' },
+  title: { type: DataTypes.STRING, allowNull: false },
+  message: { type: DataTypes.TEXT, allowNull: false },
+  read: { type: DataTypes.BOOLEAN, defaultValue: false },
+  link: { type: DataTypes.STRING, defaultValue: null },
+  metaJson: { type: DataTypes.JSONB, defaultValue: null },
+}, { tableName: 'notifications', timestamps: true });
+
 // ─── Aptitude Test ────────────────────────────────────────────────────────────
 const AptitudeTest = sequelize.define('AptitudeTest', {
   id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  applicationId: { type: DataTypes.UUID, allowNull: true },
+  domainId: { type: DataTypes.STRING, defaultValue: 'fullstack' },
   questionsJson: { type: DataTypes.JSONB, allowNull: false },
   generatedFromSkillProfile: { type: DataTypes.JSONB, defaultValue: null },
   timeLimitMinutes: { type: DataTypes.INTEGER, defaultValue: 30 },
+  startedAt: { type: DataTypes.DATE, defaultValue: null },
+  expiresAt: { type: DataTypes.DATE, defaultValue: null },
+  mcqScore: { type: DataTypes.FLOAT, defaultValue: null },
+  codingScore: { type: DataTypes.FLOAT, defaultValue: null },
+  compositeScore: { type: DataTypes.FLOAT, defaultValue: null },
+  scoringFormula: { type: DataTypes.STRING, defaultValue: null },
+  scoringExplanation: { type: DataTypes.TEXT, defaultValue: null },
+  codingSubmissionJson: { type: DataTypes.JSONB, defaultValue: null },
+  status: { type: DataTypes.STRING, defaultValue: 'not_started' },
 }, { tableName: 'aptitude_tests', timestamps: true });
 
 // ─── Test Submission ──────────────────────────────────────────────────────────
 const TestSubmission = sequelize.define('TestSubmission', {
   id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+  testId: { type: DataTypes.UUID, allowNull: false },
   answersJson: { type: DataTypes.JSONB, allowNull: false },
   autoScore: { type: DataTypes.FLOAT, defaultValue: null },
   llmConfidence: { type: DataTypes.FLOAT, defaultValue: null },
@@ -166,21 +221,43 @@ AuditLog.belongsTo(User, { foreignKey: 'userId' });
 User.hasMany(ChatbotSession, { foreignKey: 'userId' });
 ChatbotSession.belongsTo(User, { foreignKey: 'userId' });
 
+User.hasMany(CandidateResume, { foreignKey: 'userId', as: 'Resumes' });
+CandidateResume.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasMany(Interview, { foreignKey: 'candidateId', as: 'CandidateInterviews' });
+Interview.belongsTo(User, { foreignKey: 'candidateId', as: 'Candidate' });
+Interview.belongsTo(User, { foreignKey: 'recruiterId', as: 'Recruiter' });
+Interview.belongsTo(Application, { foreignKey: 'applicationId' });
+
+User.hasMany(Notification, { foreignKey: 'userId', as: 'Notifications' });
+Notification.belongsTo(User, { foreignKey: 'userId' });
+
 // ─── Sync ─────────────────────────────────────────────────────────────────────
 const syncModels = async () => {
   try {
     if (sequelize.getDialect() === 'sqlite') {
       await sequelize.sync();
-      // Ensure recruiterNotes column exists in SQLite table
-      try {
-        await sequelize.query('ALTER TABLE applications ADD COLUMN recruiterNotes TEXT;');
-      } catch (colErr) {
-        // Column already exists or table fresh — safe to ignore
+      // Ensure added columns exist in SQLite tables if migrated
+      const safeQueries = [
+        'ALTER TABLE applications ADD COLUMN recruiterNotes TEXT;',
+        'ALTER TABLE aptitude_tests ADD COLUMN domainId TEXT;',
+        'ALTER TABLE aptitude_tests ADD COLUMN startedAt DATETIME;',
+        'ALTER TABLE aptitude_tests ADD COLUMN expiresAt DATETIME;',
+        'ALTER TABLE aptitude_tests ADD COLUMN mcqScore REAL;',
+        'ALTER TABLE aptitude_tests ADD COLUMN codingScore REAL;',
+        'ALTER TABLE aptitude_tests ADD COLUMN compositeScore REAL;',
+        'ALTER TABLE aptitude_tests ADD COLUMN scoringFormula TEXT;',
+        'ALTER TABLE aptitude_tests ADD COLUMN scoringExplanation TEXT;',
+        'ALTER TABLE aptitude_tests ADD COLUMN codingSubmissionJson JSON;',
+        'ALTER TABLE aptitude_tests ADD COLUMN status TEXT;',
+      ];
+      for (const q of safeQueries) {
+        try { await sequelize.query(q); } catch (_) {}
       }
     } else {
       await sequelize.sync({ alter: true });
     }
-    console.log('✅ All database models synced (v2 schema)');
+    console.log('✅ All database models synced (Candidate Portal v3 schema)');
   } catch (err) {
     console.warn('⚠️ sequelize.sync warning, falling back to basic sync:', err.message);
     await sequelize.sync();
@@ -201,6 +278,9 @@ module.exports = {
   EligibilityVerdict,
   AuditLog,
   ChatbotSession,
+  CandidateResume,
+  Interview,
+  Notification,
   USER_ROLES,
   ORG_STATUS,
   RECRUITER_REQUEST_STATUS,
