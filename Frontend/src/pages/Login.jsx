@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, LogIn, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Eye, EyeOff, LogIn, ShieldCheck, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
@@ -74,14 +74,24 @@ export default function Login() {
         margin: '0 auto',
         width: '100%',
       }}>
-        {/* Brand */}
-        <div style={{ marginBottom: 32 }}>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <span style={{ fontWeight: 700, fontSize: 22, color: 'var(--color-text-primary)', letterSpacing: '-0.02em' }}>
-              Fair<span style={{ color: 'var(--color-primary)' }}>Hire</span>
-            </span>
-          </Link>
-          <h1 style={{ marginTop: 24, marginBottom: 8, fontSize: '1.75rem' }}>Sign in to your account</h1>
+        {/* Brand Header & Back to Landing Button */}
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <span style={{ fontWeight: 700, fontSize: 22, color: 'var(--color-text-primary)', letterSpacing: '-0.02em' }}>
+                Fair<span style={{ color: 'var(--color-primary)' }}>Hire</span>
+              </span>
+            </Link>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 bg-white hover:bg-emerald-50 px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs transition group cursor-pointer"
+            >
+              <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5 text-slate-400 group-hover:text-emerald-600" />
+              <span>Back to Home</span>
+            </Link>
+          </div>
+
+          <h1 style={{ marginTop: 8, marginBottom: 8, fontSize: '1.75rem' }}>Sign in to your account</h1>
           <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', margin: 0 }}>
             Enter your credentials to access your portal
           </p>

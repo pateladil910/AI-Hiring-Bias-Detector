@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff, UserPlus, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Eye, EyeOff, UserPlus, ShieldCheck, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const ROLES = [
@@ -90,14 +90,23 @@ export default function Register() {
         margin: '0 auto',
         width: '100%',
       }}>
-        {/* Brand Header */}
+        {/* Brand Header & Back to Landing Button */}
         <div style={{ marginBottom: 28 }}>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <span style={{ fontWeight: 700, fontSize: 22, color: 'var(--color-text-primary)', letterSpacing: '-0.02em' }}>
-              Fair<span style={{ color: 'var(--color-primary)' }}>Hire</span>
-            </span>
-          </Link>
-          <div className="badge badge-primary" style={{ display: 'inline-flex', marginTop: 14, marginBottom: 8, fontSize: 11 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <span style={{ fontWeight: 700, fontSize: 22, color: 'var(--color-text-primary)', letterSpacing: '-0.02em' }}>
+                Fair<span style={{ color: 'var(--color-primary)' }}>Hire</span>
+              </span>
+            </Link>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 bg-white hover:bg-emerald-50 px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs transition group cursor-pointer"
+            >
+              <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5 text-slate-400 group-hover:text-emerald-600" />
+              <span>Back to Home</span>
+            </Link>
+          </div>
+          <div className="badge badge-primary" style={{ display: 'inline-flex', marginBottom: 8, fontSize: 11 }}>
             Candidate & Recruiter Onboarding
           </div>
           <h1 style={{ fontSize: '1.75rem', marginBottom: 6 }}>Create your account</h1>
