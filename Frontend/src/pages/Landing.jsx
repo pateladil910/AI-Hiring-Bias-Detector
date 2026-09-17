@@ -129,16 +129,16 @@ export default function Landing() {
         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* ── Translucent Glassmorphic Navigation Bar ─────────────────────── */}
+      {/* ── Seamless Transparent Glass Navigation Bar ───────────────────── */}
       <header
         style={{
           position: 'sticky',
           top: 0,
           zIndex: 100,
-          background: 'rgba(255, 255, 255, 0.75)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(226, 232, 240, 0.7)',
+          background: 'rgba(255, 255, 255, 0.45)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(226, 232, 240, 0.4)',
           transition: 'all 0.3s ease',
         }}
       >
@@ -180,22 +180,22 @@ export default function Landing() {
               <ShieldCheck size={22} />
             </div>
             <span style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-0.03em' }}>
-              Fair<span style={{ color: '#10b981' }}>Hire</span>
+              Fair<span style={{ color: '#059669' }}>Hire</span>
             </span>
           </Link>
 
           {/* Nav Links */}
           <nav style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
-            <a href="#how-it-works" style={{ textDecoration: 'none', color: '#334155', fontSize: 14, fontWeight: 600 }}>
+            <a href="#how-it-works" style={{ textDecoration: 'none', color: '#0f172a', fontSize: 14, fontWeight: 600 }}>
               How It Works
             </a>
-            <a href="#live-demo" style={{ textDecoration: 'none', color: '#334155', fontSize: 14, fontWeight: 600 }}>
+            <a href="#live-demo" style={{ textDecoration: 'none', color: '#0f172a', fontSize: 14, fontWeight: 600 }}>
               Live Bias Scanner
             </a>
-            <a href="#pillars" style={{ textDecoration: 'none', color: '#334155', fontSize: 14, fontWeight: 600 }}>
+            <a href="#pillars" style={{ textDecoration: 'none', color: '#0f172a', fontSize: 14, fontWeight: 600 }}>
               Ethical Pillars
             </a>
-            <a href="#faq" style={{ textDecoration: 'none', color: '#334155', fontSize: 14, fontWeight: 600 }}>
+            <a href="#faq" style={{ textDecoration: 'none', color: '#0f172a', fontSize: 14, fontWeight: 600 }}>
               FAQ
             </a>
           </nav>
@@ -206,12 +206,12 @@ export default function Landing() {
               to="/login"
               style={{
                 textDecoration: 'none',
-                color: '#1e293b',
+                color: '#0f172a',
                 fontSize: 14,
                 fontWeight: 600,
                 padding: '8px 16px',
                 borderRadius: 8,
-                background: 'rgba(255, 255, 255, 0.6)',
+                background: 'rgba(255, 255, 255, 0.7)',
                 backdropFilter: 'blur(8px)',
                 border: '1px solid rgba(203, 213, 225, 0.6)',
               }}
@@ -229,7 +229,8 @@ export default function Landing() {
                 padding: '8px 16px',
                 border: '1px solid #cbd5e1',
                 borderRadius: 8,
-                background: '#ffffff',
+                background: 'rgba(255, 255, 255, 0.9)',
+                backdropFilter: 'blur(8px)',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
               }}
             >
@@ -258,36 +259,49 @@ export default function Landing() {
         </div>
       </header>
 
-      {/* ── Hero Section with Recruiter-Candidate Interview Photo ────────── */}
+      {/* ── Hero Section with Visible Recruiter-Candidate Photo Background ── */}
       <section
         style={{
           position: 'relative',
-          padding: '90px 24px 80px',
+          padding: '100px 24px 90px',
           textAlign: 'center',
           overflow: 'hidden',
-          backgroundImage: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.88) 0%, rgba(248, 250, 252, 0.94) 60%, #f8fafc 100%), url("/interview-hero-bg.jpg")',
+          backgroundImage: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0.76) 50%, rgba(248, 250, 252, 0.96) 100%), url("/interview-hero-bg.jpg")',
           backgroundSize: 'cover',
-          backgroundPosition: 'center center',
+          backgroundPosition: 'center 20%',
           backgroundRepeat: 'no-repeat',
         }}
       >
-        <div style={{ maxWidth: 980, margin: '0 auto', position: 'relative', zIndex: 2 }}>
+        <div
+          style={{
+            maxWidth: 1000,
+            margin: '0 auto',
+            position: 'relative',
+            zIndex: 2,
+            background: 'rgba(255, 255, 255, 0.78)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            borderRadius: 24,
+            padding: '48px 36px 42px',
+            boxShadow: '0 20px 50px -15px rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.9)',
+          }}
+        >
           {/* Pill Badge */}
           <div
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: 8,
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(16, 185, 129, 0.35)',
+              background: '#ecfdf5',
+              border: '1px solid #a7f3d0',
               color: '#047857',
               padding: '8px 18px',
               borderRadius: 9999,
               fontSize: 13,
               fontWeight: 700,
               marginBottom: 24,
-              boxShadow: '0 4px 12px rgba(16, 185, 129, 0.1)',
+              boxShadow: '0 2px 8px rgba(16, 185, 129, 0.1)',
             }}
           >
             <Sparkles size={16} />
@@ -297,13 +311,12 @@ export default function Landing() {
           {/* Hero Title */}
           <h1
             style={{
-              fontSize: 'clamp(2.6rem, 5.2vw, 4rem)',
+              fontSize: 'clamp(2.5rem, 5.2vw, 3.8rem)',
               fontWeight: 900,
-              lineHeight: 1.15,
+              lineHeight: 1.16,
               letterSpacing: '-0.04em',
               color: '#0f172a',
-              margin: '0 0 22px',
-              textShadow: '0 2px 10px rgba(255, 255, 255, 0.9)',
+              margin: '0 0 20px',
             }}
           >
             Hire strictly on <span style={{ color: '#059669', background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>merit</span>.<br />
@@ -314,12 +327,11 @@ export default function Landing() {
           <p
             style={{
               fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
-              color: '#1e293b',
+              color: '#334155',
               lineHeight: 1.65,
-              maxWidth: 740,
-              margin: '0 auto 38px',
+              maxWidth: 760,
+              margin: '0 auto 36px',
               fontWeight: 500,
-              textShadow: '0 1px 8px rgba(255, 255, 255, 0.8)',
             }}
           >
             FairHire replaces biased keyword screening with automated demographic redaction,
@@ -338,7 +350,7 @@ export default function Landing() {
                 color: '#fff',
                 fontSize: 16,
                 fontWeight: 700,
-                padding: '15px 30px',
+                padding: '15px 32px',
                 borderRadius: 12,
                 textDecoration: 'none',
                 boxShadow: '0 10px 25px rgba(16, 185, 129, 0.3)',
@@ -354,13 +366,12 @@ export default function Landing() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 8,
-                background: 'rgba(255, 255, 255, 0.95)',
-                backdropFilter: 'blur(8px)',
+                background: '#ffffff',
                 color: '#0f172a',
                 border: '1px solid #cbd5e1',
                 fontSize: 16,
                 fontWeight: 700,
-                padding: '15px 30px',
+                padding: '15px 32px',
                 borderRadius: 12,
                 textDecoration: 'none',
                 boxShadow: '0 4px 14px rgba(0, 0, 0, 0.06)',
@@ -371,26 +382,19 @@ export default function Landing() {
             </Link>
           </div>
 
-          {/* Trust Badges Floating Glass Card */}
+          {/* Trust Badges Floating Inside */}
           <div
             style={{
               display: 'flex',
               justifyContent: 'center',
               gap: 28,
               flexWrap: 'wrap',
-              marginTop: 52,
-              padding: '16px 28px',
-              background: 'rgba(255, 255, 255, 0.85)',
-              backdropFilter: 'blur(12px)',
-              border: '1px solid rgba(226, 232, 240, 0.8)',
-              borderRadius: 16,
-              boxShadow: '0 8px 24px -6px rgba(0, 0, 0, 0.05)',
+              marginTop: 42,
+              paddingTop: 28,
+              borderTop: '1px solid rgba(226, 232, 240, 0.8)',
               fontSize: 13,
               fontWeight: 600,
-              color: '#334155',
-              maxWidth: 820,
-              marginLeft: 'auto',
-              marginRight: 'auto',
+              color: '#475569',
             }}
           >
             <span style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
