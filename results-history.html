@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results History & Score Trends — EquiHire AI</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <style>
+    .history-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: var(--space-6);
+      margin-bottom: var(--space-4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .history-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(17,100,70,0.08);
+    }
+    .score-badge {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .formula-tag {
+      background: var(--primary-soft);
+      color: var(--primary-hover);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.8rem;
+    }
+    .btn-download {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: var(--radius-control);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .btn-download:hover {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header class="glass-header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-shield">🛡️</span>
+        <span class="logo-text">EquiHire <span>AI</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="candidate-dashboard.html">Dashboard</a>
+        <a href="select-domain.html">Assessments</a>
+        <a href="results-history.html" class="active">Results History</a>
+        <a href="bias-report.html">Audit Report</a>
+      </nav>
+      <div class="nav-actions">
+        <button onclick="logout()" class="btn-secondary">Log Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-container" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <div style="margin-bottom: 24px;">
+      <h1 style="font-size: 2rem; color: var(--text); margin-bottom: 8px;">Candidate Results History</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Historical timeline of your completed objective technical assessments, formula derivations, and verified benchmarks.
+      </p>
+    </div>
+
+    <!-- Attempt 1 -->
+    <div class="history-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: var(--primary);">Assessment #EQ-2026-89</span>
+          <h2 style="font-size: 1.3rem; margin: 4px 0 8px;">Full Stack Engineering (TypeScript & Node.js)</h2>
+          <div style="font-size: 0.85rem; color: var(--text-muted);">
+            Completed: September 14, 2026 • Rubric v1.0 • Evaluated in Sandbox
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <div class="score-badge">88 / 100</div>
+          <span class="formula-tag">Composite Score</span>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 20px 0; padding: 16px; background: var(--background); border-radius: 12px;">
+        <div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">MCQ / Aptitude (40%)</div>
+          <div style="font-weight: 700; font-size: 1.1rem; color: var(--text);">90 / 100</div>
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Coding Sandbox (40%)</div>
+          <div style="font-weight: 700; font-size: 1.1rem; color: var(--text);">85 / 100 (5/5 tests passed)</div>
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Resume Skill Match (20%)</div>
+          <div style="font-weight: 700; font-size: 1.1rem; color: var(--text);">90 / 100</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div style="font-size: 0.85rem; color: var(--text-muted);">
+          Status: <strong style="color: var(--primary);">Review Completed — Outcome: Advance</strong>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button onclick="window.print()" class="btn-download">📄 Download PDF Report</button>
+          <a href="final-score.html" class="btn-primary" style="padding: 8px 16px; font-size: 0.85rem; text-decoration: none;">View Full Derivation</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attempt 2 -->
+    <div class="history-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: var(--primary);">Assessment #EQ-2026-42</span>
+          <h2 style="font-size: 1.3rem; margin: 4px 0 8px;">Frontend Architecture (React & Modern State)</h2>
+          <div style="font-size: 0.85rem; color: var(--text-muted);">
+            Completed: August 28, 2026 • Rubric v1.0
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <div class="score-badge">92 / 100</div>
+          <span class="formula-tag">Composite Score</span>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 20px 0; padding: 16px; background: var(--background); border-radius: 12px;">
+        <div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">MCQ / Aptitude (40%)</div>
+          <div style="font-weight: 700; font-size: 1.1rem; color: var(--text);">95 / 100</div>
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Coding Sandbox (40%)</div>
+          <div style="font-weight: 700; font-size: 1.1rem; color: var(--text);">90 / 100</div>
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Resume Skill Match (20%)</div>
+          <div style="font-weight: 700; font-size: 1.1rem; color: var(--text);">90 / 100</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div style="font-size: 0.85rem; color: var(--text-muted);">
+          Status: <strong style="color: var(--primary);">Shared with Recruiter Pool</strong>
+        </div>
+        <button onclick="window.print()" class="btn-download">📄 Download PDF Report</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

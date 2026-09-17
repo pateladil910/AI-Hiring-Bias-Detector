@@ -35,6 +35,8 @@ export const authAPI = {
   login:                (data)  => api.post('/api/auth/login', data),
   me:                   ()      => api.get('/api/auth/me'),
   resendVerification:   (email) => api.post('/api/auth/resend-verification', { email }),
+  forgotPassword:       (email) => api.post('/api/auth/forgot-password', { email }),
+  resetPassword:        (data)  => api.post('/api/auth/reset-password', data),
 };
 
 // ─── Jobs ─────────────────────────────────────────────────────────────────────
@@ -122,6 +124,27 @@ export const adminAPI = {
   getRecruiterRequests: (status) => api.get('/api/admin/recruiter-requests', { params: status ? { status } : {} }),
   decision: (id, decision, notes) => api.post(`/api/admin/recruiter-requests/${id}/decision`, { decision, notes }),
   organisations: () => api.get('/api/admin/organisations'),
+};
+
+// ─── Interviews ───────────────────────────────────────────────────────────────
+export const interviewsAPI = {
+  list:       ()            => api.get('/api/interviews'),
+  create:     (data)        => api.post('/api/interviews', data),
+  confirm:    (id, slotId)  => api.post(`/api/interviews/${id}/confirm`, { slotId }),
+  reschedule: (id, reason)  => api.post(`/api/interviews/${id}/reschedule`, { reason }),
+};
+
+// ─── Notifications ────────────────────────────────────────────────────────────
+export const notificationsAPI = {
+  list:       ()            => api.get('/api/notifications/me'),
+  markRead:   (id)          => api.put(`/api/notifications/${id}/read`),
+  markAllRead:()            => api.put('/api/notifications/read-all'),
+};
+
+// ─── Billing ──────────────────────────────────────────────────────────────────
+export const billingAPI = {
+  getSubscription: ()       => api.get('/api/billing/subscription'),
+  changePlan:      (tier)   => api.post('/api/billing/subscription/change', { tier }),
 };
 
 export default api;

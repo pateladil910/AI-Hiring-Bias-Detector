@@ -5,6 +5,8 @@ import ErrorBoundary from './components/ErrorBoundary';
 // Public & Onboarding Pages
 import Landing from './pages/Landing';
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import RegisterCandidate from './pages/candidate/RegisterCandidate';
 import EmployerRequest from './pages/EmployerRequest';
 import VerifyEmail from './pages/VerifyEmail';
@@ -22,15 +24,31 @@ import RecruiterCandidates from './pages/recruiter/Candidates';
 import TestResults from './pages/recruiter/TestResults';
 import ReviewQueue from './pages/recruiter/ReviewQueue';
 import AuditTrail from './pages/recruiter/AuditTrail';
+import Interviews from './pages/recruiter/Interviews';
+import Analytics from './pages/recruiter/Analytics';
 
 // Candidate pages
 import CandidateStatus from './pages/candidate/Status';
 import CandidateJobs from './pages/candidate/Jobs';
+import JobDetail from './pages/candidate/JobDetail';
+import Applications from './pages/candidate/Applications';
+import Profile from './pages/candidate/Profile';
 import Apply from './pages/candidate/Apply';
 import TakeTest from './pages/candidate/TakeTest';
 
-// Admin pages
+// Notifications & Admin pages
+import Notifications from './pages/Notifications';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import Billing from './pages/admin/Billing';
+import AuditExplorer from './pages/admin/AuditExplorer';
+
+// Shared & Legal System Pages
+import Help from './pages/Help';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import Accessibility from './pages/Accessibility';
+import SystemStatus from './pages/SystemStatus';
+import NotFound from './pages/NotFound';
 
 // ─── Protected Route Guards ───────────────────────────────────────────────────
 const RequireAuth = ({ children }) => {
@@ -82,18 +100,68 @@ export default function App() {
             {/* Public & Onboarding */}
             <Route path="/" element={<HomeRedirect />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Navigate to="/register/candidate" replace />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/register" element={<Navigate to="/register-candidate" replace />} />
+            <Route path="/register-candidate" element={<RegisterCandidate />} />
             <Route path="/register/candidate" element={<RegisterCandidate />} />
+            <Route path="/employer-request" element={<EmployerRequest />} />
             <Route path="/employers/request-access" element={<EmployerRequest />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/accept-invite" element={<AcceptInvite />} />
 
-            {/* Admin Console (Non-Discoverable) */}
+            {/* Public / Candidate Job Exploration */}
+            <Route path="/jobs" element={<CandidateJobs />} />
+            <Route path="/jobs/:id" element={<JobDetail />} />
+            <Route
+              path="/applications"
+              element={
+                <RequireCandidate>
+                  <Applications />
+                </RequireCandidate>
+              }
+            />
+
+            {/* Authenticated Shared Pages */}
+            <Route
+              path="/profile"
+              element={
+                <RequireAuth>
+                  <Profile />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/notifications"
+              element={
+                <RequireAuth>
+                  <Notifications />
+                </RequireAuth>
+              }
+            />
+
+            {/* Admin Console */}
             <Route
               path="/admin/dashboard"
               element={
                 <RequireAdmin>
                   <AdminDashboard />
+                </RequireAdmin>
+              }
+            />
+            <Route
+              path="/admin/billing"
+              element={
+                <RequireAdmin>
+                  <Billing />
+                </RequireAdmin>
+              }
+            />
+            <Route
+              path="/admin/audit"
+              element={
+                <RequireAdmin>
+                  <AuditExplorer />
                 </RequireAdmin>
               }
             />
@@ -111,8 +179,11 @@ export default function App() {
               <Route path="dashboard" element={<RecruiterDashboard />} />
               <Route path="jobs" element={<RecruiterJobs />} />
               <Route path="jobs/new" element={<JobCreate />} />
+              <Route path="jobs/create" element={<JobCreate />} />
               <Route path="jobs/:id/edit" element={<JobCreate />} />
               <Route path="candidates" element={<RecruiterCandidates />} />
+              <Route path="interviews" element={<Interviews />} />
+              <Route path="analytics" element={<Analytics />} />
               <Route path="test-results/:testId" element={<TestResults />} />
               <Route path="review" element={<ReviewQueue />} />
               <Route path="audit" element={<AuditTrail />} />
@@ -134,8 +205,15 @@ export default function App() {
               <Route path="test/:testId" element={<TakeTest />} />
             </Route>
 
-            {/* Catch-all */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            {/* Shared, Legal & System Pages */}
+            <Route path="/help" element={<Help />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/accessibility" element={<Accessibility />} />
+            <Route path="/status" element={<SystemStatus />} />
+
+            {/* Catch-all 404 */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

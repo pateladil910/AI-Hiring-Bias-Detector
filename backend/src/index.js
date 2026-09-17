@@ -19,6 +19,9 @@ const chatbotRoutes = require('./routes/chatbot');
 const auditRoutes = require('./routes/audit');
 const analyticsRoutes = require('./routes/analytics');
 const biasRoutes = require('./routes/bias');
+const interviewsRoutes = require('./routes/interviews');
+const notificationsRoutes = require('./routes/notifications');
+const billingRoutes = require('./routes/billing');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -129,6 +132,9 @@ app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/audit', auditRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/bias', biasRoutes);
+app.use('/api/interviews', interviewsRoutes);
+app.use('/api/notifications', notificationsRoutes);
+app.use('/api/billing', billingRoutes);
 
 // Serve uploaded resumes (so frontend can link to them)
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));

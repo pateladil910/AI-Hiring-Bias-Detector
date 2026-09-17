@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment Experience Feedback — EquiHire AI</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <header class="glass-header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-shield">🛡️</span>
+        <span class="logo-text">EquiHire <span>AI</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="candidate-dashboard.html">Dashboard</a>
+        <a href="final-score.html">Results</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="candidate-dashboard.html" class="btn-secondary">Return Home</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-container" style="max-width: 650px; margin: 40px auto; padding: 0 20px;">
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-card); padding: var(--space-8); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+      <h1 style="font-size: 1.8rem; color: var(--text); margin-bottom: 8px;">Evaluation Experience Feedback</h1>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">
+        Help us continuously improve algorithmic fairness. Your responses are anonymous and do not impact your hiring score.
+      </p>
+
+      <form onsubmit="submitFeedback(event)" style="display: flex; flex-direction: column; gap: 20px;">
+        <div>
+          <label style="display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 8px;">
+            1. Did the technical assessment questions feel relevant to the job domain?
+          </label>
+          <div style="display: flex; gap: 16px; font-size: 0.9rem;">
+            <label><input type="radio" name="relevance" value="5" checked> Highly Relevant</label>
+            <label><input type="radio" name="relevance" value="3"> Moderately</label>
+            <label><input type="radio" name="relevance" value="1"> Not Relevant</label>
+          </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 8px;">
+            2. How clear was the Demographic Shield & PII Redaction explanation?
+          </label>
+          <div style="display: flex; gap: 16px; font-size: 0.9rem;">
+            <label><input type="radio" name="clarity" value="5" checked> Very Clear</label>
+            <label><input type="radio" name="clarity" value="3"> Somewhat Clear</label>
+            <label><input type="radio" name="clarity" value="1"> Unclear</label>
+          </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 8px;">
+            3. Did the timed coding sandbox perform smoothly?
+          </label>
+          <div style="display: flex; gap: 16px; font-size: 0.9rem;">
+            <label><input type="radio" name="sandbox" value="yes" checked> Yes, ran without issues</label>
+            <label><input type="radio" name="sandbox" value="no"> Experienced lag / latency</label>
+          </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 8px;">
+            4. Additional suggestions for platform fairness:
+          </label>
+          <textarea rows="4" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-control); padding: 12px; font-family: inherit; font-size: 0.9rem;" placeholder="Share any thoughts or accessibility observations..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" style="padding: 12px 20px; font-weight: 700; font-size: 0.95rem;">
+          Submit Feedback
+        </button>
+      </form>
+
+      <div id="thankYouMsg" style="display: none; margin-top: 20px; padding: 16px; background: var(--primary-soft); color: var(--primary-hover); border-radius: 10px; font-size: 0.9rem; text-align: center;">
+        🎉 <strong>Thank you!</strong> Your feedback has been recorded anonymously to audit and improve test neutrality.
+      </div>
+    </div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script>
+    function submitFeedback(e) {
+      e.preventDefault();
+      document.querySelector('form').style.display = 'none';
+      document.getElementById('thankYouMsg').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

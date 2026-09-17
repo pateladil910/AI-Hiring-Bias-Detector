@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Scheduling — EquiHire AI</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <style>
+    .slot-card {
+      border: 2px solid var(--border);
+      border-radius: var(--radius-control);
+      padding: var(--space-4);
+      margin-bottom: var(--space-3);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .slot-card:hover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .slot-card.selected {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+  </style>
+</head>
+<body>
+  <header class="glass-header">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-shield">🛡️</span>
+        <span class="logo-text">EquiHire <span>AI</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="candidate-dashboard.html">Dashboard</a>
+        <a href="results-history.html">Results History</a>
+      </nav>
+      <div class="nav-actions">
+        <button onclick="logout()" class="btn-secondary">Log Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-container" style="max-width: 680px; margin: 50px auto; padding: 0 20px;">
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-card); padding: var(--space-8); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+      <div style="text-align: center; margin-bottom: 24px;">
+        <span style="font-size: 2.5rem;">📅</span>
+        <h1 style="font-size: 1.8rem; color: var(--text); margin-top: 8px;">Technical Evaluation Schedule</h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">
+          Congratulations! Your objective test performance has qualified for the blind technical pairing round. Please select an interview time slot.
+        </p>
+      </div>
+
+      <div style="background: var(--background); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+        <div style="font-size: 0.85rem; color: var(--text-muted);">Position:</div>
+        <div style="font-size: 1.1rem; font-weight: 700; color: var(--text);">Senior Full Stack Engineer</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Format: 45-Minute Algorithmic Pairing Session</div>
+      </div>
+
+      <h2 style="font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 12px;">Select an Available Slot:</h2>
+
+      <div id="slotsContainer">
+        <div class="slot-card selected" onclick="selectSlot(this, 'slot1')">
+          <div>
+            <div style="font-weight: 700; color: var(--text);">Friday, September 20, 2026</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">2:00 PM – 2:45 PM UTC (Morning Panel)</div>
+          </div>
+          <span style="color: var(--primary); font-weight: 700;">✓ Selected</span>
+        </div>
+
+        <div class="slot-card" onclick="selectSlot(this, 'slot2')">
+          <div>
+            <div style="font-weight: 700; color: var(--text);">Monday, September 23, 2026</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">4:00 PM – 4:45 PM UTC (Afternoon Panel)</div>
+          </div>
+          <span style="color: var(--text-muted);">Select</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <button id="confirmBtn" onclick="confirmAttendance()" class="btn-primary" style="width: 100%; padding: 14px; font-size: 1rem; font-weight: 700;">
+          Confirm Interview & Generate Calendar Invite
+        </button>
+      </div>
+
+      <div id="confirmationNotice" style="display: none; margin-top: 20px; padding: 16px; background: var(--primary-soft); border: 1px solid var(--primary); border-radius: 10px; color: var(--primary-hover); font-size: 0.9rem; text-align: center;">
+        ✅ <strong>Confirmed!</strong> Calendar invitation dispatched. Your evaluation panel has been locked.
+      </div>
+    </div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script>
+    function selectSlot(el) {
+      document.querySelectorAll('.slot-card').forEach(c => {
+        c.classList.remove('selected');
+        c.querySelector('span').textContent = 'Select';
+        c.querySelector('span').style.color = 'var(--text-muted)';
+      });
+      el.classList.add('selected');
+      el.querySelector('span').textContent = '✓ Selected';
+      el.querySelector('span').style.color = 'var(--primary)';
+    }
+
+    function confirmAttendance() {
+      document.getElementById('confirmBtn').disabled = true;
+      document.getElementById('confirmBtn').textContent = 'Processing Confirmation...';
+      setTimeout(() => {
+        document.getElementById('confirmBtn').style.display = 'none';
+        document.getElementById('confirmationNotice').style.display = 'block';
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

@@ -305,4 +305,83 @@ router.post('/resend-verification', async (req, res) => {
   }
 });
 
+// ─── POST /api/auth/forgot-password ──────────────────────────────────────────
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: { message: 'Email is required.' } });
+    }
+
+    const user = await User.findOne({ where: { email: email.toLowerCase().trim() } });
+    if (user) {
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      user.resetPasswordToken = resetToken;
+      user.resetPasswordExpires = new Date(Date.now() + 30 * 60 * 1000); // 30 mins
+      await user.save();
+      console.log(`[PASSWORD RESET] Token generated for ${email}: ${resetToken}`);
+      console.log(`[PASSWORD RESET LINK]: http://localhost:5173/reset-password?token=${resetToken}`);
+    }
+
+    // Generic response to prevent enumeration
+    return res.json({
+      message: 'If an account exists with that email address, a password reset link has been dispatched.',
+    });
+  } catch (err) {
+    console.error('[FORGOT PASSWORD ERROR]', err.message);
+    return res.status(500).json({ error: { message: 'Could not process password reset request.' } });
+  }
+});
+
+// ─── POST /api/auth/reset-password ───────────────────────────────────────────
+router.post(
+  '/reset-password',
+  [
+    body('token').trim().notEmpty().withMessage('Reset token is required'),
+    body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long'),
+  ],
+  async (req, res) => {
+    const validationError = handleValidationErrors(req, res);
+    if (validationError) return;
+
+    try {
+      const { token, password } = req.body;
+      const user = await User.findOne({ where: { resetPasswordToken: token } });
+
+      if (!user) {
+        return res.status(400).json({
+          error: { message: 'Password reset link is invalid or has already been used.' },
+        });
+      }
+
+      if (user.resetPasswordExpires && new Date() > new Date(user.resetPasswordExpires)) {
+        return res.status(400).json({
+          error: { message: 'Password reset link has expired. Please request a new one.' },
+        });
+      }
+
+      const passwordHash = await bcrypt.hash(password, 12);
+      user.passwordHash = passwordHash;
+      user.resetPasswordToken = null;
+      user.resetPasswordExpires = null;
+      await user.save();
+
+      await AuditLog.create({
+        actorRole: user.role,
+        actorId: user.id,
+        action: AUDIT_ACTIONS.USER_LOGIN,
+        targetRecord: `user-${user.id}`,
+        details: 'Password was successfully reset via token verification',
+      });
+
+      return res.json({
+        message: 'Your password has been reset successfully. You can now sign in with your new password.',
+      });
+    } catch (err) {
+      console.error('[RESET PASSWORD ERROR]', err.message);
+      return res.status(500).json({ error: { message: 'Could not reset password. Please try again.' } });
+    }
+  }
+);
+
 module.exports = router;
