@@ -433,36 +433,35 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── Interactive Live Bias Scanner (Full Screen Width Layout) ──────── */}
+      {/* ── Interactive Live Bias Scanner (Full Page Width & Seamless Integration) ── */}
       <section
         id="live-demo"
         className="scroll-reveal"
         style={{
           width: '100%',
-          padding: '60px 32px 80px',
+          background: '#ffffff',
+          borderTop: '1px solid #e2e8f0',
+          borderBottom: '1px solid #e2e8f0',
+          padding: '70px 32px 80px',
           boxSizing: 'border-box',
         }}
       >
         <div
           style={{
-            maxWidth: 1280,
+            maxWidth: 1320,
             margin: '0 auto',
-            background: '#ffffff',
-            borderRadius: 20,
-            border: '1px solid #e2e8f0',
-            boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.07)',
-            padding: '40px',
+            width: '100%',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16, marginBottom: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16, marginBottom: 28 }}>
             <div>
               <div style={{ fontSize: 12, fontWeight: 700, color: '#10b981', textTransform: 'uppercase', marginBottom: 4 }}>
                 Interactive Live Demo
               </div>
-              <h2 style={{ fontSize: 26, fontWeight: 900, margin: 0, color: '#0f172a' }}>
+              <h2 style={{ fontSize: 28, fontWeight: 900, margin: 0, color: '#0f172a' }}>
                 Pre-Publication Job Description Bias Scanner
               </h2>
-              <p style={{ margin: '4px 0 0', color: '#64748b', fontSize: 14 }}>
+              <p style={{ margin: '6px 0 0', color: '#64748b', fontSize: 15 }}>
                 Type or modify text below to test real-time bias detection and instant inclusive replacements.
               </p>
             </div>
@@ -474,7 +473,7 @@ export default function Landing() {
                   key={preset.id}
                   onClick={() => handlePresetSelect(preset.id)}
                   style={{
-                    padding: '8px 14px',
+                    padding: '9px 16px',
                     borderRadius: 8,
                     fontSize: 13,
                     fontWeight: 600,
@@ -491,9 +490,9 @@ export default function Landing() {
             </div>
           </div>
 
-          {/* Scanner Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 28, alignItems: 'start' }}>
-            {/* Textarea Input */}
+          {/* Scanner Grid Covering Whole Width */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 360px', gap: 32, alignItems: 'start' }}>
+            {/* Textarea Input & Corrections */}
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <div
                 style={{
@@ -502,24 +501,25 @@ export default function Landing() {
                   overflow: 'hidden',
                   background: '#f8fafc',
                   transition: 'border-color 200ms ease',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
                 }}
               >
-                <div style={{ background: '#f1f5f9', padding: '10px 16px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#64748b' }}>
-                  <span>Job Description Editor</span>
+                <div style={{ background: '#f1f5f9', padding: '12px 18px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', fontSize: 13, color: '#64748b' }}>
+                  <span style={{ fontWeight: 600 }}>Job Description Editor</span>
                   <span>{demoText.split(/\s+/).filter(Boolean).length} words</span>
                 </div>
                 <textarea
                   value={demoText}
                   onChange={(e) => setDemoText(e.target.value)}
-                  rows={6}
+                  rows={7}
                   style={{
                     width: '100%',
-                    padding: '16px',
+                    padding: '18px',
                     background: '#fff',
                     border: 'none',
                     outline: 'none',
                     fontSize: 15,
-                    lineHeight: 1.6,
+                    lineHeight: 1.65,
                     color: '#0f172a',
                     resize: 'vertical',
                     fontFamily: 'inherit',
@@ -528,14 +528,14 @@ export default function Landing() {
               </div>
 
               {/* Detected Flags Pills */}
-              <div style={{ marginTop: 20 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: '#334155', marginBottom: 10 }}>
+              <div style={{ marginTop: 24 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: '#334155', marginBottom: 12 }}>
                   Detected Biased Phrasing ({flags.length}):
                 </div>
 
                 {flags.length === 0 ? (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#10b981', fontSize: 14, fontWeight: 600, background: 'rgba(16, 185, 129, 0.08)', padding: '12px 16px', borderRadius: 10 }}>
-                    <CheckCircle2 size={18} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#047857', fontSize: 14, fontWeight: 600, background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '14px 18px', borderRadius: 10 }}>
+                    <CheckCircle2 size={18} color="#059669" />
                     Zero bias flags detected! This job description qualifies as fully inclusive.
                   </div>
                 ) : (
@@ -543,11 +543,12 @@ export default function Landing() {
                     {flags.map((flag, idx) => (
                       <div
                         key={idx}
+                        className={`scroll-child stagger-${Math.min(idx + 1, 5)}`}
                         style={{
                           background: '#fff',
                           border: '1px solid #fee2e2',
                           borderRadius: 10,
-                          padding: '10px 14px',
+                          padding: '12px 16px',
                           display: 'flex',
                           justifyContent: 'space-between',
                           alignItems: 'center',
@@ -561,7 +562,7 @@ export default function Landing() {
                             </span>
                             <span style={{ fontSize: 12, color: '#64748b' }}>Category: {flag.category}</span>
                           </div>
-                          <div style={{ fontSize: 12, color: '#059669', marginTop: 4 }}>
+                          <div style={{ fontSize: 13, color: '#047857', marginTop: 4, fontWeight: 500 }}>
                             Suggestion: <strong>"{flag.suggestion}"</strong>
                           </div>
                         </div>
@@ -571,12 +572,13 @@ export default function Landing() {
                           style={{
                             background: '#ecfdf5',
                             border: '1px solid #a7f3d0',
-                            color: '#059669',
+                            color: '#047857',
                             fontSize: 12,
                             fontWeight: 700,
-                            padding: '6px 12px',
+                            padding: '7px 14px',
                             borderRadius: 6,
                             cursor: 'pointer',
+                            transition: 'all 0.15s ease',
                           }}
                         >
                           Accept Fix ✓
@@ -588,44 +590,45 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Score Breakdown Card */}
+            {/* Score Breakdown Panel */}
             <div
               style={{
                 background: '#f8fafc',
                 border: '1px solid #e2e8f0',
-                borderRadius: 14,
-                padding: 24,
+                borderRadius: 16,
+                padding: 28,
                 textAlign: 'center',
+                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.03)',
               }}
             >
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: 12 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: 14 }}>
                 Inclusivity Index
               </div>
 
               {/* Large Score Metric */}
-              <div style={{ fontSize: 54, fontWeight: 900, color: score >= 80 ? '#10b981' : score >= 60 ? '#f59e0b' : '#ef4444', lineHeight: 1 }}>
+              <div style={{ fontSize: 60, fontWeight: 900, color: score >= 80 ? '#059669' : score >= 60 ? '#d97706' : '#dc2626', lineHeight: 1 }}>
                 {score}
               </div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#64748b', marginTop: 4 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#64748b', marginTop: 6 }}>
                 out of 100
               </div>
 
               <div
                 style={{
                   display: 'inline-block',
-                  marginTop: 12,
-                  padding: '4px 12px',
+                  marginTop: 14,
+                  padding: '6px 14px',
                   borderRadius: 9999,
                   fontSize: 12,
                   fontWeight: 700,
                   background: score >= 80 ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
-                  color: score >= 80 ? '#059669' : '#dc2626',
+                  color: score >= 80 ? '#047857' : '#dc2626',
                 }}
               >
                 {score >= 80 ? 'Inclusive & Ready to Post' : 'High Demographic Bias Risk'}
               </div>
 
-              <div style={{ borderTop: '1px solid #e2e8f0', marginTop: 20, paddingTop: 16, textAlign: 'left', fontSize: 12, color: '#475569', lineHeight: 1.5 }}>
+              <div style={{ borderTop: '1px solid #e2e8f0', marginTop: 22, paddingTop: 18, textAlign: 'left', fontSize: 13, color: '#475569', lineHeight: 1.55 }}>
                 Jobs with inclusivity scores above 85 attract up to <strong>42% more diverse qualified talent</strong> across technical disciplines.
               </div>
             </div>
@@ -698,6 +701,7 @@ export default function Landing() {
             ].map((step, idx) => (
               <div
                 key={idx}
+                className={`scroll-child stagger-${idx + 1}`}
                 style={{
                   background: '#f8fafc',
                   border: '1px solid #e2e8f0',
@@ -749,6 +753,7 @@ export default function Landing() {
           ].map((m, idx) => (
             <div
               key={idx}
+              className={`scroll-child stagger-${idx + 1}`}
               style={{
                 background: '#fff',
                 border: '1px solid #e2e8f0',
@@ -826,6 +831,7 @@ export default function Landing() {
             ].map((p, idx) => (
               <div
                 key={idx}
+                className={`scroll-child stagger-${idx + 1}`}
                 style={{
                   background: '#f8fafc',
                   border: '1px solid #e2e8f0',
