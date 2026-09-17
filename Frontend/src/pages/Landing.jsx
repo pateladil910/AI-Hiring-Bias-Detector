@@ -120,6 +120,24 @@ export default function Landing() {
     setFaqOpen((prev) => ({ ...prev, [idx]: !prev[idx] }));
   };
 
+  // Scroll reveal observer
+  useEffect(() => {
+    const elements = document.querySelectorAll('.scroll-reveal');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div
       style={{
@@ -317,7 +335,7 @@ export default function Landing() {
               textShadow: '0 2px 14px rgba(255, 255, 255, 0.95), 0 0 30px rgba(255, 255, 255, 0.9)',
             }}
           >
-            Hire strictly on <span style={{ color: '#059669', background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>merit</span>.<br />
+            Hire strictly on <span style={{ color: '#047857', fontWeight: 900, textShadow: 'none' }}>merit</span>.<br />
             Eliminate bias before you publish.
           </h1>
 
@@ -415,22 +433,25 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── Interactive Live Bias Scanner (Light Theme Edition) ───────────── */}
+      {/* ── Interactive Live Bias Scanner (Full Screen Width Layout) ──────── */}
       <section
         id="live-demo"
+        className="scroll-reveal"
         style={{
-          maxWidth: 1140,
-          margin: '0 auto 80px',
-          padding: '0 24px',
+          width: '100%',
+          padding: '60px 32px 80px',
+          boxSizing: 'border-box',
         }}
       >
         <div
           style={{
+            maxWidth: 1280,
+            margin: '0 auto',
             background: '#ffffff',
             borderRadius: 20,
             border: '1px solid #e2e8f0',
             boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.07)',
-            padding: '36px',
+            padding: '40px',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16, marginBottom: 24 }}>
@@ -438,7 +459,7 @@ export default function Landing() {
               <div style={{ fontSize: 12, fontWeight: 700, color: '#10b981', textTransform: 'uppercase', marginBottom: 4 }}>
                 Interactive Live Demo
               </div>
-              <h2 style={{ fontSize: 24, fontWeight: 800, margin: 0, color: '#0f172a' }}>
+              <h2 style={{ fontSize: 26, fontWeight: 900, margin: 0, color: '#0f172a' }}>
                 Pre-Publication Job Description Bias Scanner
               </h2>
               <p style={{ margin: '4px 0 0', color: '#64748b', fontSize: 14 }}>
@@ -615,6 +636,7 @@ export default function Landing() {
       {/* ── 5-Stage Candidate Journey Section ─────────────────────────────── */}
       <section
         id="how-it-works"
+        className="scroll-reveal"
         style={{
           background: '#ffffff',
           borderTop: '1px solid #e2e8f0',
@@ -710,7 +732,7 @@ export default function Landing() {
       </section>
 
       {/* ── Audited Platform Impact Metrics ──────────────────────────────── */}
-      <section style={{ padding: '70px 24px', maxWidth: 1140, margin: '0 auto' }}>
+      <section className="scroll-reveal" style={{ padding: '70px 24px', maxWidth: 1140, margin: '0 auto' }}>
         <div
           style={{
             display: 'grid',
@@ -752,6 +774,7 @@ export default function Landing() {
       {/* ── Ethical Principles & Regulatory Compliance ───────────────────── */}
       <section
         id="pillars"
+        className="scroll-reveal"
         style={{
           background: '#ffffff',
           borderTop: '1px solid #e2e8f0',
@@ -828,6 +851,7 @@ export default function Landing() {
       {/* ── FAQ Section (Light Theme) ─────────────────────────────────────── */}
       <section
         id="faq"
+        className="scroll-reveal"
         style={{
           maxWidth: 840,
           margin: '80px auto',
