@@ -79,43 +79,43 @@ export default function AuditExplorer() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 text-slate-900 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
-              <ShieldCheck className="w-7 h-7 text-emerald-400" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 flex items-center gap-3">
+              <ShieldCheck className="w-7 h-7 text-emerald-600" />
               Global Audit Explorer & Legal Hold
             </h1>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               Cross-tenant immutable activity ledger for regulatory compliance, EEOC audits, and access inspections.
             </p>
           </div>
           <button
             onClick={handleExportCSV}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs transition shrink-0"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition shrink-0 shadow-xs cursor-pointer"
           >
             <Download className="w-4 h-4" /> Export CSV for Audit Hold
           </button>
         </div>
 
         {/* Filter / Search Bar */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row gap-3">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row gap-3 shadow-xs">
           <div className="relative flex-1">
             <input
               type="text"
               placeholder="Search by action, record ID, or keyword..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-lg bg-slate-950/60 border border-slate-700 pl-10 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:border-emerald-500"
+              className="w-full rounded-lg bg-white border border-slate-300 pl-10 pr-4 py-2 text-xs text-slate-900 placeholder-slate-400 focus:border-emerald-600"
             />
-            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-2.5" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" />
           </div>
           <div className="flex gap-2">
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="rounded-lg bg-slate-950/60 border border-slate-700 px-3 py-2 text-xs text-slate-300 focus:border-emerald-500"
+              className="rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-700 focus:border-emerald-600"
             >
               <option value="all">All Audit Categories</option>
               <option value="bias">Bias Scans</option>
@@ -127,10 +127,10 @@ export default function AuditExplorer() {
         </div>
 
         {/* Log Entries */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl overflow-hidden backdrop-blur-xl shadow-xl">
+        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-900 text-slate-400 font-semibold uppercase tracking-wider border-b border-slate-800">
+            <table className="w-full text-left text-xs text-slate-700">
+              <thead className="bg-slate-50 text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-200">
                 <tr>
                   <th className="py-3.5 px-4">Event & Action</th>
                   <th className="py-3.5 px-4">Actor</th>
@@ -139,24 +139,24 @@ export default function AuditExplorer() {
                   <th className="py-3.5 px-4 text-right">Timestamp</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-slate-100">
                 {filteredLogs.map((log) => (
-                  <tr key={log.id} className="hover:bg-slate-800/30 transition">
-                    <td className="py-3.5 px-4 font-mono font-bold text-emerald-400">
+                  <tr key={log.id} className="hover:bg-slate-50 transition">
+                    <td className="py-3.5 px-4 font-mono font-bold text-emerald-700">
                       {log.action}
                     </td>
                     <td className="py-3.5 px-4">
-                      <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 text-[11px] font-semibold border border-slate-700">
+                      <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[11px] font-semibold border border-slate-200">
                         {log.actorRole}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-slate-400">
+                    <td className="py-3.5 px-4 font-mono text-slate-500">
                       {log.targetRecord || 'N/A'}
                     </td>
-                    <td className="py-3.5 px-4 max-w-md text-slate-300">
+                    <td className="py-3.5 px-4 max-w-md text-slate-600">
                       {log.details}
                     </td>
-                    <td className="py-3.5 px-4 text-right font-mono text-slate-500 whitespace-nowrap">
+                    <td className="py-3.5 px-4 text-right font-mono text-slate-400 whitespace-nowrap">
                       {new Date(log.timestamp).toLocaleString()}
                     </td>
                   </tr>

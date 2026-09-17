@@ -139,7 +139,7 @@ export default function CodingSandbox() {
               Language: <strong style={{ color: '#fff' }}>JavaScript (ES2022)</strong>
             </span>
           </div>
-          <h1 style={{ fontSize: 22, fontWeight: 800, margin: '4px 0 0', color: '#fff' }}>
+          <h1 style={{ fontSize: 22, fontWeight: 800, margin: '4px 0 0', color: 'var(--color-text-primary)' }}>
             {problem?.title || 'Algorithmic Challenge'}
           </h1>
         </div>
@@ -158,7 +158,7 @@ export default function CodingSandbox() {
             className="btn btn-outline"
             style={{ display: 'flex', alignItems: 'center', gap: 6 }}
           >
-            <Play size={15} color="#10b981" />
+            <Play size={15} color="#059669" />
             {running ? 'Executing in VM...' : 'Run Test Cases'}
           </button>
           <button
@@ -176,8 +176,8 @@ export default function CodingSandbox() {
       {/* Demo Sandbox Alert */}
       <div
         style={{
-          background: 'rgba(56, 189, 248, 0.08)',
-          border: '1px solid rgba(56, 189, 248, 0.25)',
+          background: 'rgba(16, 185, 129, 0.06)',
+          border: '1px solid rgba(16, 185, 129, 0.2)',
           borderRadius: 10,
           padding: '10px 16px',
           marginBottom: 16,
@@ -185,10 +185,10 @@ export default function CodingSandbox() {
           alignItems: 'center',
           gap: 10,
           fontSize: 12,
-          color: '#cbd5e1',
+          color: 'var(--color-text-secondary)',
         }}
       >
-        <ShieldAlert size={16} color="#38bdf8" style={{ flexShrink: 0 }} />
+        <ShieldAlert size={16} color="#059669" style={{ flexShrink: 0 }} />
         <span>
           <strong>Sandboxed Prototype Environment:</strong> Code executes server-side within an isolated Node.js <code>vm</code> context with strict 3000ms execution timeout and zero file system/network access.
         </span>
@@ -197,9 +197,9 @@ export default function CodingSandbox() {
       {error && (
         <div
           style={{
-            background: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
-            color: '#f87171',
+            background: 'rgba(239, 68, 68, 0.08)',
+            border: '1px solid rgba(239, 68, 68, 0.25)',
+            color: '#dc2626',
             padding: '10px 14px',
             borderRadius: 8,
             fontSize: 13,
@@ -226,8 +226,8 @@ export default function CodingSandbox() {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-            <Code2 size={18} color="#10b981" />
-            <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#fff' }}>
+            <Code2 size={18} color="#059669" />
+            <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--color-text-primary)' }}>
               Problem Description
             </h3>
           </div>
@@ -245,7 +245,7 @@ export default function CodingSandbox() {
           </div>
 
           <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: 16 }}>
-            <h4 style={{ margin: '0 0 12px', fontSize: 14, fontWeight: 700, color: '#fff' }}>
+            <h4 style={{ margin: '0 0 12px', fontSize: 14, fontWeight: 700, color: 'var(--color-text-primary)' }}>
               Sample Test Inputs
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -253,7 +253,7 @@ export default function CodingSandbox() {
                 <div
                   key={idx}
                   style={{
-                    background: 'rgba(255,255,255,0.02)',
+                    background: 'var(--color-surface-alt)',
                     border: '1px solid var(--color-border)',
                     borderRadius: 8,
                     padding: '8px 12px',
@@ -262,8 +262,8 @@ export default function CodingSandbox() {
                   }}
                 >
                   <div style={{ color: 'var(--color-text-muted)' }}>// {tc.description}</div>
-                  <div style={{ color: '#6ee7b7' }}>Input: {JSON.stringify(tc.input)}</div>
-                  <div style={{ color: '#38bdf8' }}>Expected: {JSON.stringify(tc.expected)}</div>
+                  <div style={{ color: '#059669' }}>Input: {JSON.stringify(tc.input)}</div>
+                  <div style={{ color: '#0284c7' }}>Expected: {JSON.stringify(tc.expected)}</div>
                 </div>
               ))}
             </div>
@@ -333,8 +333,8 @@ export default function CodingSandbox() {
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: '#fff' }}>
-                <Terminal size={16} color="#10b981" /> Test Runner Output
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: 'var(--color-text-primary)' }}>
+                <Terminal size={16} color="#059669" /> Test Runner Output
               </div>
 
               {testResults && (
@@ -342,7 +342,7 @@ export default function CodingSandbox() {
                   style={{
                     fontSize: 12,
                     fontWeight: 700,
-                    color: testResults.allPassed ? '#34d399' : '#f87171',
+                    color: testResults.allPassed ? '#059669' : '#dc2626',
                     background: testResults.allPassed ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
                     padding: '2px 8px',
                     borderRadius: 6,
@@ -362,7 +362,7 @@ export default function CodingSandbox() {
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      background: 'rgba(255,255,255,0.02)',
+                      background: 'var(--color-surface-alt)',
                       border: '1px solid var(--color-border)',
                       borderRadius: 8,
                       padding: '8px 12px',
@@ -372,14 +372,14 @@ export default function CodingSandbox() {
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       {res.passed ? (
-                        <CheckCircle2 size={16} color="#10b981" />
+                        <CheckCircle2 size={16} color="#059669" />
                       ) : (
-                        <XCircle size={16} color="#ef4444" />
+                        <XCircle size={16} color="#dc2626" />
                       )}
-                      <span style={{ color: '#fff' }}>Test {res.testCaseIndex}: {res.description}</span>
+                      <span style={{ color: 'var(--color-text-primary)' }}>Test {res.testCaseIndex}: {res.description}</span>
                     </div>
 
-                    <div style={{ fontSize: 11, color: res.passed ? '#34d399' : '#f87171' }}>
+                    <div style={{ fontSize: 11, color: res.passed ? '#059669' : '#dc2626' }}>
                       {res.passed ? 'PASSED' : res.error ? `Error: ${res.error}` : `Got: ${JSON.stringify(res.actual)}`}
                     </div>
                   </div>

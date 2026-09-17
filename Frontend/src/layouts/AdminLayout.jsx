@@ -6,17 +6,17 @@ import {
   FileText,
   CreditCard,
   LogOut,
-  Bell,
   Activity,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import ChatbotWidget from '../components/ChatbotWidget';
+import Footer from '../components/Footer';
 
 const navItems = [
-  { to: '/admin/dashboard', icon: <ShieldAlert size={17} />, label: 'Admin Governance' },
-  { to: '/admin/audit', icon: <FileText size={17} />, label: 'Audit Explorer' },
-  { to: '/admin/billing', icon: <CreditCard size={17} />, label: 'Enterprise Billing' },
-  { to: '/status', icon: <Activity size={17} />, label: 'System Health' },
+  { to: '/admin/dashboard', icon: <ShieldAlert size={16} />, label: 'Admin Governance' },
+  { to: '/admin/audit', icon: <FileText size={16} />, label: 'Audit Explorer' },
+  { to: '/admin/billing', icon: <CreditCard size={16} />, label: 'Enterprise Billing' },
+  { to: '/status', icon: <Activity size={16} />, label: 'System Health' },
 ];
 
 export default function AdminLayout() {
@@ -29,111 +29,77 @@ export default function AdminLayout() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg)', display: 'flex', flexDirection: 'column' }}>
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
       {/* ── Top Navigation Bar ────────────────────────────────────────────── */}
-      <header
-        style={{
-          background: 'var(--color-surface)',
-          borderBottom: '1px solid var(--color-border)',
-          position: 'sticky',
-          top: 0,
-          zIndex: 50,
-        }}
-      >
-        <div
-          className="container"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            height: 60,
-            gap: 20,
-            maxWidth: 1400,
-            margin: '0 auto',
-            padding: '0 24px',
-          }}
-        >
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           {/* Brand Logo & Role Pill */}
-          <NavLink
-            to="/admin/dashboard"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              textDecoration: 'none',
-              color: 'inherit',
-              flexShrink: 0,
-            }}
-          >
-            <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.02em' }}>
-              Fair<span style={{ color: 'var(--color-primary)' }}>Hire</span>
-            </span>
-            <span
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                background: 'rgba(239, 68, 68, 0.15)',
-                color: '#f87171',
-                padding: '2px 8px',
-                borderRadius: 9999,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 4,
-              }}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <NavLink
+              to="/admin/dashboard"
+              className="flex items-center gap-2.5 text-slate-900 group"
             >
-              🔐 Admin Console
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-600 flex items-center justify-center text-white shadow-sm shadow-rose-500/20 group-hover:scale-105 transition-transform">
+                <ShieldAlert size={20} />
+              </div>
+              <span className="font-extrabold text-xl tracking-tight text-slate-900">
+                Fair<span className="text-rose-600">Hire</span>
+              </span>
+            </NavLink>
+            <span className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-1 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+              Admin Console
             </span>
-          </NavLink>
+          </div>
 
           {/* Nav Links */}
-          <nav style={{ display: 'flex', gap: 4, flex: 1, overflowX: 'auto', padding: '4px 0' }}>
+          <nav className="flex items-center gap-1 overflow-x-auto py-1 scrollbar-none max-w-2xl">
             {navItems.map(({ to, icon, label }) => (
               <NavLink
                 key={to}
                 to={to}
-                style={({ isActive }) => ({
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '6px 12px',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: 13,
-                  fontWeight: 500,
-                  textDecoration: 'none',
-                  whiteSpace: 'nowrap',
-                  color: isActive ? '#fff' : 'var(--color-text-secondary)',
-                  background: isActive ? 'var(--color-primary)' : 'transparent',
-                  transition: 'all 150ms ease-out',
-                })}
+                className={({ isActive }) =>
+                  `flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
+                    isActive
+                      ? 'bg-rose-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`
+                }
               >
                 {icon}
-                {label}
+                <span>{label}</span>
               </NavLink>
             ))}
           </nav>
 
           {/* User & Actions */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
-            <span style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-              {user?.firstName} {user?.lastName} (Admin)
-            </span>
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="hidden md:flex flex-col text-right">
+              <span className="text-xs font-semibold text-slate-800">
+                {user?.firstName ? `${user.firstName} ${user.lastName || ''}` : 'System Admin'}
+              </span>
+              <span className="text-[11px] text-rose-600 font-medium">Root Authority</span>
+            </div>
 
             <button
               onClick={handleLogout}
-              className="btn btn-ghost btn-sm"
-              title="Sign out"
-              style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13 }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 transition-colors"
+              title="Sign out of Admin Console"
             >
-              <LogOut size={15} />
-              Sign out
+              <LogOut size={14} />
+              <span className="hidden sm:inline">Sign out</span>
             </button>
           </div>
         </div>
       </header>
 
       {/* ── Main Content ─────────────────────────────────────────────────── */}
-      <main style={{ flex: 1 }}>
+      <main className="flex-1 bg-slate-50">
         <Outlet />
       </main>
+
+      {/* ── Production Enterprise Footer ─────────────────────────────────── */}
+      <Footer />
 
       {/* ── Chatbot Widget ────────────────────────────────────────────────── */}
       <ChatbotWidget />

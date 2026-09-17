@@ -115,81 +115,41 @@ export default function CandidateDashboard() {
   ];
 
   return (
-    <div className="container" style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
-      {/* ── Welcome Banner ─────────────────────────────────────────────────── */}
-      <div
-        style={{
-          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(14, 165, 233, 0.08) 100%)',
-          border: '1px solid rgba(16, 185, 129, 0.25)',
-          borderRadius: 16,
-          padding: '28px 32px',
-          marginBottom: 32,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: 20,
-        }}
-      >
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-sans">
+      {/* ── Welcome & Candidate Profile Hero Banner ───────────────────────── */}
+      <div className="bg-gradient-to-r from-emerald-50 via-teal-50/60 to-sky-50/50 border border-emerald-200/80 rounded-2xl p-6 sm:p-8 mb-8 flex flex-wrap items-center justify-between gap-6 shadow-xs">
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-            <span
-              style={{
-                fontSize: 12,
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                background: 'rgba(16, 185, 129, 0.2)',
-                color: '#34d399',
-                padding: '3px 10px',
-                borderRadius: 9999,
-                letterSpacing: '0.05em',
-              }}
-            >
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <span className="text-xs font-bold uppercase tracking-wider bg-emerald-100/80 text-emerald-800 px-3 py-1 rounded-full border border-emerald-200">
               Algorithmic Merit Hiring
             </span>
-            <span style={{ fontSize: 13, color: 'var(--color-text-secondary)', display: 'flex', alignItems: 'center', gap: 4 }}>
-              <Shield size={14} color="#10b981" /> 100% Demographic-Blind Evaluation
+            <span className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
+              <Shield size={14} className="text-emerald-600" /> 100% Demographic-Blind Evaluation
             </span>
           </div>
-          <h1 style={{ fontSize: 28, fontWeight: 800, margin: '0 0 8px', color: '#fff' }}>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
             Welcome back, {user?.firstName || 'Engineer'}!
           </h1>
-          <p style={{ margin: 0, color: 'var(--color-text-secondary)', fontSize: 15, maxWidth: 640, lineHeight: 1.5 }}>
+          <p className="text-sm text-slate-600 max-w-2xl leading-relaxed">
             Your hiring process is entirely demographic-neutral. Recruiters only see your anonymized alias, verified skills, and validated assessment benchmarks.
           </p>
         </div>
 
-        {/* Quick Stats Pill Cards */}
-        <div style={{ display: 'flex', gap: 14 }}>
-          <div
-            style={{
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 12,
-              padding: '14px 20px',
-              textAlign: 'center',
-            }}
-          >
-            <div style={{ fontSize: 24, fontWeight: 800, color: '#10b981' }}>
+        {/* Quick Stats Cards */}
+        <div className="flex items-center gap-3">
+          <div className="bg-white border border-slate-200/80 rounded-xl px-5 py-3.5 text-center shadow-xs">
+            <div className="text-2xl font-extrabold text-emerald-600 font-mono">
               {progress?.stats?.totalApplications ?? 0}
             </div>
-            <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 2 }}>
+            <div className="text-xs font-medium text-slate-500 mt-0.5">
               Applications
             </div>
           </div>
-          <div
-            style={{
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 12,
-              padding: '14px 20px',
-              textAlign: 'center',
-            }}
-          >
-            <div style={{ fontSize: 24, fontWeight: 800, color: '#38bdf8' }}>
+          <div className="bg-white border border-slate-200/80 rounded-xl px-5 py-3.5 text-center shadow-xs">
+            <div className="text-2xl font-extrabold text-sky-600 font-mono">
               {progress?.stats?.scheduledInterviews ?? 1}
             </div>
-            <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 2 }}>
+            <div className="text-xs font-medium text-slate-500 mt-0.5">
               Interviews
             </div>
           </div>
@@ -197,129 +157,82 @@ export default function CandidateDashboard() {
       </div>
 
       {/* ── 5-Step Progress Stepper Section ─────────────────────────────────── */}
-      <div style={{ marginBottom: 40 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+      <div className="mb-10">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
           <div>
-            <h2 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 4px', color: '#fff' }}>
+            <h2 className="text-lg font-bold text-slate-900">
               Your 5-Stage Candidate Journey
             </h2>
-            <p style={{ margin: 0, fontSize: 14, color: 'var(--color-text-secondary)' }}>
+            <p className="text-xs text-slate-500">
               Complete each stage sequentially to advance your blind technical profile to recruiters.
             </p>
           </div>
-          <div
-            style={{
-              background: 'rgba(255,255,255,0.06)',
-              padding: '6px 14px',
-              borderRadius: 20,
-              fontSize: 13,
-              fontWeight: 600,
-              color: '#34d399',
-            }}
-          >
+          <span className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">
             Stage {currentStep} of 5 Active
-          </div>
+          </span>
         </div>
 
         {/* Stepper Cards Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
-            gap: 16,
-          }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {stepperItems.map((step) => {
             const isCompleted = step.completed;
             const isCurrent = step.active;
-
-            let borderStyle = '1px solid var(--color-border)';
-            let bgStyle = 'var(--color-surface)';
-            if (isCurrent) {
-              borderStyle = '2px solid var(--color-primary)';
-              bgStyle = 'rgba(16, 185, 129, 0.05)';
-            } else if (isCompleted) {
-              borderStyle = '1px solid rgba(16, 185, 129, 0.4)';
-            }
 
             return (
               <div
                 key={step.num}
                 onClick={() => navigate(step.link)}
-                style={{
-                  background: bgStyle,
-                  border: borderStyle,
-                  borderRadius: 14,
-                  padding: 20,
-                  cursor: 'pointer',
-                  transition: 'all 200ms ease',
-                  position: 'relative',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.3)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
+                className={`bg-white rounded-xl p-5 cursor-pointer transition-all duration-150 flex flex-col justify-between border ${
+                  isCurrent
+                    ? 'border-emerald-500 ring-2 ring-emerald-500/20 shadow-sm bg-emerald-50/20'
+                    : isCompleted
+                    ? 'border-emerald-200 shadow-xs hover:border-emerald-300'
+                    : 'border-slate-200 shadow-xs hover:border-slate-300 hover:shadow-sm'
+                }`}
               >
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                  <div className="flex items-center justify-between mb-3.5">
                     <div
-                      style={{
-                        width: 38,
-                        height: 38,
-                        borderRadius: 10,
-                        background: isCompleted
-                          ? 'rgba(16, 185, 129, 0.2)'
+                      className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm ${
+                        isCompleted
+                          ? 'bg-emerald-100 text-emerald-700'
                           : isCurrent
-                          ? 'var(--color-primary)'
-                          : 'rgba(255,255,255,0.06)',
-                        color: isCompleted ? '#34d399' : isCurrent ? '#000' : 'var(--color-text-secondary)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
+                          ? 'bg-emerald-600 text-white shadow-xs'
+                          : 'bg-slate-100 text-slate-500'
+                      }`}
                     >
-                      {isCompleted ? <CheckCircle2 size={22} /> : step.icon}
+                      {isCompleted ? <CheckCircle2 size={20} /> : step.icon}
                     </div>
 
                     <span
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 600,
-                        padding: '3px 8px',
-                        borderRadius: 6,
-                        background: isCompleted
-                          ? 'rgba(16, 185, 129, 0.15)'
+                      className={`text-[11px] font-semibold px-2 py-0.5 rounded-md ${
+                        isCompleted
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                           : isCurrent
-                          ? 'rgba(56, 189, 248, 0.15)'
-                          : 'rgba(255,255,255,0.05)',
-                        color: isCompleted ? '#34d399' : isCurrent ? '#38bdf8' : 'var(--color-text-muted)',
-                      }}
+                          ? 'bg-sky-50 text-sky-700 border border-sky-200'
+                          : 'bg-slate-100 text-slate-500 border border-slate-200'
+                      }`}
                     >
                       {step.badge}
                     </span>
                   </div>
 
-                  <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text-muted)', marginBottom: 4 }}>
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
                     STEP 0{step.num}
                   </div>
-                  <h3 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 6px', color: '#fff' }}>
+                  <h3 className="text-sm font-bold text-slate-900 mb-1.5 line-clamp-1">
                     {step.title}
                   </h3>
-                  <p style={{ margin: 0, fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>
+                  <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
                     {step.desc}
                   </p>
                 </div>
 
-                <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: isCurrent ? '#34d399' : 'var(--color-text-secondary)' }}>
-                  {isCompleted ? 'Review Result' : isCurrent ? 'Continue Step' : 'Start Stage'}
-                  <ArrowRight size={14} />
+                <div className={`mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-xs font-semibold ${
+                  isCurrent ? 'text-emerald-700' : 'text-slate-600'
+                }`}>
+                  <span>{isCompleted ? 'Review Result' : isCurrent ? 'Continue Step' : 'Start Stage'}</span>
+                  <ArrowRight size={13} />
                 </div>
               </div>
             );
@@ -328,142 +241,107 @@ export default function CandidateDashboard() {
       </div>
 
       {/* ── Two Column Action Area: Open Verified Jobs & Quick Navigation ─── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 24 }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Bias-Audited Verified Job Openings */}
-        <div
-          style={{
-            background: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 16,
-            padding: 24,
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Briefcase size={18} color="#10b981" />
-              <h3 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: '#fff' }}>
-                Open Verified Positions
-              </h3>
-            </div>
-            <Link
-              to="/candidate/jobs"
-              style={{ fontSize: 13, color: '#34d399', textDecoration: 'none', fontWeight: 600 }}
-            >
-              View All Roles →
-            </Link>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {jobs.length > 0 ? (
-              jobs.map((job) => (
-                <div
-                  key={job.id}
-                  style={{
-                    border: '1px solid var(--color-border)',
-                    borderRadius: 12,
-                    padding: 16,
-                    background: 'rgba(255,255,255,0.02)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    gap: 12,
-                  }}
-                >
-                  <div>
-                    <h4 style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 600, color: '#fff' }}>
-                      {job.title}
-                    </h4>
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                      <span style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
-                        {job.skillProfileJson?.salary_range || '$110,000 - $140,000'}
-                      </span>
-                      <span style={{ color: 'var(--color-border)' }}>•</span>
-                      <span
-                        style={{
-                          fontSize: 11,
-                          color: '#34d399',
-                          background: 'rgba(16, 185, 129, 0.1)',
-                          padding: '1px 6px',
-                          borderRadius: 4,
-                        }}
-                      >
-                        Bias Scanned (0.0% PII)
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => navigate(`/candidate/apply/${job.id}`)}
-                    className="btn btn-primary btn-sm"
-                    style={{ whiteSpace: 'nowrap' }}
-                  >
-                    Apply Now
-                  </button>
-                </div>
-              ))
-            ) : (
-              <div style={{ textAlign: 'center', padding: 24, color: 'var(--color-text-secondary)' }}>
-                Loading verified positions...
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Briefcase size={18} className="text-emerald-600" />
+                <h3 className="text-base font-bold text-slate-900">
+                  Open Verified Positions
+                </h3>
               </div>
-            )}
+              <Link
+                to="/candidate/jobs"
+                className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+              >
+                View All Roles →
+              </Link>
+            </div>
+
+            <div className="space-y-3">
+              {jobs.length > 0 ? (
+                jobs.map((job) => (
+                  <div
+                    key={job.id}
+                    className="border border-slate-200 rounded-xl p-4 bg-slate-50/50 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between gap-4"
+                  >
+                    <div>
+                      <h4 className="text-sm font-semibold text-slate-900 mb-1">
+                        {job.title}
+                      </h4>
+                      <div className="flex items-center gap-2 text-xs flex-wrap">
+                        <span className="text-slate-600 font-medium">
+                          {job.skillProfileJson?.salary_range || '$110,000 - $140,000'}
+                        </span>
+                        <span className="text-slate-300">•</span>
+                        <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">
+                          Bias Scanned (0.0% PII)
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => navigate(`/candidate/apply/${job.id}`)}
+                      className="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium transition-colors shadow-xs flex-shrink-0"
+                    >
+                      Apply Now
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-6 text-xs text-slate-500">
+                  Loading verified positions...
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Candidate Protection & Interview Readiness */}
-        <div
-          style={{
-            background: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 16,
-            padding: 24,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}
-        >
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-              <Sparkles size={18} color="#38bdf8" />
-              <h3 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: '#fff' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles size={18} className="text-sky-600" />
+              <h3 className="text-base font-bold text-slate-900">
                 Blind Hiring Protections Active
               </h3>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <div style={{ display: 'flex', gap: 12 }}>
-                <CheckCircle2 size={18} color="#10b981" style={{ flexShrink: 0, marginTop: 2 }} />
-                <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
-                  <strong style={{ color: '#fff' }}>Demographic Masking:</strong> Name, photo, gender indicators, age markers, and physical addresses are automatically stripped before hiring panels see your file.
+            <div className="space-y-3 text-xs text-slate-600 leading-relaxed">
+              <div className="flex items-start gap-2.5">
+                <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-slate-900 font-semibold">Demographic Masking:</strong> Name, photo, gender indicators, age markers, and physical addresses are automatically stripped before hiring panels see your file.
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: 12 }}>
-                <CheckCircle2 size={18} color="#10b981" style={{ flexShrink: 0, marginTop: 2 }} />
-                <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
-                  <strong style={{ color: '#fff' }}>Transparent Evaluation:</strong> All tests produce an unalterable formula score: <code>MCQ × 0.4 + Coding × 0.4 + Resume × 0.2</code>.
+              <div className="flex items-start gap-2.5">
+                <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-slate-900 font-semibold">Transparent Evaluation:</strong> All tests produce an unalterable formula score: <code className="bg-slate-100 text-slate-800 px-1 py-0.5 rounded text-[11px]">MCQ × 0.4 + Coding × 0.4 + Resume × 0.2</code>.
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: 12 }}>
-                <CheckCircle2 size={18} color="#10b981" style={{ flexShrink: 0, marginTop: 2 }} />
-                <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
-                  <strong style={{ color: '#fff' }}>Candidate Rights (GDPR/CCPA):</strong> You retain full data portability and can export your verified logs or request full record deletion anytime.
+              <div className="flex items-start gap-2.5">
+                <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-slate-900 font-semibold">Candidate Rights (GDPR/CCPA):</strong> You retain full data portability and can export your verified logs or request full record deletion anytime.
                 </div>
               </div>
             </div>
           </div>
 
-          <div style={{ marginTop: 24, display: 'flex', gap: 10 }}>
+          <div className="mt-6 pt-4 border-t border-slate-100 flex items-center gap-3">
             <Link
               to="/candidate/interviews"
-              className="btn btn-outline btn-sm"
-              style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 6 }}
+              className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 text-xs font-medium transition-colors"
             >
-              <Calendar size={14} /> My Interviews
+              <Calendar size={13} /> My Interviews
             </Link>
             <Link
               to="/candidate/profile"
-              className="btn btn-outline btn-sm"
-              style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 6 }}
+              className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 text-xs font-medium transition-colors"
             >
               Privacy & Data Export
             </Link>

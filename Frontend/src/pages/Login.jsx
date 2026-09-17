@@ -188,62 +188,36 @@ export default function Login() {
       </div>
 
       {/* ── Right Trust Visual Panel ────────────────────────────────────────── */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(19,24,38,0.9) 0%, rgba(11,15,23,0.98) 100%)',
-        borderLeft: '1px solid var(--color-border)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 48,
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        {/* Glow */}
-        <div style={{
-          position: 'absolute', width: 400, height: 400,
-          background: 'radial-gradient(circle, rgba(124,92,255,0.12) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
+      <div className="hidden lg:flex flex-col items-center justify-center p-12 bg-gradient-to-br from-emerald-50/80 via-teal-50/60 to-sky-50 border-l border-slate-200 relative overflow-hidden">
+        {/* Glow / Ambient Mesh */}
+        <div className="absolute w-96 h-96 bg-emerald-200/30 rounded-full blur-3xl pointer-events-none" />
 
         {/* Floating Glassmorphic Trust Card */}
-        <div style={{
-          maxWidth: 440,
-          padding: 36,
-          background: 'rgba(27, 34, 51, 0.7)',
-          backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          borderRadius: 20,
-          boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
-          position: 'relative',
-        }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: 12, background: 'rgba(91,127,255,0.2)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-primary)',
-            marginBottom: 20,
-          }}>
+        <div className="max-w-md p-8 bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-2xl shadow-xl relative z-10">
+          <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center border border-emerald-200 mb-5">
             <ShieldCheck size={26} />
           </div>
 
-          <h3 style={{ fontSize: 20, marginBottom: 12, lineHeight: 1.3 }}>
+          <h3 className="text-xl font-bold text-slate-900 mb-3 leading-snug">
             &ldquo;Every decision explained. Every override logged.&rdquo;
           </h3>
 
-          <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', lineHeight: 1.6, marginBottom: 24 }}>
+          <p className="text-xs text-slate-600 leading-relaxed mb-6">
             FairHire delivers end-to-end recruitment equity: from real-time job description de-biasing to blind resume anonymization and standardized skill testing.
           </p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 13, color: 'var(--color-text-primary)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <CheckCircle2 size={16} style={{ color: 'var(--color-success)' }} />
-              Zero demographic variables in scoring
+          <div className="space-y-2.5 text-xs font-medium text-slate-700">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0" />
+              <span>Zero demographic variables in scoring</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <CheckCircle2 size={16} style={{ color: 'var(--color-success)' }} />
-              Human review queue for borderline candidates
+            <div className="flex items-center gap-2">
+              <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0" />
+              <span>Human review queue for borderline candidates</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <CheckCircle2 size={16} style={{ color: 'var(--color-success)' }} />
-              Cryptographic-ready compliance audit logging
+            <div className="flex items-center gap-2">
+              <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0" />
+              <span>Cryptographic-ready compliance audit logging</span>
             </div>
           </div>
         </div>

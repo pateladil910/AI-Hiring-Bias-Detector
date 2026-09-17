@@ -60,215 +60,129 @@ export default function AssessmentResult() {
   const composite = result?.compositeScore ?? Math.round((mcq * 0.4) + (coding * 0.4) + (resume * 0.2));
 
   return (
-    <div className="container" style={{ maxWidth: 1000, margin: '0 auto', padding: '36px 24px' }}>
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 font-sans">
       {/* ── Status Banner ─────────────────────────────────────────────────── */}
-      <div
-        style={{
-          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(56, 189, 248, 0.08) 100%)',
-          border: '1px solid #10b981',
-          borderRadius: 16,
-          padding: '32px 36px',
-          textAlign: 'center',
-          marginBottom: 32,
-        }}
-      >
-        <div
-          style={{
-            width: 56,
-            height: 56,
-            borderRadius: '50%',
-            background: 'rgba(16, 185, 129, 0.2)',
-            color: '#34d399',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 16px',
-          }}
-        >
-          <Award size={32} />
+      <div className="bg-gradient-to-r from-emerald-50 via-teal-50/60 to-sky-50/50 border border-emerald-200 rounded-2xl p-8 text-center mb-8 shadow-xs">
+        <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-4 border border-emerald-200">
+          <Award size={30} />
         </div>
 
-        <span
-          style={{
-            fontSize: 12,
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            background: 'rgba(16, 185, 129, 0.2)',
-            color: '#34d399',
-            padding: '4px 12px',
-            borderRadius: 9999,
-          }}
-        >
+        <span className="inline-block text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-3.5 py-1 rounded-full border border-emerald-200 mb-3">
           Assessment Complete — Recruiter Review Pending
         </span>
 
-        <h1 style={{ fontSize: 32, fontWeight: 800, margin: '14px 0 8px', color: '#fff' }}>
-          Final Composite Benchmark: {composite} / 100
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
+          Final Composite Benchmark: <span className="text-emerald-600 font-mono">{composite}</span> / 100
         </h1>
-        <p style={{ color: 'var(--color-text-secondary)', fontSize: 15, maxWidth: 640, margin: '0 auto', lineHeight: 1.5 }}>
-          Your performance has been evaluated using our transparent mathematical formula. Your results are now available to hiring panels in anonymized form.
+        <p className="text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
+          Your performance has been evaluated using our transparent mathematical formula. Your results are now available to hiring panels in demographic-neutral form.
         </p>
       </div>
 
       {/* ── Transparent Mathematical Formula Card ─────────────────────────── */}
-      <div
-        style={{
-          background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 16,
-          padding: 24,
-          marginBottom: 32,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-          <ShieldCheck size={18} color="#10b981" />
-          <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#fff' }}>
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-8 shadow-xs">
+        <div className="flex items-center gap-2 mb-3">
+          <ShieldCheck size={18} className="text-emerald-600" />
+          <h3 className="text-base font-bold text-slate-900">
             Transparent Weighted Scoring Formula
           </h3>
         </div>
 
-        <div
-          style={{
-            background: '#090f0c',
-            border: '1px solid var(--color-border)',
-            borderRadius: 10,
-            padding: '16px 20px',
-            fontFamily: 'monospace',
-            fontSize: 14,
-            color: '#34d399',
-            lineHeight: 1.6,
-          }}
-        >
-          <div>Composite Score = (MCQ × 0.4) + (Coding × 0.4) + (Resume Match × 0.2)</div>
-          <div style={{ color: '#cbd5e1', marginTop: 4 }}>
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 font-mono text-xs leading-relaxed">
+          <div className="text-emerald-700 font-bold">Composite Score = (MCQ × 0.4) + (Coding × 0.4) + (Resume Match × 0.2)</div>
+          <div className="text-slate-600 mt-1">
             = ({mcq} × 0.4) + ({coding} × 0.4) + ({resume} × 0.2)
           </div>
-          <div style={{ color: '#38bdf8', fontWeight: 700, marginTop: 4 }}>
+          <div className="text-sky-700 font-bold mt-1">
             = {(mcq * 0.4).toFixed(1)} + {(coding * 0.4).toFixed(1)} + {(resume * 0.2).toFixed(1)} = {composite} / 100
           </div>
         </div>
       </div>
 
       {/* ── Component Breakdown Grid ──────────────────────────────────────── */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: 20,
-          marginBottom: 32,
-        }}
-      >
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
         {/* Component 1: MCQ */}
-        <div
-          style={{
-            background: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 14,
-            padding: 24,
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#38bdf8', fontWeight: 600 }}>
-              <Layers size={18} /> MCQ Aptitude
+        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2 text-sky-700 font-bold text-xs">
+                <Layers size={16} /> MCQ Aptitude
+              </div>
+              <span className="text-[11px] font-bold bg-sky-50 text-sky-700 border border-sky-200 px-2 py-0.5 rounded">
+                40% Weight
+              </span>
             </div>
-            <span style={{ fontSize: 11, background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>
-              40% Weight
-            </span>
-          </div>
-          <div style={{ fontSize: 28, fontWeight: 800, color: '#fff', margin: '8px 0' }}>
-            {mcq}%
-          </div>
-          <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>
-            Weighted contribution: <strong>{(mcq * 0.4).toFixed(1)} pts</strong> towards composite benchmark.
+            <div className="text-3xl font-extrabold text-slate-900 font-mono mb-2">
+              {mcq}%
+            </div>
+            <div className="text-xs text-slate-500 leading-relaxed">
+              Weighted contribution: <strong className="text-slate-800">{(mcq * 0.4).toFixed(1)} pts</strong> towards composite benchmark.
+            </div>
           </div>
         </div>
 
         {/* Component 2: Coding Sandbox */}
-        <div
-          style={{
-            background: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 14,
-            padding: 24,
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#10b981', fontWeight: 600 }}>
-              <Code2 size={18} /> Coding Sandbox
+        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2 text-emerald-700 font-bold text-xs">
+                <Code2 size={16} /> Coding Sandbox
+              </div>
+              <span className="text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded">
+                40% Weight
+              </span>
             </div>
-            <span style={{ fontSize: 11, background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>
-              40% Weight
-            </span>
-          </div>
-          <div style={{ fontSize: 28, fontWeight: 800, color: '#fff', margin: '8px 0' }}>
-            {coding}%
-          </div>
-          <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>
-            Weighted contribution: <strong>{(coding * 0.4).toFixed(1)} pts</strong> based on VM test execution.
+            <div className="text-3xl font-extrabold text-slate-900 font-mono mb-2">
+              {coding}%
+            </div>
+            <div className="text-xs text-slate-500 leading-relaxed">
+              Weighted contribution: <strong className="text-slate-800">{(coding * 0.4).toFixed(1)} pts</strong> based on VM test execution.
+            </div>
           </div>
         </div>
 
         {/* Component 3: Resume Match */}
-        <div
-          style={{
-            background: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 14,
-            padding: 24,
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#a855f7', fontWeight: 600 }}>
-              <FileText size={18} /> Resume Match
+        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2 text-indigo-700 font-bold text-xs">
+                <FileText size={16} /> Resume Match
+              </div>
+              <span className="text-[11px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded">
+                20% Weight
+              </span>
             </div>
-            <span style={{ fontSize: 11, background: 'rgba(168, 85, 247, 0.15)', color: '#c084fc', padding: '2px 8px', borderRadius: 6, fontWeight: 700 }}>
-              20% Weight
-            </span>
-          </div>
-          <div style={{ fontSize: 28, fontWeight: 800, color: '#fff', margin: '8px 0' }}>
-            {resume}%
-          </div>
-          <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>
-            Weighted contribution: <strong>{(resume * 0.2).toFixed(1)} pts</strong> matching verified competencies.
+            <div className="text-3xl font-extrabold text-slate-900 font-mono mb-2">
+              {resume}%
+            </div>
+            <div className="text-xs text-slate-500 leading-relaxed">
+              Weighted contribution: <strong className="text-slate-800">{(resume * 0.2).toFixed(1)} pts</strong> matching verified competencies.
+            </div>
           </div>
         </div>
       </div>
 
       {/* ── Next Actions ─────────────────────────────────────────────────── */}
-      <div
-        style={{
-          background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 16,
-          padding: 24,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: 16,
-        }}
-      >
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-wrap items-center justify-between gap-4">
         <div>
-          <div style={{ fontWeight: 700, color: '#fff', fontSize: 16, marginBottom: 4 }}>
+          <div className="font-bold text-slate-900 text-sm mb-1">
             What happens next?
           </div>
-          <div style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
+          <div className="text-xs text-slate-500 max-w-md">
             Recruiters will evaluate your score card. If shortlisted, you will receive an interview invitation directly in your portal.
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 10 }}>
+        <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/candidate/applications')}
-            className="btn btn-outline btn-sm"
-            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors"
           >
             <Briefcase size={14} /> My Applications
           </button>
           <button
             onClick={() => navigate('/candidate/interviews')}
-            className="btn btn-primary btn-sm"
-            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors shadow-xs"
           >
             <Calendar size={14} /> View Interviews
           </button>

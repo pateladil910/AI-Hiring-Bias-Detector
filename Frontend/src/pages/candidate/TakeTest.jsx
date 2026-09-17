@@ -13,7 +13,7 @@ function ScoreRing({ score }) {
   return (
     <div className="score-ring-wrapper">
       <svg width="180" height="180" style={{ transform: 'rotate(-90deg)' }}>
-        <circle cx="90" cy="90" r={radius} fill="none" stroke="#262E42" strokeWidth="12" />
+        <circle cx="90" cy="90" r={radius} fill="none" stroke="#e2e8f0" strokeWidth="12" />
         <circle
           cx="90" cy="90" r={radius} fill="none"
           stroke={color} strokeWidth="12"

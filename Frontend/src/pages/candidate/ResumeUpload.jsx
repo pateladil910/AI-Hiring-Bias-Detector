@@ -102,150 +102,82 @@ export default function ResumeUpload() {
   };
 
   return (
-    <div className="container" style={{ maxWidth: 880, margin: '0 auto', padding: '36px 24px' }}>
-      {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div style={{ textAlign: 'center', marginBottom: 32 }}>
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            background: 'rgba(16, 185, 129, 0.15)',
-            color: '#34d399',
-            padding: '4px 12px',
-            borderRadius: 9999,
-            fontSize: 12,
-            fontWeight: 700,
-            marginBottom: 12,
-          }}
-        >
-          <ShieldCheck size={14} /> Stage 01: Resume Anonymization
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 font-sans">
+      {/* ── Header ───────────────────────────────────────────────────────── */}
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full mb-3">
+          <ShieldCheck size={14} className="text-emerald-600" /> Stage 01: Resume Anonymization
         </div>
-        <h1 style={{ fontSize: 28, fontWeight: 800, margin: '0 0 8px', color: '#fff' }}>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
           Upload Your Resume for Algorithmic Redaction
         </h1>
-        <p style={{ color: 'var(--color-text-secondary)', fontSize: 15, maxWidth: 600, margin: '0 auto' }}>
+        <p className="text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
           Our AI scans your resume to strip personally identifiable information (PII) including name, phone, address, and demographic markers before recruiter review.
         </p>
       </div>
 
       {/* ── Existing Confirmed Resume Notice (if any) ────────────────────── */}
       {existingResume && (
-        <div
-          style={{
-            background: 'var(--color-surface)',
-            border: '1px solid rgba(16, 185, 129, 0.3)',
-            borderRadius: 14,
-            padding: 20,
-            marginBottom: 28,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: 16,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div
-              style={{
-                width: 42,
-                height: 42,
-                borderRadius: 10,
-                background: 'rgba(16, 185, 129, 0.15)',
-                color: '#34d399',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <FileCheck size={22} />
+        <div className="bg-white border border-emerald-200 rounded-xl p-5 mb-6 shadow-xs flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200">
+              <FileCheck size={20} />
             </div>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontWeight: 700, color: '#fff', fontSize: 15 }}>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-slate-900 text-sm">
                   {existingResume.fileName || 'Active Anonymized Resume'}
                 </span>
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    background: existingResume.confirmed ? 'rgba(16, 185, 129, 0.2)' : 'rgba(234, 179, 8, 0.2)',
-                    color: existingResume.confirmed ? '#34d399' : '#facc15',
-                    padding: '2px 8px',
-                    borderRadius: 6,
-                  }}
-                >
+                <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-md ${
+                  existingResume.confirmed
+                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                    : 'bg-amber-50 text-amber-700 border border-amber-200'
+                }`}>
                   {existingResume.confirmed ? 'Verified & Confirmed' : 'Needs Review'}
                 </span>
               </div>
-              <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 2 }}>
-                Reference ID: <code style={{ color: '#6ee7b7' }}>{existingResume.refId}</code> • Uploaded {new Date(existingResume.createdAt).toLocaleDateString()}
+              <div className="text-xs text-slate-500 mt-0.5">
+                Reference ID: <code className="font-mono text-emerald-700 font-bold">{existingResume.refId}</code> • Uploaded {new Date(existingResume.createdAt).toLocaleDateString()}
               </div>
             </div>
           </div>
 
           <button
             onClick={() => navigate(`/candidate/resume/review?refId=${existingResume.refId}`)}
-            className="btn btn-outline btn-sm"
-            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50 transition-colors"
           >
-            Review Redacted Preview <ArrowRight size={14} />
+            Review Redacted Preview <ArrowRight size={13} />
           </button>
         </div>
       )}
 
       {/* ── Upload Card ─────────────────────────────────────────────────── */}
-      <div
-        style={{
-          background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 16,
-          padding: 32,
-        }}
-      >
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
         <form onSubmit={handleUpload}>
           {/* Drag & Drop Area */}
           <label
             htmlFor="resume-file"
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '48px 24px',
-              border: file ? '2px dashed #10b981' : '2px dashed var(--color-border)',
-              borderRadius: 14,
-              background: file ? 'rgba(16, 185, 129, 0.04)' : 'rgba(255,255,255,0.01)',
-              cursor: 'pointer',
-              transition: 'all 200ms ease',
-              marginBottom: 24,
-            }}
+            className={`flex flex-col items-center justify-center py-10 px-6 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-150 mb-6 ${
+              file
+                ? 'border-emerald-500 bg-emerald-50/30'
+                : 'border-slate-200 hover:border-emerald-400 bg-slate-50/50 hover:bg-slate-50'
+            }`}
           >
-            <div
-              style={{
-                width: 56,
-                height: 56,
-                borderRadius: '50%',
-                background: file ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255,255,255,0.06)',
-                color: file ? '#34d399' : 'var(--color-text-secondary)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: 16,
-              }}
-            >
-              {file ? <FileCheck size={28} /> : <UploadCloud size={28} />}
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${
+              file ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'
+            }`}>
+              {file ? <FileCheck size={24} /> : <UploadCloud size={24} />}
             </div>
 
-            <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 6 }}>
+            <div className="text-sm font-bold text-slate-900 mb-1">
               {file ? file.name : 'Click to select or drag and drop your resume'}
             </div>
-            <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', textAlign: 'center' }}>
+            <div className="text-xs text-slate-500 text-center">
               Supported formats: PDF, DOCX (Max 5MB)
             </div>
 
             {file && (
-              <div style={{ marginTop: 12, fontSize: 12, color: '#34d399', fontWeight: 600 }}>
+              <div className="mt-3 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
                 ✓ Selected {(file.size / 1024).toFixed(1)} KB — Ready for Anonymization
               </div>
             )}
@@ -255,112 +187,73 @@ export default function ResumeUpload() {
               type="file"
               accept=".pdf,.docx,.doc,.txt"
               onChange={handleFileChange}
-              style={{ display: 'none' }}
+              className="hidden"
             />
           </label>
 
           {/* Error Message */}
           {error && (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                background: 'rgba(239, 68, 68, 0.1)',
-                border: '1px solid rgba(239, 68, 68, 0.3)',
-                color: '#f87171',
-                padding: '10px 14px',
-                borderRadius: 8,
-                fontSize: 13,
-                marginBottom: 20,
-              }}
-            >
-              <AlertCircle size={16} />
-              {error}
+            <div className="flex items-center gap-2 bg-rose-50 border border-rose-200 text-rose-700 px-4 py-2.5 rounded-lg text-xs font-medium mb-5">
+              <AlertCircle size={15} />
+              <span>{error}</span>
             </div>
           )}
 
           {/* Upload Progress Bar */}
           {uploading && (
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 6 }}>
+            <div className="mb-5">
+              <div className="flex justify-between text-xs text-slate-600 mb-1.5 font-medium">
                 <span>Uploading and extracting PII markers...</span>
                 <span>{uploadProgress}%</span>
               </div>
-              <div style={{ height: 6, background: 'rgba(255,255,255,0.1)', borderRadius: 9999, overflow: 'hidden' }}>
+              <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  style={{
-                    height: '100%',
-                    width: `${uploadProgress}%`,
-                    background: 'var(--color-primary)',
-                    transition: 'width 200ms ease',
-                  }}
+                  className="h-full bg-emerald-600 transition-all duration-150 rounded-full"
+                  style={{ width: `${uploadProgress}%` }}
                 />
               </div>
             </div>
           )}
 
           {/* Consent Checkbox */}
-          <div
-            style={{
-              background: 'rgba(255,255,255,0.02)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 10,
-              padding: 16,
-              marginBottom: 24,
-            }}
-          >
-            <label style={{ display: 'flex', gap: 12, cursor: 'pointer', alignItems: 'flex-start' }}>
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6">
+            <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
                 checked={consent}
                 onChange={(e) => setConsent(e.target.checked)}
-                style={{ marginTop: 3, accentColor: '#10b981', cursor: 'pointer' }}
+                className="mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 cursor-pointer"
               />
-              <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
-                <strong style={{ color: '#fff' }}>Candidate Demographic Protection Consent:</strong> I consent to FairHire storing and algorithmically parsing my resume. I understand that all PII (name, photo, contact, and demographic markers) will be redacted before recruiter evaluation.
+              <div className="text-xs text-slate-600 leading-relaxed">
+                <strong className="text-slate-900 font-semibold">Candidate Demographic Protection Consent:</strong> I consent to FairHire storing and algorithmically parsing my resume. I understand that all PII (name, photo, contact, and demographic markers) will be redacted before recruiter evaluation.
               </div>
             </label>
           </div>
 
           {/* Action Buttons */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
+          <div className="flex items-center justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={() => navigate('/candidate/dashboard')}
-              className="btn btn-ghost"
+              className="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={uploading || !file || !consent}
-              className="btn btn-primary"
-              style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+              className="flex items-center gap-2 px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-semibold transition-colors shadow-xs"
             >
-              {uploading ? 'Processing Anonymization...' : 'Upload & Scan PII'}
-              <ArrowRight size={16} />
+              <span>{uploading ? 'Processing Anonymization...' : 'Upload & Scan PII'}</span>
+              <ArrowRight size={14} />
             </button>
           </div>
         </form>
       </div>
 
       {/* ── Privacy Guarantee Notice ─────────────────────────────────────── */}
-      <div
-        style={{
-          marginTop: 24,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-          padding: '14px 20px',
-          background: 'rgba(16, 185, 129, 0.05)',
-          border: '1px solid rgba(16, 185, 129, 0.2)',
-          borderRadius: 12,
-          fontSize: 13,
-          color: 'var(--color-text-secondary)',
-        }}
-      >
-        <Lock size={18} color="#10b981" style={{ flexShrink: 0 }} />
+      <div className="mt-6 flex items-center gap-3 p-4 bg-emerald-50/50 border border-emerald-200/80 rounded-xl text-xs text-slate-600 leading-relaxed">
+        <Lock size={16} className="text-emerald-600 flex-shrink-0" />
         <div>
           Raw original resumes are encrypted and kept strictly separate from recruiter pools. Recruiters only see your verified skills and unalterable assessment benchmarks.
         </div>

@@ -59,64 +59,33 @@ export default function DomainSelection() {
   };
 
   return (
-    <div className="container" style={{ maxWidth: 1100, margin: '0 auto', padding: '36px 24px' }}>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 font-sans">
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div style={{ textAlign: 'center', marginBottom: 36 }}>
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            background: 'rgba(16, 185, 129, 0.15)',
-            color: '#34d399',
-            padding: '4px 12px',
-            borderRadius: 9999,
-            fontSize: 12,
-            fontWeight: 700,
-            marginBottom: 12,
-          }}
-        >
-          <Target size={14} /> Stage 02: Domain Assessment Track
+      <div className="text-center mb-10">
+        <div className="inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full mb-3">
+          <Target size={14} className="text-emerald-600" /> Stage 02: Domain Assessment Track
         </div>
-        <h1 style={{ fontSize: 28, fontWeight: 800, margin: '0 0 8px', color: '#fff' }}>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
           Select Your Engineering Assessment Specialization
         </h1>
-        <p style={{ color: 'var(--color-text-secondary)', fontSize: 15, maxWidth: 650, margin: '0 auto' }}>
+        <p className="text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
           All tracks feature standardized, objective benchmarks: 5 knowledge MCQs followed by 1 sandboxed algorithmic coding task.
         </p>
       </div>
 
       {error && (
-        <div
-          style={{
-            background: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
-            color: '#f87171',
-            padding: '12px 16px',
-            borderRadius: 10,
-            marginBottom: 24,
-            textAlign: 'center',
-          }}
-        >
+        <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl text-xs font-medium mb-6 text-center">
           {error}
         </div>
       )}
 
       {/* ── Domain Cards Grid ───────────────────────────────────────────── */}
       {loading ? (
-        <div style={{ textAlign: 'center', padding: 60 }}>
-          <div className="spinner" style={{ margin: '0 auto 16px' }} />
-          <div style={{ color: 'var(--color-text-secondary)' }}>Loading assessment tracks...</div>
+        <div className="text-center py-16 text-slate-500 text-sm">
+          Loading assessment tracks...
         </div>
       ) : (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: 20,
-            marginBottom: 36,
-          }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {domains.map((domain) => {
             const isSelected = selectedDomain === domain.id;
 
@@ -124,71 +93,44 @@ export default function DomainSelection() {
               <div
                 key={domain.id}
                 onClick={() => setSelectedDomain(domain.id)}
-                style={{
-                  background: isSelected ? 'rgba(16, 185, 129, 0.08)' : 'var(--color-surface)',
-                  border: isSelected ? '2px solid #10b981' : '1px solid var(--color-border)',
-                  borderRadius: 16,
-                  padding: 24,
-                  cursor: 'pointer',
-                  transition: 'all 200ms ease',
-                  position: 'relative',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                }}
+                className={`bg-white rounded-2xl p-6 cursor-pointer transition-all duration-150 border flex flex-col justify-between ${
+                  isSelected
+                    ? 'border-emerald-500 ring-2 ring-emerald-500/20 shadow-md bg-emerald-50/10'
+                    : 'border-slate-200 shadow-xs hover:border-slate-300 hover:shadow-sm'
+                }`}
               >
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-                    <div
-                      style={{
-                        width: 42,
-                        height: 42,
-                        borderRadius: 10,
-                        background: isSelected ? '#10b981' : 'rgba(255,255,255,0.06)',
-                        color: isSelected ? '#000' : 'var(--color-text-secondary)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Code size={22} />
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                      isSelected ? 'bg-emerald-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600'
+                    }`}>
+                      <Code size={20} />
                     </div>
 
-                    <div
-                      style={{
-                        width: 22,
-                        height: 22,
-                        borderRadius: '50%',
-                        border: isSelected ? '6px solid #10b981' : '2px solid var(--color-border)',
-                        background: '#090f0c',
-                      }}
-                    />
+                    <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all ${
+                      isSelected ? 'border-emerald-600 bg-emerald-600' : 'border-slate-300 bg-white'
+                    }`}>
+                      {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
+                    </div>
                   </div>
 
-                  <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 8px', color: '#fff' }}>
+                  <h3 className="text-base font-bold text-slate-900 mb-2">
                     {domain.name}
                   </h3>
-                  <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', margin: '0 0 16px', lineHeight: 1.5 }}>
+                  <p className="text-xs text-slate-600 mb-4 leading-relaxed">
                     {domain.description}
                   </p>
 
                   {/* Skills tags */}
-                  <div style={{ marginBottom: 18 }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-text-muted)', marginBottom: 6, textTransform: 'uppercase' }}>
+                  <div className="mb-4">
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
                       Required Competencies
                     </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    <div className="flex flex-wrap gap-1.5">
                       {domain.requiredSkills.map((skill, idx) => (
                         <span
                           key={idx}
-                          style={{
-                            background: 'rgba(255,255,255,0.04)',
-                            border: '1px solid var(--color-border)',
-                            color: '#cbd5e1',
-                            padding: '2px 8px',
-                            borderRadius: 6,
-                            fontSize: 11,
-                          }}
+                          className="bg-slate-100 text-slate-700 border border-slate-200/80 px-2 py-0.5 rounded text-[11px] font-medium"
                         >
                           {skill}
                         </span>
@@ -198,21 +140,12 @@ export default function DomainSelection() {
                 </div>
 
                 {/* Duration & Format Pill */}
-                <div
-                  style={{
-                    borderTop: '1px solid var(--color-border)',
-                    paddingTop: 14,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    fontSize: 12,
-                    color: 'var(--color-text-secondary)',
-                  }}
-                >
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <Clock size={13} color="#10b981" /> {domain.durationMinutes} Minutes
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                  <span className="flex items-center gap-1.5">
+                    <Clock size={13} className="text-emerald-600" /> {domain.durationMinutes} Minutes
                   </span>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <Layers size={13} color="#38bdf8" /> {domain.format}
+                  <span className="flex items-center gap-1.5">
+                    <Layers size={13} className="text-sky-600" /> {domain.format}
                   </span>
                 </div>
               </div>
@@ -222,26 +155,16 @@ export default function DomainSelection() {
       )}
 
       {/* ── Start Assessment Bar ────────────────────────────────────────── */}
-      <div
-        style={{
-          background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 16,
-          padding: '20px 28px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: 16,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <ShieldCheck size={24} color="#10b981" />
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center flex-shrink-0">
+            <ShieldCheck size={20} />
+          </div>
           <div>
-            <div style={{ fontWeight: 700, color: '#fff', fontSize: 15 }}>
+            <div className="font-bold text-slate-900 text-sm">
               Ready to begin?
             </div>
-            <div style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
+            <div className="text-xs text-slate-500">
               The 30-minute server timer starts once you confirm on the next screen. Progress is autosaved every 30 seconds.
             </div>
           </div>
@@ -250,11 +173,10 @@ export default function DomainSelection() {
         <button
           onClick={handleStart}
           disabled={starting || loading}
-          className="btn btn-primary"
-          style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px', fontSize: 15 }}
+          className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-xs"
         >
-          {starting ? 'Launching Assessment...' : 'Start Timed Assessment'}
-          <ArrowRight size={16} />
+          <span>{starting ? 'Launching Assessment...' : 'Start Timed Assessment'}</span>
+          <ArrowRight size={15} />
         </button>
       </div>
     </div>

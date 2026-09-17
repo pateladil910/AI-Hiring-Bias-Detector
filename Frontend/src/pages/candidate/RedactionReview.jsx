@@ -97,57 +97,46 @@ export default function RedactionReview() {
   const skills = data.extractedSkills || [];
 
   return (
-    <div className="container" style={{ maxWidth: 1200, margin: '0 auto', padding: '36px 24px' }}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-sans">
       {/* ── Top Header ──────────────────────────────────────────────────────── */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16, marginBottom: 28 }}>
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-            <span
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                background: 'rgba(16, 185, 129, 0.2)',
-                color: '#34d399',
-                padding: '3px 10px',
-                borderRadius: 9999,
-              }}
-            >
+          <div className="flex items-center gap-2.5 mb-1.5">
+            <span className="text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full border border-emerald-200">
               Stage 01 Review
             </span>
-            <span style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-              Candidate Alias: <strong style={{ color: '#6ee7b7', fontFamily: 'monospace' }}>{data.refId}</strong>
+            <span className="text-xs text-slate-500">
+              Candidate Alias: <strong className="font-mono text-emerald-700 font-bold">{data.refId}</strong>
             </span>
           </div>
-          <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0, color: '#fff' }}>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
             Verify Demographic Redaction Preview
           </h1>
         </div>
 
-        <div style={{ display: 'flex', gap: 10 }}>
+        <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/candidate/resume')}
-            className="btn btn-ghost btn-sm"
-            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-semibold transition-colors"
           >
-            <RotateCcw size={14} /> Re-upload
+            <RotateCcw size={13} /> Re-upload
           </button>
           {!confirmed ? (
             <button
               onClick={handleConfirm}
               disabled={confirming}
-              className="btn btn-primary"
-              style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-xs font-semibold transition-colors shadow-xs"
             >
-              <CheckCircle2 size={16} />
+              <CheckCircle2 size={15} />
               {confirming ? 'Confirming...' : 'Confirm Anonymized Profile'}
             </button>
           ) : (
             <button
               onClick={() => navigate('/candidate/domain')}
-              className="btn btn-primary"
-              style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors shadow-xs"
             >
-              Proceed to Domain Selection <ArrowRight size={16} />
+              <span>Proceed to Domain Selection</span>
+              <ArrowRight size={15} />
             </button>
           )}
         </div>
@@ -155,96 +144,59 @@ export default function RedactionReview() {
 
       {/* Confirmation Success Banner */}
       {confirmed && (
-        <div
-          style={{
-            background: 'rgba(16, 185, 129, 0.12)',
-            border: '1px solid #10b981',
-            borderRadius: 12,
-            padding: '16px 20px',
-            marginBottom: 24,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: 12,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#34d399', fontWeight: 600 }}>
-            <CheckCircle2 size={20} />
+        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-6 flex flex-wrap items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-center gap-2.5 text-xs font-semibold text-emerald-800">
+            <CheckCircle2 size={18} className="text-emerald-600" />
             Profile confirmed! Your resume has been locked and certified demographic-neutral.
           </div>
           <button
             onClick={() => navigate('/candidate/domain')}
-            className="btn btn-primary btn-sm"
-            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors shadow-xs"
           >
-            Select Domain Track <ArrowRight size={14} />
+            <span>Select Domain Track</span>
+            <ArrowRight size={13} />
           </button>
         </div>
       )}
 
       {/* ── Side-by-Side Split View ────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: 24 }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Column: Redacted Markers & Skills Evidence */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div className="space-y-6">
           {/* Detected & Redacted Markers */}
-          <div
-            style={{
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 16,
-              padding: 24,
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-              <ShieldCheck size={18} color="#10b981" />
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#fff' }}>
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
+            <div className="flex items-center gap-2 mb-2">
+              <ShieldCheck size={18} className="text-emerald-600" />
+              <h3 className="text-base font-bold text-slate-900">
                 Detected & Masked Demographic Markers
               </h3>
             </div>
-            <p style={{ margin: '0 0 16px', fontSize: 13, color: 'var(--color-text-secondary)' }}>
+            <p className="text-xs text-slate-500 mb-4 leading-relaxed">
               The following categories have been completely stripped and replaced with deterministic tokens to eliminate unconscious recruiter bias.
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div className="space-y-2.5">
               {markers.length > 0 ? (
                 markers.map((marker, idx) => (
                   <div
                     key={idx}
-                    style={{
-                      background: 'rgba(255,255,255,0.03)',
-                      border: '1px solid var(--color-border)',
-                      borderRadius: 10,
-                      padding: '10px 14px',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
+                    className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center justify-between gap-3"
                   >
                     <div>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: '#fff' }}>
+                      <div className="text-xs font-bold text-slate-900">
                         {marker.type}
                       </div>
-                      <div style={{ fontSize: 11, color: '#6ee7b7', fontFamily: 'monospace' }}>
+                      <div className="text-[11px] text-emerald-700 font-mono font-medium">
                         Replaced with: {marker.example || '[REDACTED]'}
                       </div>
                     </div>
-                    <span
-                      style={{
-                        fontSize: 11,
-                        background: 'rgba(16, 185, 129, 0.2)',
-                        color: '#34d399',
-                        padding: '2px 8px',
-                        borderRadius: 9999,
-                        fontWeight: 700,
-                      }}
-                    >
+                    <span className="text-[11px] font-semibold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded border border-emerald-200">
                       Masked
                     </span>
                   </div>
                 ))
               ) : (
-                <div style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
+                <div className="text-xs text-slate-500 py-2">
                   ✓ Standard demographic identifiers stripped.
                 </div>
               )}
@@ -252,37 +204,22 @@ export default function RedactionReview() {
           </div>
 
           {/* Extracted Technical Skills */}
-          <div
-            style={{
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 16,
-              padding: 24,
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-              <Tag size={18} color="#38bdf8" />
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#fff' }}>
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
+            <div className="flex items-center gap-2 mb-2">
+              <Tag size={18} className="text-sky-600" />
+              <h3 className="text-base font-bold text-slate-900">
                 Extracted Skills Evidence
               </h3>
             </div>
-            <p style={{ margin: '0 0 16px', fontSize: 13, color: 'var(--color-text-secondary)' }}>
+            <p className="text-xs text-slate-500 mb-4 leading-relaxed">
               These competencies were extracted from your experience and will be matched against domain job criteria.
             </p>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            <div className="flex flex-wrap gap-2">
               {skills.map((skill, idx) => (
                 <span
                   key={idx}
-                  style={{
-                    background: 'rgba(56, 189, 248, 0.1)',
-                    border: '1px solid rgba(56, 189, 248, 0.25)',
-                    color: '#38bdf8',
-                    padding: '4px 10px',
-                    borderRadius: 8,
-                    fontSize: 12,
-                    fontWeight: 600,
-                  }}
+                  className="bg-sky-50 text-sky-700 border border-sky-200 px-2.5 py-1 rounded-lg text-xs font-semibold"
                 >
                   {skill}
                 </span>
@@ -292,59 +229,28 @@ export default function RedactionReview() {
         </div>
 
         {/* Right Column: Redacted Document Preview */}
-        <div
-          style={{
-            background: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 16,
-            padding: 24,
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Eye size={18} color="#10b981" />
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#fff' }}>
-                Recruiter View: Anonymized Preview
-              </h3>
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Eye size={18} className="text-emerald-600" />
+                <h3 className="text-base font-bold text-slate-900">
+                  Recruiter View: Anonymized Preview
+                </h3>
+              </div>
+              <span className="text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                Zero PII
+              </span>
             </div>
-            <span
-              style={{
-                fontSize: 11,
-                color: '#34d399',
-                background: 'rgba(16, 185, 129, 0.15)',
-                padding: '2px 8px',
-                borderRadius: 6,
-                fontWeight: 600,
-              }}
-            >
-              Zero PII
-            </span>
+
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 font-mono text-xs leading-relaxed text-slate-800 whitespace-pre-wrap max-h-[500px] overflow-y-auto">
+              {data.redactedText || 'No text content available.'}
+            </div>
           </div>
 
-          <div
-            style={{
-              flex: 1,
-              background: '#090f0c',
-              border: '1px solid var(--color-border)',
-              borderRadius: 12,
-              padding: 20,
-              fontFamily: 'monospace',
-              fontSize: 13,
-              lineHeight: 1.6,
-              color: '#cbd5e1',
-              whiteSpace: 'pre-wrap',
-              maxHeight: 520,
-              overflowY: 'auto',
-            }}
-          >
-            {data.redactedText || 'No text content available.'}
-          </div>
-
-          <div style={{ marginTop: 16, fontSize: 12, color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Lock size={12} />
-            This exact redacted representation is what hiring managers review during initial talent evaluation.
+          <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2 text-xs text-slate-500">
+            <Lock size={13} className="text-slate-400" />
+            <span>This exact redacted representation is what hiring managers review during initial talent evaluation.</span>
           </div>
         </div>
       </div>

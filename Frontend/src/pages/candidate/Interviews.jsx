@@ -82,78 +82,42 @@ export default function CandidateInterviews() {
   };
 
   return (
-    <div className="container" style={{ maxWidth: 1000, margin: '0 auto', padding: '36px 24px' }}>
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 font-sans">
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div style={{ marginBottom: 32 }}>
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            background: 'rgba(56, 189, 248, 0.15)',
-            color: '#38bdf8',
-            padding: '4px 12px',
-            borderRadius: 9999,
-            fontSize: 12,
-            fontWeight: 700,
-            marginBottom: 12,
-          }}
-        >
-          <Calendar size={14} /> Candidate Interview Hub
+      <div className="mb-8">
+        <div className="inline-flex items-center gap-1.5 text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200 px-3 py-1 rounded-full mb-3">
+          <Calendar size={14} className="text-sky-600" /> Candidate Interview Hub
         </div>
-        <h1 style={{ fontSize: 28, fontWeight: 800, margin: '0 0 8px', color: '#fff' }}>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
           Scheduled Technical Interviews
         </h1>
-        <p style={{ color: 'var(--color-text-secondary)', fontSize: 15, margin: 0 }}>
-          Hiring panels conduct blind technical discussions focusing solely on architecture, problem solving, and past projects.
+        <p className="text-sm text-slate-600 max-w-xl">
+          Hiring panels conduct blind technical discussions focusing solely on architecture, problem solving, and past engineering challenges.
         </p>
       </div>
 
       {actionSuccess && (
-        <div
-          style={{
-            background: 'rgba(16, 185, 129, 0.12)',
-            border: '1px solid #10b981',
-            borderRadius: 12,
-            padding: '14px 18px',
-            marginBottom: 24,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
-            color: '#34d399',
-            fontSize: 14,
-            fontWeight: 600,
-          }}
-        >
-          <CheckCircle2 size={18} />
-          {actionSuccess}
+        <div className="flex items-center gap-2.5 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-xs font-semibold mb-6 shadow-xs">
+          <CheckCircle2 size={16} className="text-emerald-600" />
+          <span>{actionSuccess}</span>
         </div>
       )}
 
       {/* ── Interviews List ───────────────────────────────────────────────── */}
       {loading ? (
-        <div style={{ textAlign: 'center', padding: 60 }}>
-          <div className="spinner" style={{ margin: '0 auto 16px' }} />
-          <div style={{ color: 'var(--color-text-secondary)' }}>Loading scheduled interviews...</div>
+        <div className="text-center py-16 text-slate-500 text-sm">
+          Loading scheduled interviews...
         </div>
       ) : interviews.length === 0 ? (
-        <div
-          style={{
-            background: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 16,
-            padding: 48,
-            textAlign: 'center',
-          }}
-        >
-          <Calendar size={48} color="var(--color-text-muted)" style={{ margin: '0 auto 16px' }} />
-          <h3 style={{ color: '#fff', fontSize: 18, marginBottom: 8 }}>No Upcoming Interviews</h3>
-          <p style={{ color: 'var(--color-text-secondary)', maxWidth: 460, margin: '0 auto' }}>
-            When a hiring team advances your anonymized profile to the interview stage, you will see your meeting slots and video links here.
+        <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-xs">
+          <Calendar size={42} className="text-slate-300 mx-auto mb-3" />
+          <h3 className="text-base font-bold text-slate-900 mb-1">No Upcoming Interviews</h3>
+          <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+            When a hiring team advances your demographic-neutral profile to the interview stage, you will see your meeting slots and video links here.
           </p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div className="space-y-5">
           {interviews.map((item) => {
             const isConfirmed = item.status === 'confirmed';
             const isReschedule = item.status === 'reschedule_requested';
@@ -161,40 +125,31 @@ export default function CandidateInterviews() {
             return (
               <div
                 key={item.id}
-                style={{
-                  background: 'var(--color-surface)',
-                  border: isConfirmed ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid var(--color-border)',
-                  borderRadius: 16,
-                  padding: 28,
-                  position: 'relative',
-                }}
+                className={`bg-white rounded-2xl p-6 border shadow-xs transition-all ${
+                  isConfirmed ? 'border-emerald-300 ring-1 ring-emerald-200' : 'border-slate-200'
+                }`}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16, marginBottom: 16 }}>
+                <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-                      <h3 style={{ margin: 0, fontSize: 19, fontWeight: 700, color: '#fff' }}>
+                    <div className="flex items-center gap-2.5 mb-1.5">
+                      <h3 className="text-base font-bold text-slate-900">
                         {item.jobTitle}
                       </h3>
                       <span
-                        style={{
-                          fontSize: 11,
-                          fontWeight: 700,
-                          padding: '3px 8px',
-                          borderRadius: 6,
-                          background: isConfirmed
-                            ? 'rgba(16, 185, 129, 0.15)'
+                        className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
+                          isConfirmed
+                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                             : isReschedule
-                            ? 'rgba(234, 179, 8, 0.15)'
-                            : 'rgba(56, 189, 248, 0.15)',
-                          color: isConfirmed ? '#34d399' : isReschedule ? '#facc15' : '#38bdf8',
-                        }}
+                            ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                            : 'bg-sky-50 text-sky-700 border border-sky-200'
+                        }`}
                       >
                         {isConfirmed ? 'Attendance Confirmed' : isReschedule ? 'Reschedule Requested' : 'Action Required'}
                       </span>
                     </div>
 
-                    <div style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-                      Organization: <strong style={{ color: '#fff' }}>{item.companyName}</strong>
+                    <div className="text-xs text-slate-500">
+                      Organization: <strong className="text-slate-800">{item.companyName}</strong>
                     </div>
                   </div>
 
@@ -202,71 +157,62 @@ export default function CandidateInterviews() {
                     href={item.meetingLink || '#'}
                     target="_blank"
                     rel="noreferrer"
-                    className="btn btn-outline btn-sm"
-                    style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50 transition-colors"
                   >
-                    <Video size={14} color="#10b981" /> Open Video Room <ExternalLink size={12} />
+                    <Video size={14} className="text-emerald-600" />
+                    <span>Open Video Room</span>
+                    <ExternalLink size={12} />
                   </a>
                 </div>
 
                 {/* Date & Time Grid */}
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                    gap: 14,
-                    background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid var(--color-border)',
-                    borderRadius: 12,
-                    padding: 16,
-                    marginBottom: 20,
-                  }}
-                >
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 border border-slate-200/80 rounded-xl p-4 mb-4 text-xs">
                   <div>
-                    <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
+                    <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
                       Scheduled Date & Time
                     </div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: '#fff', marginTop: 2, display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <Calendar size={14} color="#10b981" />
-                      {new Date(item.scheduledAt).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
+                    <div className="font-semibold text-slate-800 mt-1 flex items-center gap-1.5">
+                      <Calendar size={13} className="text-emerald-600" />
+                      <span>{new Date(item.scheduledAt).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</span>
                     </div>
                   </div>
 
                   <div>
-                    <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
+                    <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
                       Expected Duration
                     </div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: '#fff', marginTop: 2, display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <Clock size={14} color="#38bdf8" /> {item.durationMinutes || 45} Minutes
+                    <div className="font-semibold text-slate-800 mt-1 flex items-center gap-1.5">
+                      <Clock size={13} className="text-sky-600" />
+                      <span>{item.durationMinutes || 45} Minutes</span>
                     </div>
                   </div>
 
                   <div>
-                    <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
+                    <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
                       Panel Protocol
                     </div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: '#34d399', marginTop: 2, display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <ShieldCheck size={14} /> Blind Technical Panel
+                    <div className="font-semibold text-emerald-700 mt-1 flex items-center gap-1.5">
+                      <ShieldCheck size={13} />
+                      <span>Demographic-Blind Panel</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Panellists & Preparation Notes */}
+                {/* Preparation Notes */}
                 {item.notes && (
-                  <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 20, lineHeight: 1.5 }}>
-                    <strong>Preparation Notes:</strong> {item.notes}
+                  <div className="text-xs text-slate-600 mb-4 leading-relaxed bg-slate-50/50 p-3 rounded-lg border border-slate-200/60">
+                    <strong className="text-slate-800">Preparation Notes:</strong> {item.notes}
                   </div>
                 )}
 
                 {/* Actions */}
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+                <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-100">
                   {!isReschedule && (
                     <button
                       onClick={() => setRescheduleModal(item.id)}
-                      className="btn btn-ghost btn-sm"
-                      style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-semibold transition-colors"
                     >
-                      <RotateCcw size={14} /> Request Reschedule
+                      <RotateCcw size={13} /> Request Reschedule
                     </button>
                   )}
 
@@ -274,10 +220,9 @@ export default function CandidateInterviews() {
                     <button
                       onClick={() => handleConfirm(item.id)}
                       disabled={submittingAction}
-                      className="btn btn-primary btn-sm"
-                      style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+                      className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors shadow-xs"
                     >
-                      <CheckCircle2 size={14} /> Confirm Attendance
+                      <CheckCircle2 size={13} /> Confirm Attendance
                     </button>
                   )}
                 </div>
@@ -289,32 +234,12 @@ export default function CandidateInterviews() {
 
       {/* ── Reschedule Request Modal ──────────────────────────────────────── */}
       {rescheduleModal && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0,0,0,0.7)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 100,
-            padding: 24,
-          }}
-        >
-          <div
-            style={{
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 16,
-              maxWidth: 480,
-              width: '100%',
-              padding: 28,
-            }}
-          >
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: '#fff', margin: '0 0 8px' }}>
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 shadow-xl">
+            <h3 className="text-base font-bold text-slate-900 mb-1">
               Request Interview Reschedule
             </h3>
-            <p style={{ color: 'var(--color-text-secondary)', fontSize: 13, margin: '0 0 18px' }}>
+            <p className="text-xs text-slate-500 mb-4 leading-relaxed">
               Please provide a brief reason or your preferred availability. The hiring panel will review and suggest alternate slots.
             </p>
 
@@ -325,32 +250,21 @@ export default function CandidateInterviews() {
                 placeholder="e.g., Conflict with current exam/work schedule. Available afternoons Thursday or Friday..."
                 rows={4}
                 required
-                style={{
-                  width: '100%',
-                  background: '#090f0c',
-                  border: '1px solid var(--color-border)',
-                  borderRadius: 10,
-                  padding: 12,
-                  color: '#fff',
-                  fontSize: 13,
-                  outline: 'none',
-                  resize: 'none',
-                  marginBottom: 18,
-                }}
+                className="w-full bg-white border border-slate-300 rounded-xl p-3 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent mb-4 resize-none"
               />
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+              <div className="flex items-center justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setRescheduleModal(null)}
-                  className="btn btn-ghost btn-sm"
+                  className="px-3.5 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submittingAction}
-                  className="btn btn-primary btn-sm"
+                  className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors shadow-xs"
                 >
                   {submittingAction ? 'Sending...' : 'Submit Request'}
                 </button>

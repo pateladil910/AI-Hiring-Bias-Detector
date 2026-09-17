@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, UserPlus, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const ROLES = [
@@ -76,29 +76,40 @@ export default function Register() {
   return (
     <div style={{
       minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 24,
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
       background: 'var(--color-bg)',
     }}>
-      <div style={{ width: '100%', maxWidth: 460 }}>
-
-        {/* Logo */}
-        <div style={{ textAlign: 'center', marginBottom: 36 }}>
+      {/* ── Left Form Panel ─────────────────────────────────────────────────── */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '48px 32px',
+        maxWidth: 500,
+        margin: '0 auto',
+        width: '100%',
+      }}>
+        {/* Brand Header */}
+        <div style={{ marginBottom: 28 }}>
           <Link to="/" style={{ textDecoration: 'none' }}>
             <span style={{ fontWeight: 700, fontSize: 22, color: 'var(--color-text-primary)', letterSpacing: '-0.02em' }}>
               Fair<span style={{ color: 'var(--color-primary)' }}>Hire</span>
             </span>
           </Link>
-          <h1 style={{ marginTop: 24, marginBottom: 6, fontSize: '1.5rem' }}>Create your account</h1>
-          <p style={{ fontSize: 14, margin: 0 }}>Join the fair hiring platform</p>
+          <div className="badge badge-primary" style={{ display: 'inline-flex', marginTop: 14, marginBottom: 8, fontSize: 11 }}>
+            Candidate & Recruiter Onboarding
+          </div>
+          <h1 style={{ fontSize: '1.75rem', marginBottom: 6 }}>Create your account</h1>
+          <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', margin: 0 }}>
+            Join the algorithmic fairness hiring ecosystem
+          </p>
         </div>
 
-        <div className="card" style={{ padding: 32 }}>
-          {error && <div className="alert alert-error" style={{ marginBottom: 20 }}>{error}</div>}
+        <div className="card" style={{ padding: 28 }}>
+          {error && <div className="alert alert-error" style={{ marginBottom: 18 }}>{error}</div>}
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {/* Role selector */}
             <div className="form-group">
               <label className="form-label" htmlFor="register-role">I am a…</label>
@@ -188,10 +199,46 @@ export default function Register() {
           </form>
         </div>
 
-        <p style={{ textAlign: 'center', marginTop: 24, fontSize: 14, color: 'var(--color-text-muted)' }}>
+        <p style={{ textAlign: 'center', marginTop: 24, fontSize: 14, color: 'var(--color-text-secondary)' }}>
           Already have an account?{' '}
-          <Link to="/login" style={{ color: 'var(--color-primary)' }}>Sign in</Link>
+          <Link to="/login" style={{ color: 'var(--color-primary)', fontWeight: 600 }}>Sign in</Link>
         </p>
+      </div>
+
+      {/* ── Right Trust Visual Panel ────────────────────────────────────────── */}
+      <div className="hidden lg:flex flex-col items-center justify-center p-12 bg-gradient-to-br from-emerald-50/80 via-teal-50/60 to-sky-50 border-l border-slate-200 relative overflow-hidden">
+        {/* Glow / Ambient Mesh */}
+        <div className="absolute w-96 h-96 bg-emerald-200/30 rounded-full blur-3xl pointer-events-none" />
+
+        {/* Floating Glassmorphic Trust Card */}
+        <div className="max-w-md p-8 bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-2xl shadow-xl relative z-10">
+          <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center border border-emerald-200 mb-5">
+            <ShieldCheck size={26} />
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-900 mb-3 leading-snug">
+            Protected Candidate Anonymity
+          </h3>
+
+          <p className="text-xs text-slate-600 leading-relaxed mb-6">
+            When you apply on FairHire, your personally identifiable markers are automatically cloaked before recruiters review your skills, ensuring evaluation is 100% merit-based.
+          </p>
+
+          <div className="space-y-3 text-xs font-medium text-slate-700">
+            <div className="flex items-start gap-2.5">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span><strong>Demographic Shielding:</strong> Names, photos, emails, and addresses masked.</span>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span><strong>Standardized Testing:</strong> Objective MCQs and sandboxed algorithmic scoring.</span>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span><strong>Formula Transparency:</strong> Candidates see exact calculation breakdowns.</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

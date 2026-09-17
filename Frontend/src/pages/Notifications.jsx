@@ -74,23 +74,23 @@ export default function Notifications() {
     : notifications.filter(n => n.type === filter);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 text-slate-900 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
-              <Bell className="w-7 h-7 text-emerald-400" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 flex items-center gap-3">
+              <Bell className="w-7 h-7 text-emerald-600" />
               Notifications Center
             </h1>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               Real-time alerts regarding application progress, interview schedules, and bias audit results.
             </p>
           </div>
           <button
             onClick={handleMarkAllRead}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 transition"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-white border border-slate-300 hover:border-emerald-600 text-xs font-semibold text-slate-700 shadow-xs transition cursor-pointer"
           >
-            <CheckCheck className="w-4 h-4 text-emerald-400" /> Mark All as Read
+            <CheckCheck className="w-4 h-4 text-emerald-600" /> Mark All as Read
           </button>
         </div>
 
@@ -100,10 +100,10 @@ export default function Notifications() {
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-3.5 py-1.5 rounded-full capitalize font-semibold transition whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full capitalize font-semibold transition whitespace-nowrap cursor-pointer ${
                 filter === tab
-                  ? 'bg-emerald-500 text-slate-950'
-                  : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
               {tab.replace('_', ' ')}
@@ -112,9 +112,9 @@ export default function Notifications() {
         </div>
 
         {/* Notifications List */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl overflow-hidden backdrop-blur-xl shadow-xl divide-y divide-slate-800/80">
+        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs divide-y divide-slate-100">
           {filtered.length === 0 ? (
-            <div className="p-12 text-center text-slate-500 text-sm">
+            <div className="p-12 text-center text-slate-400 text-sm">
               No notifications matching the selected filter.
             </div>
           ) : (
@@ -123,24 +123,24 @@ export default function Notifications() {
                 key={item.id}
                 onClick={() => handleMarkRead(item.id)}
                 className={`p-5 sm:p-6 transition flex items-start justify-between gap-4 cursor-pointer ${
-                  item.read ? 'bg-transparent hover:bg-slate-800/20' : 'bg-emerald-950/10 hover:bg-emerald-950/20'
+                  item.read ? 'bg-transparent hover:bg-slate-50' : 'bg-emerald-50/50 hover:bg-emerald-50'
                 }`}
               >
                 <div className="flex items-start gap-4">
                   <div className="mt-0.5 shrink-0">
-                    {item.type === 'application' && <Briefcase className="w-5 h-5 text-blue-400" />}
-                    {item.type === 'bias_scan' && <ShieldCheck className="w-5 h-5 text-emerald-400" />}
-                    {item.type === 'system' && <Info className="w-5 h-5 text-purple-400" />}
+                    {item.type === 'application' && <Briefcase className="w-5 h-5 text-blue-600" />}
+                    {item.type === 'bias_scan' && <ShieldCheck className="w-5 h-5 text-emerald-600" />}
+                    {item.type === 'system' && <Info className="w-5 h-5 text-purple-600" />}
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-bold text-white">{item.title}</h3>
+                      <h3 className="text-sm font-bold text-slate-900">{item.title}</h3>
                       {!item.read && (
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
                       )}
                     </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">{item.message}</p>
-                    <div className="text-[11px] text-slate-500 flex items-center gap-1 mt-1">
+                    <p className="text-xs text-slate-600 leading-relaxed">{item.message}</p>
+                    <div className="text-[11px] text-slate-400 flex items-center gap-1 mt-1">
                       <Clock className="w-3 h-3" />
                       {new Date(item.createdAt).toLocaleDateString()} at {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
@@ -150,7 +150,7 @@ export default function Notifications() {
                 {item.link && (
                   <Link
                     to={item.link}
-                    className="shrink-0 p-2 rounded-lg bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-emerald-400 text-xs transition inline-flex items-center"
+                    className="shrink-0 p-2 rounded-lg bg-slate-100 hover:bg-emerald-50 text-slate-500 hover:text-emerald-600 text-xs transition inline-flex items-center"
                   >
                     <ArrowRight className="w-4 h-4" />
                   </Link>

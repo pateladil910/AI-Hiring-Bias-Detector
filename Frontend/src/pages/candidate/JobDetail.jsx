@@ -39,18 +39,18 @@ export default function JobDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   if (error || !job) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col items-center justify-center p-4">
         <h2 className="text-xl font-bold mb-2">Job Not Found</h2>
-        <p className="text-slate-400 mb-6">{error || 'This opportunity could not be located.'}</p>
-        <Link to="/jobs" className="px-4 py-2 bg-emerald-500 text-slate-950 rounded-lg font-semibold text-sm">
+        <p className="text-slate-600 mb-6">{error || 'This opportunity could not be located.'}</p>
+        <Link to="/jobs" className="px-4 py-2 bg-emerald-600 text-white rounded-lg font-semibold text-sm hover:bg-emerald-700 shadow-xs">
           Browse All Openings
         </Link>
       </div>
@@ -58,42 +58,42 @@ export default function JobDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 text-slate-900 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
-          <Link to="/jobs" className="inline-flex items-center text-sm text-slate-400 hover:text-emerald-400 transition">
+          <Link to="/jobs" className="inline-flex items-center text-sm text-slate-500 hover:text-emerald-600 transition">
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to all jobs
           </Link>
         </div>
 
         {/* Job Header Card */}
-        <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden mb-8">
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full inline-flex items-center gap-1.5">
+                <span className="px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold rounded-full inline-flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5" /> Bias-Scanned & Verified
                 </span>
-                <span className="text-xs text-slate-500">•</span>
-                <span className="text-xs text-slate-400">{job.department || 'Engineering'}</span>
+                <span className="text-xs text-slate-300">•</span>
+                <span className="text-xs text-slate-500">{job.department || 'Engineering'}</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white">{job.title}</h1>
-              <div className="flex flex-wrap items-center gap-4 text-sm text-slate-400 mt-3">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">{job.title}</h1>
+              <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 mt-3">
                 <span className="flex items-center gap-1.5">
-                  <Building className="w-4 h-4 text-slate-500" /> {job.organisation?.name || 'Partner Employer'}
+                  <Building className="w-4 h-4 text-slate-400" /> {job.organisation?.name || 'Partner Employer'}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-slate-500" /> {job.location || 'Remote / Flexible'}
+                  <MapPin className="w-4 h-4 text-slate-400" /> {job.location || 'Remote / Flexible'}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Briefcase className="w-4 h-4 text-slate-500" /> {job.employmentType || 'Full-time'}
+                  <Briefcase className="w-4 h-4 text-slate-400" /> {job.employmentType || 'Full-time'}
                 </span>
               </div>
             </div>
 
             <button
               onClick={handleApply}
-              className="px-6 py-3.5 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 whitespace-nowrap"
+              className="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-sm whitespace-nowrap cursor-pointer"
             >
               Apply With Demographic Shield <ArrowRight className="w-4 h-4" />
             </button>
@@ -104,17 +104,17 @@ export default function JobDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-6">
-              <h2 className="text-lg font-bold text-white mb-4">About the Role</h2>
-              <div className="text-slate-300 leading-relaxed text-sm whitespace-pre-line">
+            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
+              <h2 className="text-lg font-bold text-slate-900 mb-4">About the Role</h2>
+              <div className="text-slate-600 leading-relaxed text-sm whitespace-pre-line">
                 {job.cleanedDescription || job.description}
               </div>
             </div>
 
             {job.requirements && (
-              <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-6">
-                <h2 className="text-lg font-bold text-white mb-4">Objective Technical Requirements</h2>
-                <div className="text-slate-300 leading-relaxed text-sm whitespace-pre-line">
+              <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
+                <h2 className="text-lg font-bold text-slate-900 mb-4">Objective Technical Requirements</h2>
+                <div className="text-slate-600 leading-relaxed text-sm whitespace-pre-line">
                   {job.requirements}
                 </div>
               </div>
@@ -123,38 +123,38 @@ export default function JobDetail() {
 
           {/* Assessment Funnel Sidebar */}
           <div className="space-y-6">
-            <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-6">
-              <div className="flex items-center gap-2 text-emerald-400 mb-3">
+            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
+              <div className="flex items-center gap-2 text-emerald-600 mb-3">
                 <Award className="w-5 h-5" />
-                <h3 className="font-bold text-white text-base">Hiring Process</h3>
+                <h3 className="font-bold text-slate-900 text-base">Hiring Process</h3>
               </div>
-              <p className="text-xs text-slate-400 mb-4">
+              <p className="text-xs text-slate-500 mb-4">
                 This employer uses FairHire's demographic-neutral assessment pipeline:
               </p>
 
-              <ol className="space-y-3.5 text-xs text-slate-300">
+              <ol className="space-y-3.5 text-xs text-slate-600">
                 <li className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">1</div>
+                  <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">1</div>
                   <span><strong>Blind Resume Parsing:</strong> Names, locations, and personal identifiers are stripped.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">2</div>
+                  <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">2</div>
                   <span><strong>Technical MCQ & Code:</strong> Timed domain aptitude and algorithmic tests.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">3</div>
+                  <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">3</div>
                   <span><strong>Composite Scoring:</strong> Real transparent mathematical formulas derived from code output.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">4</div>
+                  <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">4</div>
                   <span><strong>Recruiter Human Review:</strong> Reviewer evaluates code quality and skills strictly blind.</span>
                 </li>
               </ol>
 
-              <div className="mt-6 pt-4 border-t border-slate-800">
+              <div className="mt-6 pt-4 border-t border-slate-100">
                 <button
                   onClick={handleApply}
-                  className="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs transition"
+                  className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition shadow-xs cursor-pointer"
                 >
                   Start Application
                 </button>

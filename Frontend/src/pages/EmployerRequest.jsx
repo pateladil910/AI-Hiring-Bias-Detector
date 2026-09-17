@@ -283,53 +283,35 @@ export default function EmployerRequest() {
       </div>
 
       {/* ── Right Vetting Trust Panel ───────────────────────────────────────── */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(19,24,38,0.9) 0%, rgba(11,15,23,0.98) 100%)',
-        borderLeft: '1px solid var(--color-border)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 48,
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        <div style={{
-          maxWidth: 440,
-          padding: 36,
-          background: 'rgba(27, 34, 51, 0.7)',
-          backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          borderRadius: 20,
-          boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
-        }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: 12, background: 'rgba(124,92,255,0.2)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-accent)',
-            marginBottom: 20,
-          }}>
+      <div className="hidden lg:flex flex-col items-center justify-center p-12 bg-gradient-to-br from-emerald-50/80 via-teal-50/60 to-sky-50 border-l border-slate-200 relative overflow-hidden">
+        {/* Ambient Glow */}
+        <div className="absolute w-96 h-96 bg-emerald-200/30 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-md p-8 bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-2xl shadow-xl relative z-10">
+          <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center border border-emerald-200 mb-5">
             <Building2 size={26} />
           </div>
 
-          <h3 style={{ fontSize: 20, marginBottom: 12 }}>
+          <h3 className="text-xl font-bold text-slate-900 mb-3 leading-snug">
             Why We Vet Every Employer
           </h3>
 
-          <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', lineHeight: 1.6, marginBottom: 24 }}>
+          <p className="text-xs text-slate-600 leading-relaxed mb-6">
             Candidate trust is our core foundation. We verify that every employer on FairHire is a legitimate enterprise committed to blind resume evaluation and objective skill assessments.
           </p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: 13, color: 'var(--color-text-primary)' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-              <CheckCircle2 size={16} style={{ color: 'var(--color-success)', marginTop: 2, flexShrink: 0 }} />
-              <span><strong>Domain Validation:</strong> Only verified company emails can post jobs.</span>
+          <div className="space-y-3 text-xs font-medium text-slate-700">
+            <div className="flex items-start gap-2.5">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span><strong>Domain Validation:</strong> Only verified corporate email addresses can post roles.</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-              <CheckCircle2 size={16} style={{ color: 'var(--color-success)', marginTop: 2, flexShrink: 0 }} />
-              <span><strong>Blind Candidate Privacy:</strong> Candidates remain anonymous until the interview stage.</span>
+            <div className="flex items-start gap-2.5">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span><strong>Blind Candidate Privacy:</strong> Candidate demographics remain masked through evaluation.</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-              <CheckCircle2 size={16} style={{ color: 'var(--color-success)', marginTop: 2, flexShrink: 0 }} />
-              <span><strong>Single-Use Invites:</strong> Secure, 72-hour expiring links for your team.</span>
+            <div className="flex items-start gap-2.5">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+              <span><strong>Single-Use Invites:</strong> Secure, 72-hour expiring links ensure tight team governance.</span>
             </div>
           </div>
         </div>

@@ -230,7 +230,7 @@ export default function AdminDashboard() {
                 Algorithmic Neutrality & Governance System
               </span>
             </div>
-            <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0, color: '#fff' }}>
+            <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0, color: 'var(--color-text-primary)' }}>
               FairHire Global Administration Portal
             </h1>
           </div>
@@ -301,29 +301,29 @@ export default function AdminDashboard() {
             gap: 16,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, fontWeight: 700, color: '#fff' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, fontWeight: 700, color: 'var(--color-text-primary)' }}>
             <Server size={16} color="#10b981" /> Multi-Tier Architecture Health:
           </div>
 
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--color-text-secondary)' }}>
               <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981' }} />
-              REST API: <strong style={{ color: '#fff' }}>Port 5000 (Express)</strong>
+              REST API: <strong style={{ color: 'var(--color-text-primary)' }}>Port 5000 (Express)</strong>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--color-text-secondary)' }}>
               <span style={{ width: 8, height: 8, borderRadius: '50%', background: systemHealth?.aiService === 'online' ? '#10b981' : '#facc15' }} />
-              AI Service: <strong style={{ color: '#fff' }}>Port 8000 (FastAPI)</strong>
+              AI Service: <strong style={{ color: 'var(--color-text-primary)' }}>Port 8000 (FastAPI)</strong>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--color-text-secondary)' }}>
               <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981' }} />
-              Database: <strong style={{ color: '#fff' }}>SQLite (Sequelize v3)</strong>
+              Database: <strong style={{ color: 'var(--color-text-primary)' }}>SQLite (Sequelize v3)</strong>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--color-text-secondary)' }}>
               <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981' }} />
-              Real-Time: <strong style={{ color: '#fff' }}>ws://localhost:5000</strong>
+              Real-Time: <strong style={{ color: 'var(--color-text-primary)' }}>ws://localhost:5000</strong>
             </div>
           </div>
         </div>
@@ -344,7 +344,7 @@ export default function AdminDashboard() {
                 Platform Users
               </span>
             </div>
-            <div style={{ fontSize: 28, fontWeight: 800, color: '#fff' }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--color-text-primary)' }}>
               {metrics?.users?.total ?? 0}
             </div>
             <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 4 }}>
@@ -359,7 +359,7 @@ export default function AdminDashboard() {
                 Audited Roles
               </span>
             </div>
-            <div style={{ fontSize: 28, fontWeight: 800, color: '#fff' }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--color-text-primary)' }}>
               {metrics?.jobs?.published ?? 0}
             </div>
             <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 4 }}>
@@ -374,7 +374,7 @@ export default function AdminDashboard() {
                 Aptitude Tests
               </span>
             </div>
-            <div style={{ fontSize: 28, fontWeight: 800, color: '#fff' }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--color-text-primary)' }}>
               {metrics?.testsCompleted ?? 0}
             </div>
             <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 4 }}>
@@ -389,7 +389,7 @@ export default function AdminDashboard() {
                 Employer Queue
               </span>
             </div>
-            <div style={{ fontSize: 28, fontWeight: 800, color: '#fff' }}>
+            <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--color-text-primary)' }}>
               {requests.filter((r) => r.status === 'pending').length}
             </div>
             <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 4 }}>
@@ -437,7 +437,7 @@ export default function AdminDashboard() {
           <div className="card" style={{ padding: 0, overflow: 'hidden', background: 'var(--color-surface)', borderRadius: 16 }}>
             <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
-                <h3 style={{ margin: '0 0 4px', fontSize: 17, fontWeight: 700, color: '#fff' }}>
+                <h3 style={{ margin: '0 0 4px', fontSize: 17, fontWeight: 700, color: 'var(--color-text-primary)' }}>
                   Enterprise Recruiter Access Requests
                 </h3>
                 <p style={{ margin: 0, fontSize: 13, color: 'var(--color-text-secondary)' }}>
@@ -469,7 +469,7 @@ export default function AdminDashboard() {
                 <tbody>
                   {requests.map((r) => (
                     <tr key={r.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                      <td style={{ padding: '16px 20px', fontWeight: 600, color: '#fff' }}>
+                      <td style={{ padding: '16px 20px', fontWeight: 600, color: 'var(--color-text-primary)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                           <Building2 size={16} color="#10b981" />
                           {r.companyName}
@@ -554,7 +554,7 @@ export default function AdminDashboard() {
               }}
             >
               <div>
-                <h3 style={{ margin: '0 0 4px', fontSize: 17, fontWeight: 700, color: '#fff' }}>
+                <h3 style={{ margin: '0 0 4px', fontSize: 17, fontWeight: 700, color: 'var(--color-text-primary)' }}>
                   Registered Users & Roles
                 </h3>
                 <p style={{ margin: 0, fontSize: 13, color: 'var(--color-text-secondary)' }}>
@@ -571,7 +571,7 @@ export default function AdminDashboard() {
                     border: '1px solid var(--color-border)',
                     borderRadius: 8,
                     padding: '6px 12px',
-                    color: '#fff',
+                    color: 'var(--color-text-primary)',
                     fontSize: 13,
                     outline: 'none',
                   }}
@@ -607,7 +607,7 @@ export default function AdminDashboard() {
                   .filter((u) => userRoleFilter === 'all' || u.role === userRoleFilter)
                   .map((u) => (
                     <tr key={u.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                      <td style={{ padding: '14px 20px', fontWeight: 600, color: '#fff' }}>
+                      <td style={{ padding: '14px 20px', fontWeight: 600, color: 'var(--color-text-primary)' }}>
                         {u.firstName} {u.lastName}
                       </td>
                       <td style={{ padding: '14px 20px', color: 'var(--color-text-secondary)' }}>
@@ -664,7 +664,7 @@ export default function AdminDashboard() {
         {activeTab === 'jobs' && (
           <div className="card" style={{ padding: 0, overflow: 'hidden', background: 'var(--color-surface)', borderRadius: 16 }}>
             <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--color-border)' }}>
-              <h3 style={{ margin: '0 0 4px', fontSize: 17, fontWeight: 700, color: '#fff' }}>
+              <h3 style={{ margin: '0 0 4px', fontSize: 17, fontWeight: 700, color: 'var(--color-text-primary)' }}>
                 Platform Job Postings & Bias Compliance
               </h3>
               <p style={{ margin: 0, fontSize: 13, color: 'var(--color-text-secondary)' }}>
@@ -686,7 +686,7 @@ export default function AdminDashboard() {
               <tbody>
                 {jobs.map((j) => (
                   <tr key={j.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                    <td style={{ padding: '14px 20px', fontWeight: 600, color: '#fff' }}>
+                    <td style={{ padding: '14px 20px', fontWeight: 600, color: 'var(--color-text-primary)' }}>
                       {j.title}
                     </td>
                     <td style={{ padding: '14px 20px', color: 'var(--color-text-secondary)' }}>
@@ -744,7 +744,7 @@ export default function AdminDashboard() {
         {activeTab === 'audit' && (
           <div className="card" style={{ padding: 0, overflow: 'hidden', background: 'var(--color-surface)', borderRadius: 16 }}>
             <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--color-border)' }}>
-              <h3 style={{ margin: '0 0 4px', fontSize: 17, fontWeight: 700, color: '#fff' }}>
+              <h3 style={{ margin: '0 0 4px', fontSize: 17, fontWeight: 700, color: 'var(--color-text-primary)' }}>
                 Algorithmic Traceability & Security Audit Trail
               </h3>
               <p style={{ margin: 0, fontSize: 13, color: 'var(--color-text-secondary)' }}>
@@ -787,14 +787,14 @@ export default function AdminDashboard() {
         {activeTab === 'system' && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 24 }}>
             <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 16, padding: 24 }}>
-              <h3 style={{ margin: '0 0 16px', fontSize: 17, fontWeight: 700, color: '#fff', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <h3 style={{ margin: '0 0 16px', fontSize: 17, fontWeight: 700, color: 'var(--color-text-primary)', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Zap size={18} color="#10b981" /> Sandbox Runner Parameters
               </h3>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 13 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: 'rgba(255,255,255,0.02)', borderRadius: 8 }}>
                   <span style={{ color: 'var(--color-text-secondary)' }}>Execution Engine:</span>
-                  <strong style={{ color: '#fff' }}>Node.js Built-in VM Sandbox</strong>
+                  <strong style={{ color: 'var(--color-text-primary)' }}>Node.js Built-in VM Sandbox</strong>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: 'rgba(255,255,255,0.02)', borderRadius: 8 }}>
                   <span style={{ color: 'var(--color-text-secondary)' }}>Max Script Execution Timeout:</span>
@@ -806,13 +806,13 @@ export default function AdminDashboard() {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: 'rgba(255,255,255,0.02)', borderRadius: 8 }}>
                   <span style={{ color: 'var(--color-text-secondary)' }}>Scoring Model Version:</span>
-                  <strong style={{ color: '#fff' }}>EquiHire Weighted Rubric v3.0</strong>
+                  <strong style={{ color: 'var(--color-text-primary)' }}>EquiHire Weighted Rubric v3.0</strong>
                 </div>
               </div>
             </div>
 
             <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 16, padding: 24 }}>
-              <h3 style={{ margin: '0 0 16px', fontSize: 17, fontWeight: 700, color: '#fff', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <h3 style={{ margin: '0 0 16px', fontSize: 17, fontWeight: 700, color: 'var(--color-text-primary)', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <ShieldCheck size={18} color="#38bdf8" /> AI Fairness Models
               </h3>
 
@@ -823,7 +823,7 @@ export default function AdminDashboard() {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: 'rgba(255,255,255,0.02)', borderRadius: 8 }}>
                   <span style={{ color: 'var(--color-text-secondary)' }}>Demographic Redaction Engine:</span>
-                  <strong style={{ color: '#fff' }}>Regex + SpaCy NER Lexicon</strong>
+                  <strong style={{ color: 'var(--color-text-primary)' }}>Regex + SpaCy NER Lexicon</strong>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', background: 'rgba(255,255,255,0.02)', borderRadius: 8 }}>
                   <span style={{ color: 'var(--color-text-secondary)' }}>EEOC 80% Adverse Impact Rule:</span>
@@ -840,9 +840,9 @@ export default function AdminDashboard() {
 
         {/* ── Provision Recruiter Modal ────────────────────────────────────── */}
         {showProvisionModal && (
-          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
-            <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 16, maxWidth: 480, width: '100%', padding: 28 }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(2px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
+            <div style={{ background: '#ffffff', border: '1px solid var(--color-border)', borderRadius: 16, maxWidth: 480, width: '100%', padding: 28, boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--color-text-primary)', margin: '0 0 6px' }}>
                 Provision Enterprise Account
               </h3>
               <p style={{ color: 'var(--color-text-secondary)', fontSize: 13, margin: '0 0 20px' }}>
@@ -858,7 +858,7 @@ export default function AdminDashboard() {
                       required
                       value={provisionForm.firstName}
                       onChange={(e) => setProvisionForm({ ...provisionForm, firstName: e.target.value })}
-                      style={{ width: '100%', background: '#090f0c', border: '1px solid var(--color-border)', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13 }}
+                      style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 8, padding: '8px 12px', color: 'var(--color-text-primary)', fontSize: 13 }}
                     />
                   </div>
                   <div>
@@ -868,7 +868,7 @@ export default function AdminDashboard() {
                       required
                       value={provisionForm.lastName}
                       onChange={(e) => setProvisionForm({ ...provisionForm, lastName: e.target.value })}
-                      style={{ width: '100%', background: '#090f0c', border: '1px solid var(--color-border)', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13 }}
+                      style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 8, padding: '8px 12px', color: 'var(--color-text-primary)', fontSize: 13 }}
                     />
                   </div>
                 </div>
@@ -880,7 +880,7 @@ export default function AdminDashboard() {
                     required
                     value={provisionForm.email}
                     onChange={(e) => setProvisionForm({ ...provisionForm, email: e.target.value })}
-                    style={{ width: '100%', background: '#090f0c', border: '1px solid var(--color-border)', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13 }}
+                    style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 8, padding: '8px 12px', color: 'var(--color-text-primary)', fontSize: 13 }}
                   />
                 </div>
 
@@ -890,7 +890,7 @@ export default function AdminDashboard() {
                     <select
                       value={provisionForm.role}
                       onChange={(e) => setProvisionForm({ ...provisionForm, role: e.target.value })}
-                      style={{ width: '100%', background: '#090f0c', border: '1px solid var(--color-border)', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13 }}
+                      style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 8, padding: '8px 12px', color: 'var(--color-text-primary)', fontSize: 13 }}
                     >
                       <option value="recruiter">Recruiter</option>
                       <option value="hr_lead">HR Lead</option>
@@ -903,7 +903,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={provisionForm.password}
                       onChange={(e) => setProvisionForm({ ...provisionForm, password: e.target.value })}
-                      style={{ width: '100%', background: '#090f0c', border: '1px solid var(--color-border)', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13 }}
+                      style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 8, padding: '8px 12px', color: 'var(--color-text-primary)', fontSize: 13 }}
                     />
                   </div>
                 </div>
@@ -919,9 +919,9 @@ export default function AdminDashboard() {
 
         {/* ── Broadcast Notice Modal ───────────────────────────────────────── */}
         {showBroadcastModal && (
-          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
-            <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 16, maxWidth: 480, width: '100%', padding: 28 }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(2px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
+            <div style={{ background: '#ffffff', border: '1px solid var(--color-border)', borderRadius: 16, maxWidth: 480, width: '100%', padding: 28, boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--color-text-primary)', margin: '0 0 6px' }}>
                 Broadcast System Announcement
               </h3>
               <p style={{ color: 'var(--color-text-secondary)', fontSize: 13, margin: '0 0 20px' }}>
@@ -937,7 +937,7 @@ export default function AdminDashboard() {
                     placeholder="e.g., FairHire AI 3.0.0 Algorithmic Update"
                     value={broadcastForm.title}
                     onChange={(e) => setBroadcastForm({ ...broadcastForm, title: e.target.value })}
-                    style={{ width: '100%', background: '#090f0c', border: '1px solid var(--color-border)', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13 }}
+                    style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 8, padding: '8px 12px', color: 'var(--color-text-primary)', fontSize: 13 }}
                   />
                 </div>
 
@@ -949,7 +949,7 @@ export default function AdminDashboard() {
                     placeholder="Describe maintenance window, model updates, or compliance instructions..."
                     value={broadcastForm.message}
                     onChange={(e) => setBroadcastForm({ ...broadcastForm, message: e.target.value })}
-                    style={{ width: '100%', background: '#090f0c', border: '1px solid var(--color-border)', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13, resize: 'none' }}
+                    style={{ width: '100%', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: 8, padding: '8px 12px', color: 'var(--color-text-primary)', fontSize: 13, resize: 'none' }}
                   />
                 </div>
 
