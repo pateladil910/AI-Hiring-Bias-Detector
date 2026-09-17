@@ -15,6 +15,7 @@ import AcceptInvite from './pages/AcceptInvite';
 // Layouts
 import RecruiterLayout from './layouts/RecruiterLayout';
 import CandidateLayout from './layouts/CandidateLayout';
+import AdminLayout from './layouts/AdminLayout';
 
 // Recruiter pages
 import RecruiterDashboard from './pages/recruiter/Dashboard';
@@ -150,29 +151,18 @@ export default function App() {
 
             {/* Admin Console */}
             <Route
-              path="/admin/dashboard"
+              path="/admin"
               element={
                 <RequireAdmin>
-                  <AdminDashboard />
+                  <AdminLayout />
                 </RequireAdmin>
               }
-            />
-            <Route
-              path="/admin/billing"
-              element={
-                <RequireAdmin>
-                  <Billing />
-                </RequireAdmin>
-              }
-            />
-            <Route
-              path="/admin/audit"
-              element={
-                <RequireAdmin>
-                  <AuditExplorer />
-                </RequireAdmin>
-              }
-            />
+            >
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="billing" element={<Billing />} />
+              <Route path="audit" element={<AuditExplorer />} />
+            </Route>
 
             {/* Recruiter-side portal */}
             <Route

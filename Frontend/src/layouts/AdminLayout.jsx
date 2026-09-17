@@ -1,30 +1,25 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard,
-  Briefcase,
-  Users,
   ShieldAlert,
-  ClipboardList,
-  Calendar,
-  BarChart3,
+  Users,
+  Briefcase,
+  FileText,
+  CreditCard,
   LogOut,
   Bell,
-  Building2,
+  Activity,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import ChatbotWidget from '../components/ChatbotWidget';
 
 const navItems = [
-  { to: '/recruiter/dashboard', icon: <LayoutDashboard size={17} />, label: 'Dashboard' },
-  { to: '/recruiter/jobs', icon: <Briefcase size={17} />, label: 'Jobs' },
-  { to: '/recruiter/candidates', icon: <Users size={17} />, label: 'Blind Candidates' },
-  { to: '/recruiter/review', icon: <ShieldAlert size={17} />, label: 'Review Queue' },
-  { to: '/recruiter/interviews', icon: <Calendar size={17} />, label: 'Interviews' },
-  { to: '/recruiter/analytics', icon: <BarChart3 size={17} />, label: 'Analytics' },
-  { to: '/recruiter/audit', icon: <ClipboardList size={17} />, label: 'Audit Trail' },
+  { to: '/admin/dashboard', icon: <ShieldAlert size={17} />, label: 'Admin Governance' },
+  { to: '/admin/audit', icon: <FileText size={17} />, label: 'Audit Explorer' },
+  { to: '/admin/billing', icon: <CreditCard size={17} />, label: 'Enterprise Billing' },
+  { to: '/status', icon: <Activity size={17} />, label: 'System Health' },
 ];
 
-export default function RecruiterLayout() {
+export default function AdminLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -59,7 +54,7 @@ export default function RecruiterLayout() {
         >
           {/* Brand Logo & Role Pill */}
           <NavLink
-            to="/recruiter/dashboard"
+            to="/admin/dashboard"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -76,8 +71,8 @@ export default function RecruiterLayout() {
               style={{
                 fontSize: 11,
                 fontWeight: 700,
-                background: 'rgba(56, 189, 248, 0.15)',
-                color: '#38bdf8',
+                background: 'rgba(239, 68, 68, 0.15)',
+                color: '#f87171',
                 padding: '2px 8px',
                 borderRadius: 9999,
                 display: 'flex',
@@ -85,11 +80,11 @@ export default function RecruiterLayout() {
                 gap: 4,
               }}
             >
-              <Building2 size={12} /> Recruiter Suite
+              🔐 Admin Console
             </span>
           </NavLink>
 
-          {/* Navigation Links */}
+          {/* Nav Links */}
           <nav style={{ display: 'flex', gap: 4, flex: 1, overflowX: 'auto', padding: '4px 0' }}>
             {navItems.map(({ to, icon, label }) => (
               <NavLink
@@ -119,11 +114,10 @@ export default function RecruiterLayout() {
           {/* User & Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
             <span style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-              {user?.firstName} {user?.lastName}
+              {user?.firstName} {user?.lastName} (Admin)
             </span>
 
             <button
-              id="recruiter-logout"
               onClick={handleLogout}
               className="btn btn-ghost btn-sm"
               title="Sign out"
@@ -137,7 +131,7 @@ export default function RecruiterLayout() {
       </header>
 
       {/* ── Main Content ─────────────────────────────────────────────────── */}
-      <main style={{ flex: 1, paddingBottom: 60 }}>
+      <main style={{ flex: 1 }}>
         <Outlet />
       </main>
 
