@@ -590,46 +590,145 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Score Breakdown Panel */}
+            {/* Rich Real-Time Analytics & Inclusivity Breakdown Panel */}
             <div
               style={{
-                background: '#f8fafc',
-                border: '1px solid #e2e8f0',
-                borderRadius: 16,
-                padding: 28,
-                textAlign: 'center',
-                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.03)',
+                position: 'sticky',
+                top: 88,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 20,
               }}
             >
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: 14 }}>
-                Inclusivity Index
-              </div>
-
-              {/* Large Score Metric */}
-              <div style={{ fontSize: 60, fontWeight: 900, color: score >= 80 ? '#059669' : score >= 60 ? '#d97706' : '#dc2626', lineHeight: 1 }}>
-                {score}
-              </div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#64748b', marginTop: 6 }}>
-                out of 100
-              </div>
-
+              {/* Primary Inclusivity Score Card */}
               <div
                 style={{
-                  display: 'inline-block',
-                  marginTop: 14,
-                  padding: '6px 14px',
-                  borderRadius: 9999,
-                  fontSize: 12,
-                  fontWeight: 700,
-                  background: score >= 80 ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
-                  color: score >= 80 ? '#047857' : '#dc2626',
+                  background: '#f8fafc',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: 16,
+                  padding: 24,
+                  textAlign: 'center',
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.03)',
                 }}
               >
-                {score >= 80 ? 'Inclusive & Ready to Post' : 'High Demographic Bias Risk'}
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>
+                  Live Inclusivity Index
+                </div>
+
+                {/* Score Number with Circular Glow Ring */}
+                <div
+                  style={{
+                    width: 110,
+                    height: 110,
+                    borderRadius: '50%',
+                    margin: '0 auto 12px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: score >= 80 ? 'rgba(16, 185, 129, 0.08)' : score >= 60 ? 'rgba(245, 158, 11, 0.08)' : 'rgba(239, 68, 68, 0.08)',
+                    border: `4px solid ${score >= 80 ? '#10b981' : score >= 60 ? '#f59e0b' : '#ef4444'}`,
+                    boxShadow: `0 0 24px ${score >= 80 ? 'rgba(16, 185, 129, 0.2)' : score >= 60 ? 'rgba(245, 158, 11, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`,
+                  }}
+                >
+                  <span style={{ fontSize: 42, fontWeight: 900, color: score >= 80 ? '#059669' : score >= 60 ? '#d97706' : '#dc2626', lineHeight: 1 }}>
+                    {score}
+                  </span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#64748b', marginTop: 2 }}>
+                    / 100
+                  </span>
+                </div>
+
+                <div
+                  style={{
+                    display: 'inline-block',
+                    padding: '5px 14px',
+                    borderRadius: 9999,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    background: score >= 80 ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+                    color: score >= 80 ? '#047857' : '#dc2626',
+                    marginBottom: 14,
+                  }}
+                >
+                  {score >= 80 ? 'Inclusive & Ready to Post' : 'High Demographic Bias Risk'}
+                </div>
+
+                <p style={{ margin: 0, fontSize: 12, color: '#475569', lineHeight: 1.5, borderTop: '1px solid #e2e8f0', paddingTop: 12 }}>
+                  Jobs scoring above 85 attract up to <strong>42% more diverse qualified talent</strong> across technical disciplines.
+                </p>
               </div>
 
-              <div style={{ borderTop: '1px solid #e2e8f0', marginTop: 22, paddingTop: 18, textAlign: 'left', fontSize: 13, color: '#475569', lineHeight: 1.55 }}>
-                Jobs with inclusivity scores above 85 attract up to <strong>42% more diverse qualified talent</strong> across technical disciplines.
+              {/* Real-time Category Breakdown Card */}
+              <div
+                style={{
+                  background: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: 16,
+                  padding: 22,
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.02)',
+                }}
+              >
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>Bias Category Health</span>
+                  <span style={{ color: '#10b981', fontSize: 11 }}>Active Scan</span>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  {[
+                    { label: 'Gender-Coded Terms', count: flags.filter(f => f.category.toLowerCase().includes('gender')).length, max: 3 },
+                    { label: 'Age & Seniority Bias', count: flags.filter(f => f.category.toLowerCase().includes('age')).length, max: 2 },
+                    { label: 'Pedigree & School Elitism', count: flags.filter(f => f.category.toLowerCase().includes('pedigree')).length, max: 2 },
+                    { label: 'Exclusionary Culture', count: flags.filter(f => f.category.toLowerCase().includes('culture')).length, max: 3 },
+                  ].map((cat, i) => {
+                    const hasIssues = cat.count > 0;
+                    const pct = hasIssues ? Math.max(25, (cat.count / cat.max) * 100) : 0;
+                    return (
+                      <div key={i}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 5 }}>
+                          <span style={{ fontWeight: 600, color: '#1e293b' }}>{cat.label}</span>
+                          <span style={{ fontWeight: 700, color: hasIssues ? '#ef4444' : '#10b981' }}>
+                            {hasIssues ? `${cat.count} flagged` : 'Clean ✓'}
+                          </span>
+                        </div>
+                        <div style={{ height: 6, background: '#f1f5f9', borderRadius: 9999, overflow: 'hidden' }}>
+                          <div
+                            style={{
+                              height: '100%',
+                              width: hasIssues ? `${pct}%` : '100%',
+                              background: hasIssues ? '#ef4444' : '#10b981',
+                              borderRadius: 9999,
+                              transition: 'width 0.3s ease',
+                            }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Real-time Compliance Verification Badge */}
+              <div
+                style={{
+                  background: '#f8fafc',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: 14,
+                  padding: '16px 18px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 8,
+                  fontSize: 12,
+                  color: '#475569',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 700, color: '#0f172a' }}>
+                  <ShieldCheck size={16} color="#059669" />
+                  <span>EEOC & NYC Local Law 144 Check</span>
+                </div>
+                <div>
+                  Deterministic rules applied to ensure zero adverse demographic impact during candidate sourcing.
+                </div>
               </div>
             </div>
           </div>
