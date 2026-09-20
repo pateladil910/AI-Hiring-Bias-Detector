@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, UserPlus, ShieldCheck, CheckCircle2, Check } from 'lucide-react';
+import { Eye, EyeOff, UserPlus, ShieldCheck, CheckCircle2, Check, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const evaluatePassword = (pwd) => {
@@ -103,42 +103,243 @@ export default function RegisterCandidate() {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
-      background: 'var(--color-bg)',
-    }}>
-      {/* ── Left Form Panel ─────────────────────────────────────────────────── */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        padding: '48px 32px',
-        maxWidth: 520,
-        margin: '0 auto',
-        width: '100%',
-      }}>
-        {/* Brand */}
-        <div style={{ marginBottom: 28 }}>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <span style={{ fontWeight: 700, fontSize: 22, color: 'var(--color-text-primary)', letterSpacing: '-0.02em' }}>
-              Fair<span style={{ color: 'var(--color-primary)' }}>Hire</span>
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+        background: '#f8fafc',
+      }}
+    >
+      {/* ── Left Visual Panel: AI Assistant & Candidate Evaluation ─────────── */}
+      <div
+        className="hidden lg:flex"
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          padding: '48px 40px',
+          backgroundImage: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.85) 60%, rgba(15, 23, 42, 0.95) 100%), url("/ai-candidate-assistant.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          color: '#ffffff',
+        }}
+      >
+        {/* Top Floating Badge & Brand */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', zIndex: 2 }}>
+          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 10,
+                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#fff',
+                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
+              }}
+            >
+              <ShieldCheck size={20} />
+            </div>
+            <span style={{ fontWeight: 800, fontSize: 20, color: '#ffffff', letterSpacing: '-0.02em' }}>
+              Fair<span style={{ color: '#34d399' }}>Hire</span>
             </span>
           </Link>
-          <div className="badge badge-primary" style={{ display: 'inline-flex', marginTop: 16, marginBottom: 8, fontSize: 11 }}>
-            Candidate Portal
+
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '6px 14px',
+              borderRadius: 9999,
+              background: 'rgba(255, 255, 255, 0.12)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              fontSize: 12,
+              fontWeight: 600,
+              color: '#a7f3d0',
+            }}
+          >
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981' }} />
+            Candidate Shield Active
+          </span>
+        </div>
+
+        {/* Center Spotlight: AI Candidate Assistant Callout */}
+        <div style={{ maxWidth: 480, margin: '50px 0', zIndex: 2 }}>
+          <div
+            style={{
+              display: 'inline-block',
+              padding: '4px 12px',
+              borderRadius: 6,
+              background: 'rgba(16, 185, 129, 0.2)',
+              border: '1px solid rgba(52, 211, 153, 0.4)',
+              color: '#6ee7b7',
+              fontSize: 11,
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              marginBottom: 16,
+            }}
+          >
+            Protected Candidate Onboarding
           </div>
-          <h1 style={{ fontSize: '1.75rem', marginBottom: 8 }}>Create Candidate Account</h1>
-          <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', margin: 0 }}>
+
+          <h2
+            style={{
+              fontSize: 'clamp(1.75rem, 3vw, 2.3rem)',
+              fontWeight: 900,
+              lineHeight: 1.25,
+              color: '#ffffff',
+              marginBottom: 16,
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Showcase your skills. <span style={{ color: '#34d399' }}>Let your talent</span> speak for itself.
+          </h2>
+
+          <p style={{ fontSize: 14, color: '#cbd5e1', lineHeight: 1.6, marginBottom: 28 }}>
+            FairHire shields your identity from screening bias. Upload your resume, take objective timed skill challenges, and get hired on validated engineering excellence.
+          </p>
+
+          {/* Holographic Metric Badges */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div
+              style={{
+                padding: '14px 16px',
+                borderRadius: 12,
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+              }}
+            >
+              <div style={{ fontSize: 22, fontWeight: 900, color: '#34d399' }}>Anonymous</div>
+              <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>Zero Pre-Interview Leakage</div>
+            </div>
+            <div
+              style={{
+                padding: '14px 16px',
+                borderRadius: 12,
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+              }}
+            >
+              <div style={{ fontSize: 22, fontWeight: 900, color: '#38bdf8' }}>Transparent</div>
+              <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>Auditable Scoring Formulas</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Feature List */}
+        <div
+          style={{
+            zIndex: 2,
+            padding: '18px 20px',
+            borderRadius: 14,
+            background: 'rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            fontSize: 12,
+            color: '#e2e8f0',
+          }}
+        >
+          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <CheckCircle2 size={15} color="#34d399" /> Name Redacted
+          </span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <CheckCircle2 size={15} color="#34d399" /> Skills Verified
+          </span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <CheckCircle2 size={15} color="#34d399" /> 100% Free
+          </span>
+        </div>
+      </div>
+
+      {/* ── Right Form Panel (Sign Up Card) ─────────────────────────────────── */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '40px 36px',
+          maxWidth: 540,
+          margin: '0 auto',
+          width: '100%',
+        }}
+      >
+        {/* Top Navigation Row */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+          <Link to="/" className="lg:hidden" style={{ textDecoration: 'none' }}>
+            <span style={{ fontWeight: 800, fontSize: 20, color: '#0f172a' }}>
+              Fair<span style={{ color: '#10b981' }}>Hire</span>
+            </span>
+          </Link>
+          <div className="hidden lg:block" />
+
+          <Link
+            to="/"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              fontSize: 13,
+              fontWeight: 600,
+              color: '#475569',
+              background: '#ffffff',
+              padding: '7px 14px',
+              borderRadius: 8,
+              border: '1px solid #e2e8f0',
+              textDecoration: 'none',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+              transition: 'all 0.15s ease',
+            }}
+          >
+            <ArrowLeft size={14} color="#64748b" />
+            <span>Back to Home</span>
+          </Link>
+        </div>
+
+        {/* Title & Subtitle */}
+        <div style={{ marginBottom: 24 }}>
+          <h1 style={{ fontSize: '1.85rem', fontWeight: 900, color: '#0f172a', margin: '0 0 8px', letterSpacing: '-0.03em' }}>
+            Create Candidate Account
+          </h1>
+          <p style={{ fontSize: 14, color: '#64748b', margin: 0, lineHeight: 1.5 }}>
             Apply anonymously. Get evaluated purely on verified technical skill.
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="card" style={{ padding: 28, background: 'var(--color-surface)' }}>
+        <div
+          style={{
+            background: '#ffffff',
+            borderRadius: 18,
+            border: '1px solid #e2e8f0',
+            padding: '28px 32px',
+            boxShadow: '0 10px 30px -10px rgba(0, 0, 0, 0.05)',
+          }}
+        >
           {error && (
-            <div className="alert alert-error" style={{ marginBottom: 20 }}>
+            <div
+              style={{
+                marginBottom: 18,
+                padding: '12px 16px',
+                borderRadius: 10,
+                background: '#fef2f2',
+                border: '1px solid #fecaca',
+                color: '#dc2626',
+                fontSize: 13,
+                fontWeight: 500,
+              }}
+            >
               {error}
             </div>
           )}
@@ -289,74 +490,38 @@ export default function RegisterCandidate() {
 
             <button
               type="submit"
-              className="btn btn-primary"
               disabled={loading}
-              style={{ width: '100%', justifyContent: 'center', marginTop: 6 }}
+              style={{
+                width: '100%',
+                height: 44,
+                borderRadius: 10,
+                background: '#10b981',
+                color: '#ffffff',
+                border: 'none',
+                fontWeight: 700,
+                fontSize: 15,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                cursor: loading ? 'not-allowed' : 'pointer',
+                boxShadow: '0 4px 14px rgba(16, 185, 129, 0.3)',
+                marginTop: 6,
+              }}
             >
-              {loading ? <span className="spinner" style={{ width: 16, height: 16 }} /> : <UserPlus size={16} />}
+              {loading ? <span className="spinner" style={{ width: 16, height: 16 }} /> : <UserPlus size={18} />}
               {loading ? 'Creating Account…' : 'Start Applying Blindly'}
             </button>
           </form>
         </div>
 
         <div style={{ marginTop: 24, textAlign: 'center', fontSize: 14 }}>
-          <span style={{ color: 'var(--color-text-secondary)' }}>
+          <span style={{ color: '#475569' }}>
             Already have an account?{' '}
-            <Link to="/login" style={{ color: 'var(--color-primary)', fontWeight: 600 }}>Sign In</Link>
+            <Link to="/login" style={{ color: '#059669', fontWeight: 700 }}>
+              Sign In
+            </Link>
           </span>
-        </div>
-      </div>
-
-      {/* ── Right Candidate Trust Visual Panel ──────────────────────────────── */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(19,24,38,0.9) 0%, rgba(11,15,23,0.98) 100%)',
-        borderLeft: '1px solid var(--color-border)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 48,
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        <div style={{
-          maxWidth: 440,
-          padding: 36,
-          background: 'rgba(27, 34, 51, 0.7)',
-          backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          borderRadius: 20,
-          boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
-        }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: 12, background: 'rgba(52,199,123,0.2)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-success)',
-            marginBottom: 20,
-          }}>
-            <ShieldCheck size={26} />
-          </div>
-
-          <h3 style={{ fontSize: 20, marginBottom: 12 }}>
-            Your Identity is Protected
-          </h3>
-
-          <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', lineHeight: 1.6, marginBottom: 24 }}>
-            When you apply on FairHire, our automated parser redacts all identifying details before any human recruiter reviews your profile.
-          </p>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: 13, color: 'var(--color-text-primary)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <CheckCircle2 size={16} style={{ color: 'var(--color-success)' }} />
-              Name, gender, and age markers are stripped
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <CheckCircle2 size={16} style={{ color: 'var(--color-success)' }} />
-              Assessed on standardized 30-min coding tests
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <CheckCircle2 size={16} style={{ color: 'var(--color-success)' }} />
-              Full transparency on every verdict calculation
-            </div>
-          </div>
         </div>
       </div>
     </div>
