@@ -8,10 +8,12 @@ import {
   AlertTriangle,
   Check,
   ArrowLeft,
-  Lock,
+  Briefcase,
   Sparkles,
-  Users,
-  Briefcase
+  Lock,
+  Scale,
+  Zap,
+  EyeOff
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -91,7 +93,7 @@ export default function EmployerRequest() {
         background: '#f8fafc',
       }}
     >
-      {/* ── Left Visual Panel: Enterprise Vetting & Anti-Bias Ecosystem ─── */}
+      {/* ── Left Visual Panel: Modern High-Tech AI Hiring Intelligence ─── */}
       <div
         className="hidden lg:flex"
         style={{
@@ -99,9 +101,9 @@ export default function EmployerRequest() {
           overflow: 'hidden',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '48px 40px',
+          padding: '36px 40px',
           backgroundImage:
-            'linear-gradient(to bottom, rgba(15, 23, 42, 0.78) 0%, rgba(15, 23, 42, 0.88) 60%, rgba(15, 23, 42, 0.96) 100%), url("/interview-hero-bg.jpg")',
+            'linear-gradient(to bottom, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.82) 50%, rgba(15, 23, 42, 0.95) 100%), url("/enterprise-hiring-ai.jpg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center center',
           color: '#ffffff',
@@ -112,20 +114,20 @@ export default function EmployerRequest() {
           <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
             <div
               style={{
-                width: 36,
-                height: 36,
+                width: 38,
+                height: 38,
                 borderRadius: 10,
                 background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#fff',
-                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
+                boxShadow: '0 4px 14px rgba(16, 185, 129, 0.4)',
               }}
             >
-              <Building2 size={20} />
+              <Building2 size={22} />
             </div>
-            <span style={{ fontWeight: 800, fontSize: 20, color: '#ffffff', letterSpacing: '-0.02em' }}>
+            <span style={{ fontWeight: 800, fontSize: 21, color: '#ffffff', letterSpacing: '-0.02em' }}>
               Fair<span style={{ color: '#34d399' }}>Hire</span>
             </span>
           </Link>
@@ -134,108 +136,139 @@ export default function EmployerRequest() {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 6,
+              gap: 7,
               padding: '6px 14px',
               borderRadius: 9999,
-              background: 'rgba(255, 255, 255, 0.12)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              background: 'rgba(16, 185, 129, 0.15)',
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(52, 211, 153, 0.35)',
               fontSize: 12,
               fontWeight: 600,
               color: '#a7f3d0',
             }}
           >
-            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981' }} />
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #34d399' }} />
             Enterprise Verification Gate
           </span>
         </div>
 
         {/* Center Spotlight: Enterprise Trust Callout */}
-        <div style={{ maxWidth: 490, margin: '60px 0', zIndex: 2 }}>
+        <div style={{ maxWidth: 500, margin: '30px 0', zIndex: 2 }}>
           <div
             style={{
-              display: 'inline-block',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
               padding: '4px 12px',
               borderRadius: 6,
               background: 'rgba(16, 185, 129, 0.2)',
-              border: '1px solid rgba(52, 211, 153, 0.4)',
+              border: '1px solid rgba(52, 211, 153, 0.45)',
               color: '#6ee7b7',
               fontSize: 11,
               fontWeight: 700,
               textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              marginBottom: 16,
+              letterSpacing: '0.06em',
+              marginBottom: 14,
             }}
           >
+            <Sparkles size={12} />
             Vetted Employer Network
           </div>
 
           <h2
             style={{
-              fontSize: 'clamp(1.75rem, 3vw, 2.3rem)',
+              fontSize: 'clamp(1.75rem, 2.8vw, 2.35rem)',
               fontWeight: 900,
-              lineHeight: 1.25,
+              lineHeight: 1.22,
               color: '#ffffff',
-              marginBottom: 16,
-              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+              marginBottom: 14,
+              textShadow: '0 2px 12px rgba(0,0,0,0.6)',
             }}
           >
-            Hire on verified capability. <span style={{ color: '#34d399' }}>Zero demographic bias.</span>
+            Hire on verified capability. <br />
+            <span style={{ color: '#34d399' }}>Zero demographic bias.</span>
           </h2>
 
-          <p style={{ fontSize: 14, color: '#cbd5e1', lineHeight: 1.6, marginBottom: 28 }}>
-            FairHire empowers forward-thinking engineering and talent teams to assess talent objectively. We strictly vet every employer to protect candidate anonymity, prevent poaching, and guarantee audit-grade fairness.
+          <p style={{ fontSize: 13.5, color: '#cbd5e1', lineHeight: 1.6, marginBottom: 24 }}>
+            FairHire gives enterprise engineering and talent teams autonomous, blind candidate screening. We rigorously verify corporate domains to ensure evaluation integrity and protect candidate privacy.
           </p>
 
           {/* Holographic Trust & Metric Badges */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             <div
               style={{
-                padding: '14px 16px',
+                padding: '12px 16px',
                 borderRadius: 12,
                 background: 'rgba(255, 255, 255, 0.08)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.16)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
               }}
             >
-              <div style={{ fontSize: 22, fontWeight: 900, color: '#34d399' }}>100%</div>
-              <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>Corporate Domain Vetted</div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                <span style={{ fontSize: 22, fontWeight: 900, color: '#34d399' }}>100%</span>
+                <ShieldCheck size={16} color="#34d399" />
+              </div>
+              <div style={{ fontSize: 11.5, color: '#94a3b8', marginTop: 2, fontWeight: 500 }}>
+                Corporate Domain Vetted
+              </div>
             </div>
+
             <div
               style={{
-                padding: '14px 16px',
+                padding: '12px 16px',
                 borderRadius: 12,
                 background: 'rgba(255, 255, 255, 0.08)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.16)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
               }}
             >
-              <div style={{ fontSize: 22, fontWeight: 900, color: '#38bdf8' }}>0% PII</div>
-              <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>Demographic Exposure</div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                <span style={{ fontSize: 22, fontWeight: 900, color: '#38bdf8' }}>0% PII</span>
+                <EyeOff size={16} color="#38bdf8" />
+              </div>
+              <div style={{ fontSize: 11.5, color: '#94a3b8', marginTop: 2, fontWeight: 500 }}>
+                Demographic Exposure
+              </div>
             </div>
+
             <div
               style={{
-                padding: '14px 16px',
+                padding: '12px 16px',
                 borderRadius: 12,
                 background: 'rgba(255, 255, 255, 0.08)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.16)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
               }}
             >
-              <div style={{ fontSize: 22, fontWeight: 900, color: '#a78bfa' }}>NYC 144</div>
-              <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>Audit-Ready Compliance</div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                <span style={{ fontSize: 22, fontWeight: 900, color: '#a78bfa' }}>NYC 144</span>
+                <Scale size={16} color="#a78bfa" />
+              </div>
+              <div style={{ fontSize: 11.5, color: '#94a3b8', marginTop: 2, fontWeight: 500 }}>
+                Audit-Ready Compliance
+              </div>
             </div>
+
             <div
               style={{
-                padding: '14px 16px',
+                padding: '12px 16px',
                 borderRadius: 12,
                 background: 'rgba(255, 255, 255, 0.08)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.16)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
               }}
             >
-              <div style={{ fontSize: 22, fontWeight: 900, color: '#f59e0b' }}>3.4x</div>
-              <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>Faster Quality Hiring</div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                <span style={{ fontSize: 22, fontWeight: 900, color: '#f59e0b' }}>3.4x</span>
+                <Zap size={16} color="#f59e0b" />
+              </div>
+              <div style={{ fontSize: 11.5, color: '#94a3b8', marginTop: 2, fontWeight: 500 }}>
+                Faster Quality Pipeline
+              </div>
             </div>
           </div>
         </div>
@@ -244,26 +277,26 @@ export default function EmployerRequest() {
         <div
           style={{
             zIndex: 2,
-            padding: '16px 20px',
-            borderRadius: 14,
+            padding: '12px 18px',
+            borderRadius: 12,
             background: 'rgba(255, 255, 255, 0.06)',
             backdropFilter: 'blur(12px)',
             border: '1px solid rgba(255, 255, 255, 0.12)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            fontSize: 12,
+            fontSize: 11.5,
             color: '#e2e8f0',
           }}
         >
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <CheckCircle2 size={15} color="#34d399" /> Blind Screening
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <CheckCircle2 size={14} color="#34d399" /> Blind Screening
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <CheckCircle2 size={15} color="#34d399" /> Sandboxed Code Benchmarks
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <CheckCircle2 size={14} color="#34d399" /> Sandboxed Tests
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <CheckCircle2 size={15} color="#34d399" /> Immutable Audits
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <CheckCircle2 size={14} color="#34d399" /> Immutable Audits
           </span>
         </div>
       </div>
@@ -274,14 +307,14 @@ export default function EmployerRequest() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: '48px 36px',
-          maxWidth: 540,
+          padding: '28px 32px',
+          maxWidth: 520,
           margin: '0 auto',
           width: '100%',
         }}
       >
-        {/* Top Navigation Bar */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
+        {/* Top Navigation Row */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
           <Link to="/" className="lg:hidden" style={{ textDecoration: 'none' }}>
             <span style={{ fontWeight: 800, fontSize: 20, color: '#0f172a' }}>
               Fair<span style={{ color: '#10b981' }}>Hire</span>
@@ -295,11 +328,11 @@ export default function EmployerRequest() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
-              fontSize: 13,
+              fontSize: 12.5,
               fontWeight: 600,
               color: '#475569',
               background: '#ffffff',
-              padding: '7px 14px',
+              padding: '6px 12px',
               borderRadius: 8,
               border: '1px solid #e2e8f0',
               textDecoration: 'none',
@@ -307,36 +340,36 @@ export default function EmployerRequest() {
               transition: 'all 0.15s ease',
             }}
           >
-            <ArrowLeft size={14} color="#64748b" />
+            <ArrowLeft size={13} color="#64748b" />
             Back to Home
           </Link>
         </div>
 
         {/* Header Block */}
-        <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: 18 }}>
           <div
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 6,
-              padding: '4px 10px',
+              gap: 5,
+              padding: '3px 9px',
               borderRadius: 6,
               background: '#ecfdf5',
               border: '1px solid #a7f3d0',
               color: '#065f46',
-              fontSize: 11,
+              fontSize: 10.5,
               fontWeight: 700,
               textTransform: 'uppercase',
               letterSpacing: '0.04em',
-              marginBottom: 10,
+              marginBottom: 8,
             }}
           >
-            <ShieldCheck size={13} color="#059669" /> Enterprise Access Intake
+            <ShieldCheck size={12} color="#059669" /> Enterprise Access Intake
           </div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
+          <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
             Request Employer Access
           </h1>
-          <p style={{ fontSize: 14, color: '#64748b', margin: 0, lineHeight: 1.5 }}>
+          <p style={{ fontSize: 13, color: '#64748b', margin: 0, lineHeight: 1.45 }}>
             Every organization is verified by our compliance team to protect candidate anonymity.
           </p>
         </div>
@@ -348,50 +381,50 @@ export default function EmployerRequest() {
               background: '#ffffff',
               borderRadius: 16,
               border: '1px solid #e2e8f0',
-              padding: 36,
+              padding: 32,
               textAlign: 'center',
               boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)',
             }}
           >
             <div
               style={{
-                width: 60,
-                height: 60,
+                width: 56,
+                height: 56,
                 borderRadius: '50%',
                 background: '#ecfdf5',
                 color: '#10b981',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 20px',
+                margin: '0 auto 16px',
                 border: '1px solid #a7f3d0',
               }}
             >
-              <CheckCircle2 size={34} />
+              <CheckCircle2 size={32} />
             </div>
-            <h3 style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', marginBottom: 12 }}>
+            <h3 style={{ fontSize: 19, fontWeight: 800, color: '#0f172a', marginBottom: 10 }}>
               Application Submitted Successfully
             </h3>
-            <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.6, marginBottom: 24 }}>
+            <p style={{ fontSize: 13.5, color: '#475569', lineHeight: 1.55, marginBottom: 20 }}>
               Thank you! Our compliance team is verifying your organization credentials. Once approved, an enterprise invite link will be dispatched to <strong>{form.workEmail}</strong> within 1 business day.
             </p>
             <div
               style={{
-                padding: 14,
+                padding: 12,
                 borderRadius: 10,
                 background: '#f8fafc',
                 border: '1px solid #e2e8f0',
-                fontSize: 13,
+                fontSize: 12.5,
                 color: '#64748b',
-                marginBottom: 24,
+                marginBottom: 20,
                 textAlign: 'left',
               }}
             >
               <div style={{ fontWeight: 600, color: '#334155', marginBottom: 4 }}>Next Steps:</div>
-              <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.5 }}>
-                <li>Corporate domain DNS check & company registration verification.</li>
+              <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.45 }}>
+                <li>Corporate domain DNS check & company verification.</li>
                 <li>Single-use activation token generated (valid for 72 hours).</li>
-                <li>Access to the blind applicant tracking and sandbox assessment hub.</li>
+                <li>Access to the blind candidate assessment hub.</li>
               </ul>
             </div>
             <Link
@@ -402,7 +435,7 @@ export default function EmployerRequest() {
                 display: 'inline-flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: '12px 20px',
+                padding: '10px 18px',
                 borderRadius: 10,
                 fontWeight: 600,
                 textDecoration: 'none',
@@ -418,7 +451,7 @@ export default function EmployerRequest() {
               background: '#ffffff',
               borderRadius: 16,
               border: '1px solid #e2e8f0',
-              padding: 30,
+              padding: '24px 26px',
               boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)',
             }}
           >
@@ -426,24 +459,24 @@ export default function EmployerRequest() {
               <div
                 className="alert alert-error"
                 style={{
-                  marginBottom: 20,
+                  marginBottom: 16,
                   display: 'flex',
                   alignItems: 'flex-start',
-                  gap: 10,
-                  padding: '12px 14px',
-                  borderRadius: 10,
-                  fontSize: 13,
+                  gap: 8,
+                  padding: '10px 12px',
+                  borderRadius: 8,
+                  fontSize: 12.5,
                 }}
               >
-                <AlertTriangle size={17} style={{ flexShrink: 0, marginTop: 1 }} />
+                <AlertTriangle size={15} style={{ flexShrink: 0, marginTop: 1 }} />
                 <span>{error}</span>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {/* Company Name */}
-              <div className="form-group">
-                <label className="form-label" htmlFor="company-name" style={{ fontWeight: 600, color: '#334155', fontSize: 13 }}>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label" htmlFor="company-name" style={{ fontWeight: 600, color: '#334155', fontSize: 12.5, marginBottom: 5 }}>
                   Company / Organization Name
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -457,17 +490,17 @@ export default function EmployerRequest() {
                     onChange={handleChange}
                     required
                     style={{
-                      borderRadius: 10,
-                      padding: '10px 14px 10px 38px',
-                      fontSize: 14,
+                      borderRadius: 9,
+                      padding: '9px 12px 9px 36px',
+                      fontSize: 13.5,
                       border: '1px solid #cbd5e1',
                     }}
                   />
                   <Building2
-                    size={17}
+                    size={16}
                     style={{
                       position: 'absolute',
-                      left: 12,
+                      left: 11,
                       top: '50%',
                       transform: 'translateY(-50%)',
                       color: '#94a3b8',
@@ -478,8 +511,8 @@ export default function EmployerRequest() {
               </div>
 
               {/* Work Email with Corporate Domain Detection */}
-              <div className="form-group">
-                <label className="form-label" htmlFor="work-email" style={{ fontWeight: 600, color: '#334155', fontSize: 13 }}>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label" htmlFor="work-email" style={{ fontWeight: 600, color: '#334155', fontSize: 12.5, marginBottom: 5 }}>
                   Work Email (Corporate Domain)
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -493,9 +526,9 @@ export default function EmployerRequest() {
                     onChange={handleChange}
                     required
                     style={{
-                      borderRadius: 10,
-                      padding: '10px 36px 10px 38px',
-                      fontSize: 14,
+                      borderRadius: 9,
+                      padding: '9px 34px 9px 36px',
+                      fontSize: 13.5,
                       border: isBlockedDomain
                         ? '1px solid #ef4444'
                         : isCorporateDomain
@@ -504,10 +537,10 @@ export default function EmployerRequest() {
                     }}
                   />
                   <Briefcase
-                    size={17}
+                    size={16}
                     style={{
                       position: 'absolute',
-                      left: 12,
+                      left: 11,
                       top: '50%',
                       transform: 'translateY(-50%)',
                       color: '#94a3b8',
@@ -518,7 +551,7 @@ export default function EmployerRequest() {
                     <div
                       style={{
                         position: 'absolute',
-                        right: 12,
+                        right: 11,
                         top: '50%',
                         transform: 'translateY(-50%)',
                         color: '#10b981',
@@ -527,14 +560,14 @@ export default function EmployerRequest() {
                         pointerEvents: 'none',
                       }}
                     >
-                      <Check size={17} />
+                      <Check size={16} />
                     </div>
                   )}
                   {isBlockedDomain && (
                     <div
                       style={{
                         position: 'absolute',
-                        right: 12,
+                        right: 11,
                         top: '50%',
                         transform: 'translateY(-50%)',
                         color: '#ef4444',
@@ -543,7 +576,7 @@ export default function EmployerRequest() {
                         pointerEvents: 'none',
                       }}
                     >
-                      <AlertTriangle size={17} />
+                      <AlertTriangle size={16} />
                     </div>
                   )}
                 </div>
@@ -554,22 +587,22 @@ export default function EmployerRequest() {
                     style={{
                       display: 'flex',
                       alignItems: 'flex-start',
-                      gap: 8,
-                      padding: '8px 12px',
+                      gap: 7,
+                      padding: '7px 10px',
                       background: 'rgba(239, 68, 68, 0.08)',
                       border: '1px solid rgba(239, 68, 68, 0.25)',
-                      borderRadius: 8,
-                      marginTop: 6,
+                      borderRadius: 7,
+                      marginTop: 5,
                       color: '#dc2626',
-                      fontSize: 12,
-                      lineHeight: 1.4,
+                      fontSize: 11.5,
+                      lineHeight: 1.35,
                     }}
                   >
-                    <AlertTriangle size={15} style={{ flexShrink: 0, marginTop: 2 }} />
+                    <AlertTriangle size={14} style={{ flexShrink: 0, marginTop: 1 }} />
                     <div>
-                      <strong>Consumer email domain detected (@{emailDomain}).</strong>
-                      <div style={{ opacity: 0.9, marginTop: 2 }}>
-                        Employer workspaces require an official corporate email (e.g.{' '}
+                      <strong>Consumer email (@{emailDomain}) blocked.</strong>
+                      <div style={{ opacity: 0.9, marginTop: 1 }}>
+                        Corporate email required (e.g.{' '}
                         <code>
                           name@
                           {form.companyName
@@ -583,28 +616,28 @@ export default function EmployerRequest() {
                 ) : isCorporateDomain ? (
                   <span
                     style={{
-                      fontSize: 12,
+                      fontSize: 11.5,
                       color: '#059669',
-                      marginTop: 6,
+                      marginTop: 4,
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 5,
+                      gap: 4,
                       fontWeight: 500,
                     }}
                   >
-                    <Check size={13} /> Corporate domain recognized: <strong>@{emailDomain}</strong>
+                    <Check size={12} /> Corporate domain recognized: <strong>@{emailDomain}</strong>
                   </span>
                 ) : (
-                  <span style={{ fontSize: 12, color: '#94a3b8', marginTop: 6, display: 'block' }}>
-                    Personal email providers (@gmail, @yahoo, @hotmail) are not eligible for recruiter accounts.
+                  <span style={{ fontSize: 11.5, color: '#94a3b8', marginTop: 4, display: 'block' }}>
+                    Personal emails (@gmail, @yahoo) are not eligible for recruiter accounts.
                   </span>
                 )}
               </div>
 
               {/* Company Size & Monthly Hiring Volume */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-                <div className="form-group">
-                  <label className="form-label" htmlFor="company-size" style={{ fontWeight: 600, color: '#334155', fontSize: 13 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label" htmlFor="company-size" style={{ fontWeight: 600, color: '#334155', fontSize: 12.5, marginBottom: 5 }}>
                     Company Size
                   </label>
                   <select
@@ -613,7 +646,7 @@ export default function EmployerRequest() {
                     name="companySize"
                     value={form.companySize}
                     onChange={handleChange}
-                    style={{ borderRadius: 10, padding: '9px 12px', fontSize: 14, border: '1px solid #cbd5e1' }}
+                    style={{ borderRadius: 9, padding: '8px 10px', fontSize: 13.5, border: '1px solid #cbd5e1' }}
                   >
                     <option value="1-50">1–50 employees</option>
                     <option value="51-200">51–200 employees</option>
@@ -622,8 +655,8 @@ export default function EmployerRequest() {
                   </select>
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label" htmlFor="hiring-volume" style={{ fontWeight: 600, color: '#334155', fontSize: 13 }}>
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label" htmlFor="hiring-volume" style={{ fontWeight: 600, color: '#334155', fontSize: 12.5, marginBottom: 5 }}>
                     Monthly Hiring
                   </label>
                   <select
@@ -632,7 +665,7 @@ export default function EmployerRequest() {
                     name="hiringVolume"
                     value={form.hiringVolume}
                     onChange={handleChange}
-                    style={{ borderRadius: 10, padding: '9px 12px', fontSize: 14, border: '1px solid #cbd5e1' }}
+                    style={{ borderRadius: 9, padding: '8px 10px', fontSize: 13.5, border: '1px solid #cbd5e1' }}
                   >
                     <option value="1-5">1–5 roles / mo</option>
                     <option value="5-20">5–20 roles / mo</option>
@@ -642,23 +675,23 @@ export default function EmployerRequest() {
               </div>
 
               {/* Hiring Focus & Diversity Goals */}
-              <div className="form-group">
-                <label className="form-label" htmlFor="use-case" style={{ fontWeight: 600, color: '#334155', fontSize: 13 }}>
-                  Hiring Focus & Diversity Goals <span style={{ color: '#94a3b8', fontWeight: 400 }}>(Optional)</span>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label" htmlFor="use-case" style={{ fontWeight: 600, color: '#334155', fontSize: 12.5, marginBottom: 5 }}>
+                  Hiring Goals <span style={{ color: '#94a3b8', fontWeight: 400 }}>(Optional)</span>
                 </label>
                 <textarea
                   id="use-case"
                   className="form-input"
                   name="useCase"
-                  rows={3}
-                  placeholder="Briefly describe your hiring requirements, target engineering roles, or diversity initiatives..."
+                  rows={2}
+                  placeholder="Briefly describe key roles or diversity screening goals..."
                   value={form.useCase}
                   onChange={handleChange}
                   style={{
                     resize: 'none',
-                    borderRadius: 10,
-                    padding: '10px 14px',
-                    fontSize: 14,
+                    borderRadius: 9,
+                    padding: '8px 12px',
+                    fontSize: 13,
                     border: '1px solid #cbd5e1',
                   }}
                 />
@@ -672,10 +705,10 @@ export default function EmployerRequest() {
                 style={{
                   width: '100%',
                   justifyContent: 'center',
-                  marginTop: 6,
-                  padding: '12px 18px',
-                  borderRadius: 10,
-                  fontSize: 14,
+                  marginTop: 4,
+                  padding: '11px 16px',
+                  borderRadius: 9,
+                  fontSize: 13.5,
                   fontWeight: 600,
                   display: 'flex',
                   alignItems: 'center',
@@ -683,9 +716,9 @@ export default function EmployerRequest() {
                 }}
               >
                 {loading ? (
-                  <span className="spinner" style={{ width: 16, height: 16 }} />
+                  <span className="spinner" style={{ width: 15, height: 15 }} />
                 ) : (
-                  <ArrowRight size={16} />
+                  <ArrowRight size={15} />
                 )}
                 {loading
                   ? 'Submitting Request…'
@@ -693,20 +726,41 @@ export default function EmployerRequest() {
                   ? 'Corporate Email Required'
                   : 'Submit Access Request'}
               </button>
+
+              {/* Trust Badges */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 12,
+                  fontSize: 11,
+                  color: '#94a3b8',
+                  marginTop: 2,
+                }}
+              >
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <Lock size={12} color="#10b981" /> 256-Bit SSL
+                </span>
+                <span>•</span>
+                <span>⚡ 24h Review</span>
+                <span>•</span>
+                <span>🛡️ Zero Data Selling</span>
+              </div>
             </form>
           </div>
         )}
 
         {/* Footer Navigation Links */}
-        <div style={{ marginTop: 24, textAlign: 'center', fontSize: 14 }}>
+        <div style={{ marginTop: 18, textAlign: 'center', fontSize: 13 }}>
           <span style={{ color: '#64748b' }}>
             Already have an active account?{' '}
             <Link to="/login" style={{ color: '#10b981', fontWeight: 600, textDecoration: 'none' }}>
               Sign In
             </Link>
           </span>
-          <div style={{ marginTop: 8 }}>
-            <span style={{ color: '#94a3b8', fontSize: 13 }}>
+          <div style={{ marginTop: 6 }}>
+            <span style={{ color: '#94a3b8', fontSize: 12 }}>
               Looking to apply for jobs?{' '}
               <Link to="/register" style={{ color: '#475569', fontWeight: 600, textDecoration: 'none' }}>
                 Create Candidate Profile
