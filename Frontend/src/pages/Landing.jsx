@@ -25,6 +25,7 @@ import {
   EyeOff,
   Wand2,
   Shield,
+  Cpu,
 } from 'lucide-react';
 import BiasScoreRing from '../components/BiasScoreRing';
 import axios from 'axios';
@@ -1022,6 +1023,610 @@ export default function Landing() {
                   ✓ NYC LL144 Ready &middot; Immutable Audit Trail Logs
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── AI Autonomous Candidate Selection Engine ────────────────── */}
+      <section
+        id="ai-selection"
+        className="scroll-reveal"
+        style={{
+          padding: '90px 24px',
+          background: 'linear-gradient(180deg, #09131f 0%, #0d1b2a 100%)',
+          color: '#f8fafc',
+          position: 'relative',
+          overflow: 'hidden',
+          borderTop: '1px solid #1e293b',
+          borderBottom: '1px solid #1e293b',
+        }}
+      >
+        {/* Glow ambient background lights */}
+        <div
+          style={{
+            position: 'absolute',
+            top: -120,
+            right: -80,
+            width: 480,
+            height: 480,
+            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0) 70%)',
+            pointerEvents: 'none',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            bottom: -100,
+            left: -80,
+            width: 420,
+            height: 420,
+            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.10) 0%, rgba(59, 130, 246, 0) 70%)',
+            pointerEvents: 'none',
+          }}
+        />
+
+        <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          {/* Section Header */}
+          <div style={{ textAlign: 'center', maxWidth: 840, margin: '0 auto 56px' }}>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                background: 'rgba(16, 185, 129, 0.12)',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                color: '#34d399',
+                padding: '7px 16px',
+                borderRadius: 999,
+                fontSize: 12.5,
+                fontWeight: 700,
+                letterSpacing: '0.04em',
+                textTransform: 'uppercase',
+                marginBottom: 18,
+              }}
+            >
+              <Cpu size={15} /> Autonomous Meritocracy Engine
+            </div>
+
+            <h2
+              style={{
+                fontSize: 'clamp(28px, 4vw, 42px)',
+                fontWeight: 900,
+                color: '#ffffff',
+                lineHeight: 1.2,
+                letterSpacing: '-0.025em',
+                margin: '0 0 16px',
+              }}
+            >
+              AI Automatic Candidate Selection
+              <span
+                style={{
+                  display: 'block',
+                  background: 'linear-gradient(90deg, #34d399, #60a5fa)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                Driven by Pure Competence & Continuous Anti-Bias Auditing
+              </span>
+            </h2>
+
+            <p style={{ fontSize: 16, color: '#94a3b8', lineHeight: 1.6, margin: 0 }}>
+              Eliminate recruiter fatigue, pedigree bias, and subjective resume skimming. Our autonomous shortlisting engine
+              ranks and auto-advances candidates using deterministic performance telemetry and verified skill evidence—with
+              demographic inputs mathematically locked to zero.
+            </p>
+          </div>
+
+          {/* Main 2-Column Content: Left = The 3 Pillars / Right = Live Evaluation Simulation Card */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+              gap: 32,
+              alignItems: 'start',
+              marginBottom: 48,
+            }}
+          >
+            {/* Left Column: 3 Pillars */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              {/* Pillar 1 */}
+              <div
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: 18,
+                  padding: 24,
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 10,
+                        background: 'rgba(59, 130, 246, 0.15)',
+                        border: '1px solid rgba(59, 130, 246, 0.3)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#60a5fa',
+                      }}
+                    >
+                      <FileText size={18} />
+                    </div>
+                    <div>
+                      <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, color: '#f1f5f9' }}>
+                        1. Resume Skill Evidence
+                      </h3>
+                      <span style={{ fontSize: 12, color: '#60a5fa', fontWeight: 600 }}>20% Weighted Contribution</span>
+                    </div>
+                  </div>
+                  <span
+                    style={{
+                      background: 'rgba(59, 130, 246, 0.1)',
+                      color: '#93c5fd',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      padding: '3px 8px',
+                      borderRadius: 6,
+                    }}
+                  >
+                    100% PII-STRIPPED
+                  </span>
+                </div>
+                <p style={{ fontSize: 13.5, color: '#94a3b8', lineHeight: 1.55, margin: '0 0 12px' }}>
+                  Natural language processing extracts demonstrated technical competencies, open-source portfolio repositories,
+                  and hands-on frameworks from resumes stripped of names, gender markers, universities, and addresses.
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 11.5, color: '#cbd5e1' }}>
+                  <span style={{ background: 'rgba(255,255,255,0.06)', padding: '3px 8px', borderRadius: 4 }}>
+                    ✓ Semantic Skill Graph
+                  </span>
+                  <span style={{ background: 'rgba(255,255,255,0.06)', padding: '3px 8px', borderRadius: 4 }}>
+                    ✓ Anti-Credentialism
+                  </span>
+                  <span style={{ background: 'rgba(255,255,255,0.06)', padding: '3px 8px', borderRadius: 4 }}>
+                    ✓ Zero University Bias
+                  </span>
+                </div>
+              </div>
+
+              {/* Pillar 2 */}
+              <div
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: 18,
+                  padding: 24,
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 10,
+                        background: 'rgba(16, 185, 129, 0.15)',
+                        border: '1px solid rgba(16, 185, 129, 0.3)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#34d399',
+                      }}
+                    >
+                      <Code2 size={18} />
+                    </div>
+                    <div>
+                      <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, color: '#f1f5f9' }}>
+                        2. Objective Performance Telemetry
+                      </h3>
+                      <span style={{ fontSize: 12, color: '#34d399', fontWeight: 600 }}>80% Weighted Contribution</span>
+                    </div>
+                  </div>
+                  <span
+                    style={{
+                      background: 'rgba(16, 185, 129, 0.1)',
+                      color: '#6ee7b7',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      padding: '3px 8px',
+                      borderRadius: 6,
+                    }}
+                  >
+                    EMPIRICAL EXECUTION
+                  </span>
+                </div>
+                <p style={{ fontSize: 13.5, color: '#94a3b8', lineHeight: 1.55, margin: '0 0 12px' }}>
+                  The overwhelming majority of selection decisions rely on empirical skill execution: timed MCQ cognitive aptitude
+                  (40%) and real-time sandboxed VM coding benchmarks (40%) tested against hidden unit suites.
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 11.5, color: '#cbd5e1' }}>
+                  <span style={{ background: 'rgba(255,255,255,0.06)', padding: '3px 8px', borderRadius: 4 }}>
+                    ✓ 40% Sandboxed Node.js VM
+                  </span>
+                  <span style={{ background: 'rgba(255,255,255,0.06)', padding: '3px 8px', borderRadius: 4 }}>
+                    ✓ 40% Adaptive MCQ Aptitude
+                  </span>
+                  <span style={{ background: 'rgba(255,255,255,0.06)', padding: '3px 8px', borderRadius: 4 }}>
+                    ✓ 0% Demeanor / Charisma Bias
+                  </span>
+                </div>
+              </div>
+
+              {/* Pillar 3 */}
+              <div
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: 18,
+                  padding: 24,
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 10,
+                        background: 'rgba(245, 158, 11, 0.15)',
+                        border: '1px solid rgba(245, 158, 11, 0.3)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#fbbf24',
+                      }}
+                    >
+                      <Scale size={18} />
+                    </div>
+                    <div>
+                      <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, color: '#f1f5f9' }}>
+                        3. Continuous Bias Auditing & Safety Gate
+                      </h3>
+                      <span style={{ fontSize: 12, color: '#fbbf24', fontWeight: 600 }}>0.0% Demographic Factor</span>
+                    </div>
+                  </div>
+                  <span
+                    style={{
+                      background: 'rgba(245, 158, 11, 0.1)',
+                      color: '#fde68a',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      padding: '3px 8px',
+                      borderRadius: 6,
+                    }}
+                  >
+                    MANDATORY GATE
+                  </span>
+                </div>
+                <p style={{ fontSize: 13.5, color: '#94a3b8', lineHeight: 1.55, margin: '0 0 12px' }}>
+                  No candidate is promoted until our statistical audit engine validates cohort distribution under the EEOC 4/5ths Rule
+                  and NYC LL144 guidelines. If adverse impact or demographic anomaly is detected, autonomous selection auto-halts for review.
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, fontSize: 11.5, color: '#cbd5e1' }}>
+                  <span style={{ background: 'rgba(255,255,255,0.06)', padding: '3px 8px', borderRadius: 4 }}>
+                    ✓ EEOC 4/5ths Rule Guardrail
+                  </span>
+                  <span style={{ background: 'rgba(255,255,255,0.06)', padding: '3px 8px', borderRadius: 4 }}>
+                    ✓ NYC LL144 Disparity Audit
+                  </span>
+                  <span style={{ background: 'rgba(255,255,255,0.06)', padding: '3px 8px', borderRadius: 4 }}>
+                    ✓ Immutable Audit Logs
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Interactive Simulation Card */}
+            <div
+              style={{
+                background: 'linear-gradient(145deg, #111e2e 0%, #0d1622 100%)',
+                border: '1px solid rgba(52, 211, 153, 0.25)',
+                borderRadius: 22,
+                padding: 28,
+                boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 30px rgba(16, 185, 129, 0.08)',
+                position: 'relative',
+              }}
+            >
+              {/* Top Bar of Simulation */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingBottom: 16,
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                  marginBottom: 20,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div
+                    style={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: '50%',
+                      background: '#10b981',
+                      boxShadow: '0 0 10px #10b981',
+                    }}
+                  />
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9', letterSpacing: '0.04em' }}>
+                    AUTONOMOUS SELECTION SIMULATION
+                  </span>
+                </div>
+                <span
+                  style={{
+                    background: 'rgba(16, 185, 129, 0.15)',
+                    color: '#34d399',
+                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: '3px 10px',
+                    borderRadius: 999,
+                  }}
+                >
+                  LIVE EVALUATION
+                </span>
+              </div>
+
+              {/* Candidate Info Strip */}
+              <div
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  borderRadius: 12,
+                  padding: '14px 16px',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 12,
+                  marginBottom: 22,
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>
+                    Target Profile
+                  </div>
+                  <div style={{ fontSize: 15, fontWeight: 800, color: '#f8fafc', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    Candidate #CAND-4092
+                    <span
+                      style={{
+                        background: 'rgba(59, 130, 246, 0.2)',
+                        color: '#93c5fd',
+                        fontSize: 10,
+                        fontWeight: 700,
+                        padding: '2px 6px',
+                        borderRadius: 4,
+                      }}
+                    >
+                      BLIND
+                    </span>
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>
+                    Applied Track
+                  </div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#cbd5e1' }}>
+                    Full Stack Engineering
+                  </div>
+                </div>
+              </div>
+
+              {/* Score Breakdown Progress Bars */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 24 }}>
+                {/* Score 1 */}
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, marginBottom: 6 }}>
+                    <span style={{ color: '#cbd5e1', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <FileText size={14} color="#60a5fa" /> Resume Skill Evidence Match (20%)
+                    </span>
+                    <span style={{ fontWeight: 700, color: '#93c5fd' }}>94% <span style={{ color: '#64748b', fontWeight: 400 }}>(+18.8 pts)</span></span>
+                  </div>
+                  <div style={{ height: 7, background: 'rgba(255, 255, 255, 0.08)', borderRadius: 999, overflow: 'hidden' }}>
+                    <div style={{ width: '94%', height: '100%', background: 'linear-gradient(90deg, #3b82f6, #60a5fa)', borderRadius: 999 }} />
+                  </div>
+                </div>
+
+                {/* Score 2 */}
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, marginBottom: 6 }}>
+                    <span style={{ color: '#cbd5e1', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Zap size={14} color="#34d399" /> Timed MCQ & Aptitude Telemetry (40%)
+                    </span>
+                    <span style={{ fontWeight: 700, color: '#6ee7b7' }}>90% <span style={{ color: '#64748b', fontWeight: 400 }}>(+36.0 pts)</span></span>
+                  </div>
+                  <div style={{ height: 7, background: 'rgba(255, 255, 255, 0.08)', borderRadius: 999, overflow: 'hidden' }}>
+                    <div style={{ width: '90%', height: '100%', background: 'linear-gradient(90deg, #059669, #34d399)', borderRadius: 999 }} />
+                  </div>
+                </div>
+
+                {/* Score 3 */}
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, marginBottom: 6 }}>
+                    <span style={{ color: '#cbd5e1', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Code2 size={14} color="#a78bfa" /> Sandboxed VM Coding Benchmarks (40%)
+                    </span>
+                    <span style={{ fontWeight: 700, color: '#c4b5fd' }}>98% <span style={{ color: '#64748b', fontWeight: 400 }}>(+39.2 pts)</span></span>
+                  </div>
+                  <div style={{ height: 7, background: 'rgba(255, 255, 255, 0.08)', borderRadius: 999, overflow: 'hidden' }}>
+                    <div style={{ width: '98%', height: '100%', background: 'linear-gradient(90deg, #7c3aed, #a78bfa)', borderRadius: 999 }} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Transparent Deterministic Formula Box */}
+              <div
+                style={{
+                  background: 'rgba(0, 0, 0, 0.35)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: 12,
+                  padding: 14,
+                  marginBottom: 20,
+                  fontSize: 12,
+                  fontFamily: 'monospace',
+                  color: '#94a3b8',
+                }}
+              >
+                <div style={{ color: '#cbd5e1', fontWeight: 700, marginBottom: 4 }}>
+                  DETERMINISTIC COMPOSITE FORMULA:
+                </div>
+                <div>(90 × 0.40) + (98 × 0.40) + (94 × 0.20) = <strong style={{ color: '#34d399', fontSize: 13 }}>94.0 / 100</strong></div>
+                <div style={{ color: '#64748b', fontSize: 11, marginTop: 4 }}>
+                  Threshold for Automatic Promotion: ≥ 85.0%
+                </div>
+              </div>
+
+              {/* Anti-Bias Gate Check Badges */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: 8,
+                  marginBottom: 20,
+                }}
+              >
+                <div
+                  style={{
+                    background: 'rgba(16, 185, 129, 0.08)',
+                    border: '1px solid rgba(16, 185, 129, 0.2)',
+                    borderRadius: 8,
+                    padding: '8px 10px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div style={{ fontSize: 10, color: '#6ee7b7', fontWeight: 600 }}>DEMOGRAPHIC IMPACT</div>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: '#34d399' }}>0.0% WEIGHT</div>
+                </div>
+                <div
+                  style={{
+                    background: 'rgba(16, 185, 129, 0.08)',
+                    border: '1px solid rgba(16, 185, 129, 0.2)',
+                    borderRadius: 8,
+                    padding: '8px 10px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div style={{ fontSize: 10, color: '#6ee7b7', fontWeight: 600 }}>EEOC 4/5THS RULE</div>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: '#34d399' }}>PASS (1.02)</div>
+                </div>
+                <div
+                  style={{
+                    background: 'rgba(16, 185, 129, 0.08)',
+                    border: '1px solid rgba(16, 185, 129, 0.2)',
+                    borderRadius: 8,
+                    padding: '8px 10px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div style={{ fontSize: 10, color: '#6ee7b7', fontWeight: 600 }}>NYC LL144 AUDIT</div>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: '#34d399' }}>COMPLIANT</div>
+                </div>
+              </div>
+
+              {/* Final AI Verdict Banner */}
+              <div
+                style={{
+                  background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.1) 100%)',
+                  border: '1px solid rgba(16, 185, 129, 0.4)',
+                  borderRadius: 12,
+                  padding: '14px 16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 14,
+                }}
+              >
+                <div
+                  style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: '50%',
+                    background: '#10b981',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#ffffff',
+                    flexShrink: 0,
+                  }}
+                >
+                  <CheckCircle2 size={22} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 11, color: '#34d399', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    AI Decision Output
+                  </div>
+                  <div style={{ fontSize: 14.5, fontWeight: 800, color: '#ffffff' }}>
+                    Auto-Advanced to Final Blind Interview
+                  </div>
+                  <div style={{ fontSize: 11.5, color: '#94a3b8', marginTop: 2 }}>
+                    Candidate ranked in top 2% of cohort based on empirical code execution.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom 3 Feature Banners */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: 20,
+            }}
+          >
+            <div
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                borderRadius: 14,
+                padding: '20px 22px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#34d399', fontWeight: 700, fontSize: 14, marginBottom: 8 }}>
+                <ShieldCheck size={18} /> Zero Human Subjectivity
+              </div>
+              <p style={{ fontSize: 12.5, color: '#94a3b8', margin: 0, lineHeight: 1.55 }}>
+                Removes gut feeling, prestige university bias, and gender affinity. Decisions are generated purely from live performance benchmarks and skill evidence.
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                borderRadius: 14,
+                padding: '20px 22px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#60a5fa', fontWeight: 700, fontSize: 14, marginBottom: 8 }}>
+                <Zap size={18} /> Instant 10-Second Candidate Shortlisting
+              </div>
+              <p style={{ fontSize: 12.5, color: '#94a3b8', margin: 0, lineHeight: 1.55 }}>
+                Evaluates hundreds of candidate submissions simultaneously. Shortlists the highest-scoring talent immediately without bottlenecking hiring managers.
+              </p>
+            </div>
+
+            <div
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                borderRadius: 14,
+                padding: '20px 22px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#fbbf24', fontWeight: 700, fontSize: 14, marginBottom: 8 }}>
+                <Scale size={18} /> 100% Traceable Legal Defense
+              </div>
+              <p style={{ fontSize: 12.5, color: '#94a3b8', margin: 0, lineHeight: 1.55 }}>
+                Every code test result, MCQ answer, and bias gate metric is immutably recorded. Provide full compliance records for EEOC and NYC Local Law 144 audits.
+              </p>
             </div>
           </div>
         </div>
