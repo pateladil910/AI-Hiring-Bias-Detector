@@ -254,7 +254,7 @@ export default function EmployerRequest() {
       <main className="pj-container pj-narrow">
         {/* ---------------- Hero ---------------- */}
         <section className="pj-hero">
-          <span className="pj-pill"><Sparkles size={14} /> ENTERPRISE ACCESS INTAKE</span>
+          <span className="pj-pill"><Sparkles size={14} /> EMPLOYER ACCESS INTAKE</span>
           <h1>Request Employer Access</h1>
           <p>
             Deploy demographic-blind candidate screening, sandboxed technical tests, and NYC Local Law 144

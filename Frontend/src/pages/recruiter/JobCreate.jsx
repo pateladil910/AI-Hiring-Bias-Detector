@@ -454,7 +454,6 @@ export default function JobCreate({ onBack }) {
           <Link to="/" style={{ textDecoration: "none", color: "inherit" }} className="pj-brand">
             <span className="pj-logo"><ShieldCheck size={26} /></span>
             <span className="pj-wordmark">Fair<b>Hire</b></span>
-            <span className="pj-badge">ENTERPRISE</span>
           </Link>
           <div className="pj-header-right">
             <span className="pj-muted pj-hide-sm">
