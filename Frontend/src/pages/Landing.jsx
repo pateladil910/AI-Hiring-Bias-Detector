@@ -1104,9 +1104,9 @@ export default function Landing() {
               <span
                 style={{
                   display: 'block',
-                  background: 'linear-gradient(90deg, #059669 0%, #2563eb 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
+                  color: '#059669',
+                  fontWeight: 900,
+                  marginTop: 6,
                 }}
               >
                 Driven by Pure Competence & Continuous Anti-Bias Auditing
