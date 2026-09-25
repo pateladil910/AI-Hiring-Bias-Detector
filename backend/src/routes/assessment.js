@@ -33,6 +33,61 @@ function stripAnswerKeys(domain) {
   };
 }
 
+// Helper: Semantic & Domain-Aware Resume Matcher
+function computeResumeMatch(domain, resume) {
+  if (!resume) {
+    return {
+      hasResume: false,
+      resumeScore: 0,
+      matchedSkills: [],
+      missingSkills: [...(domain.requiredSkills || [])],
+    };
+  }
+
+  const candidateSkills = (resume.extractedSkillsJson || []).map((s) => s.toLowerCase());
+  const rawResumeText = (resume.redactedText || '').toLowerCase();
+
+  const matchedSkills = domain.requiredSkills.filter((reqSkill) => {
+    const parts = reqSkill.split(/[\/,|]/).map((p) => p.trim().toLowerCase()).filter(Boolean);
+    return parts.some((p) => {
+      const inSkills = candidateSkills.some((cs) => cs === p || cs.includes(p) || p.includes(cs));
+      const inText = rawResumeText.includes(p);
+      const dbMatch = (p === 'sql' || p === 'postgresql') && (
+        candidateSkills.includes('mongodb') || rawResumeText.includes('database') || candidateSkills.includes('sql')
+      );
+      const mlFrameworkMatch = (p === 'pytorch' || p === 'tensorflow' || p === 'pytorch/tensorflow') && (
+        candidateSkills.includes('pandas') || candidateSkills.includes('numpy') ||
+        rawResumeText.includes('machine learning') || rawResumeText.includes('data science') ||
+        rawResumeText.includes('data pipeline') || rawResumeText.includes('deep learning') ||
+        candidateSkills.includes('python')
+      );
+      const evalMatch = (p === 'model evaluation' || p === 'evaluation') && (
+        rawResumeText.includes('benchmark') || rawResumeText.includes('evaluation') ||
+        rawResumeText.includes('latency') || rawResumeText.includes('metrics') ||
+        rawResumeText.includes('data analysis') || rawResumeText.includes('testing')
+      );
+      const fairnessMatch = (p === 'algorithmic fairness' || p === 'fairness') && (
+        rawResumeText.includes('safety') || rawResumeText.includes('fairness') ||
+        rawResumeText.includes('ethics') || rawResumeText.includes('bias') ||
+        rawResumeText.includes('threat mitigation') || rawResumeText.includes('security')
+      );
+      return inSkills || inText || dbMatch || mlFrameworkMatch || evalMatch || fairnessMatch;
+    });
+  });
+
+  const missingSkills = domain.requiredSkills.filter((s) => !matchedSkills.includes(s));
+  const resumeScore = domain.requiredSkills.length > 0
+    ? Math.round((matchedSkills.length / domain.requiredSkills.length) * 100)
+    : 100;
+
+  return {
+    hasResume: true,
+    resumeScore,
+    matchedSkills,
+    missingSkills,
+  };
+}
+
 // ─── GET /api/assessment/domains ──────────────────────────────────────────────
 router.get('/domains', (_req, res) => {
   const catalog = DOMAINS.map((d) => ({
@@ -328,32 +383,11 @@ router.post('/:id/submit', authenticate, requireRole('candidate'), async (req, r
         ['createdAt', 'DESC'],
       ],
     });
-    let resumeScore = 0;
-    let hasResume = false;
-    let matchedSkills = [];
-    let missingSkills = [...domain.requiredSkills];
-
-    if (resume) {
-      hasResume = true;
-      const candidateSkills = (resume.extractedSkillsJson || []).map((s) => s.toLowerCase());
-      const rawResumeText = (resume.redactedText || '').toLowerCase();
-
-      matchedSkills = domain.requiredSkills.filter((reqSkill) => {
-        // Split composite required skills like "PostgreSQL / SQL" or "JavaScript/TypeScript"
-        const parts = reqSkill.split(/[\/,|]/).map((p) => p.trim().toLowerCase()).filter(Boolean);
-        return parts.some((p) => {
-          const inSkills = candidateSkills.some((cs) => cs === p || cs.includes(p) || p.includes(cs));
-          const inText = rawResumeText.includes(p);
-          const dbMatch = (p === 'sql' || p === 'postgresql') && (candidateSkills.includes('mongodb') || rawResumeText.includes('database'));
-          return inSkills || inText || dbMatch;
-        });
-      });
-
-      missingSkills = domain.requiredSkills.filter((s) => !matchedSkills.includes(s));
-      resumeScore = domain.requiredSkills.length > 0
-        ? Math.round((matchedSkills.length / domain.requiredSkills.length) * 100)
-        : 100;
-    }
+    const matchData = computeResumeMatch(domain, resume);
+    const resumeScore = matchData.resumeScore;
+    const hasResume = matchData.hasResume;
+    const matchedSkills = matchData.matchedSkills;
+    const missingSkills = matchData.missingSkills;
 
     // 4. Transparent Mathematical Formula
     // Composite = (MCQ × 0.4) + (Coding × 0.4) + (Resume × 0.2)
@@ -531,36 +565,22 @@ router.get('/results/:id', authenticate, requireRole('candidate'), async (req, r
     let resumeScore = codingJson.resumeScore ?? 0;
     let aiAnalysis = codingJson.aiAnalysis || null;
 
-    // If resume score was 0 or unlinked, check if candidate has a confirmed resume and calculate truthful score
-    if (resumeScore === 0) {
-      const resume = await CandidateResume.findOne({
-        where: { userId: req.user.id },
-        order: [
-          ['confirmed', 'DESC'],
-          ['createdAt', 'DESC'],
-        ],
-      });
-      if (resume) {
-        const candidateSkills = (resume.extractedSkillsJson || []).map((s) => s.toLowerCase());
-        const rawResumeText = (resume.redactedText || '').toLowerCase();
-        const matchedSkills = domain.requiredSkills.filter((reqSkill) => {
-          const parts = reqSkill.split(/[\/,|]/).map((p) => p.trim().toLowerCase()).filter(Boolean);
-          return parts.some((p) => {
-            const inSkills = candidateSkills.some((cs) => cs === p || cs.includes(p) || p.includes(cs));
-            const inText = rawResumeText.includes(p);
-            const dbMatch = (p === 'sql' || p === 'postgresql') && (candidateSkills.includes('mongodb') || rawResumeText.includes('database'));
-            return inSkills || inText || dbMatch;
-          });
-        });
-        const missingSkills = domain.requiredSkills.filter((s) => !matchedSkills.includes(s));
-        resumeScore = domain.requiredSkills.length > 0
-          ? Math.round((matchedSkills.length / domain.requiredSkills.length) * 100)
-          : 100;
-
+    // Reconcile resume match against candidate's latest confirmed resume if newer/higher score exists
+    const resume = await CandidateResume.findOne({
+      where: { userId: req.user.id },
+      order: [
+        ['confirmed', 'DESC'],
+        ['createdAt', 'DESC'],
+      ],
+    });
+    if (resume) {
+      const matchData = computeResumeMatch(domain, resume);
+      if (matchData.resumeScore > resumeScore || !codingJson.hasResume || resumeScore === 0) {
+        resumeScore = matchData.resumeScore;
         codingJson.resumeScore = resumeScore;
         codingJson.hasResume = true;
-        codingJson.matchedSkills = matchedSkills;
-        codingJson.missingSkills = missingSkills;
+        codingJson.matchedSkills = matchData.matchedSkills;
+        codingJson.missingSkills = matchData.missingSkills;
 
         const mcqScore = test.mcqScore ?? 0;
         const codingScore = test.codingScore ?? 0;
@@ -576,11 +596,11 @@ router.get('/results/:id', authenticate, requireRole('candidate'), async (req, r
             weight: 0.2,
             points: Number((resumeScore * 0.2).toFixed(1)),
             hasResume: true,
-            matchedSkills,
-            missingSkills,
+            matchedSkills: matchData.matchedSkills,
+            missingSkills: matchData.missingSkills,
           };
           if (aiAnalysis.hiringCriteria && Array.isArray(aiAnalysis.hiringCriteria.whyThisScore)) {
-            aiAnalysis.hiringCriteria.whyThisScore[2] = `Resume Match: ${matchedSkills.length}/${domain.requiredSkills.length} domain skills verified in resume (${resumeScore}%).`;
+            aiAnalysis.hiringCriteria.whyThisScore[2] = `Resume Match: ${matchData.matchedSkills.length}/${domain.requiredSkills.length} domain skills verified in resume (${resumeScore}%).`;
           }
         }
         test.codingSubmissionJson = codingJson;
