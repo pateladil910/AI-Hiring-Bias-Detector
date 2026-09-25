@@ -88,7 +88,9 @@ export default function CandidateDashboard() {
       link: '/candidate/domain',
       completed: stepsData.mcq?.completed,
       active: currentStep === 3,
-      badge: stepsData.mcq?.completed ? `${stepsData.mcq.score}% Score` : 'Timed (30m)',
+      badge: stepsData.mcq?.completed
+        ? `${stepsData.mcq.score != null ? stepsData.mcq.score : 0}% Score`
+        : 'Timed (30m)',
     },
     {
       num: 4,
@@ -99,7 +101,9 @@ export default function CandidateDashboard() {
       link: stepsData.mcq?.testId ? `/candidate/coding/${stepsData.mcq.testId}` : '/candidate/domain',
       completed: stepsData.coding?.completed,
       active: currentStep === 4,
-      badge: stepsData.coding?.completed ? `${stepsData.coding.testsPassed}/${stepsData.coding.testsTotal} Passed` : 'Sandboxed',
+      badge: stepsData.coding?.completed
+        ? `${stepsData.coding.testsPassed ?? 0}/${stepsData.coding.testsTotal ?? 4} Passed`
+        : 'Sandboxed',
     },
     {
       num: 5,
@@ -110,12 +114,14 @@ export default function CandidateDashboard() {
       link: '/candidate/domain',
       completed: stepsData.results?.ready,
       active: currentStep === 5,
-      badge: stepsData.results?.ready ? `${stepsData.results.compositeScore}/100 Final` : 'Pending Review',
+      badge: stepsData.results?.ready
+        ? `${stepsData.results.compositeScore != null ? stepsData.results.compositeScore : 0}/100 Final`
+        : 'Pending Review',
     },
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-sans">
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-8 font-sans">
       {/* ── Welcome & Candidate Profile Hero Banner ───────────────────────── */}
       <div className="bg-gradient-to-r from-emerald-50 via-teal-50/60 to-sky-50/50 border border-emerald-200/80 rounded-2xl p-6 sm:p-8 mb-8 flex flex-wrap items-center justify-between gap-6 shadow-xs">
         <div>

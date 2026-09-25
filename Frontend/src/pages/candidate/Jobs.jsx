@@ -43,7 +43,7 @@ export default function CandidateJobs() {
   );
 
   return (
-    <div className="page" style={{ maxWidth: 860, margin: '0 auto' }}>
+    <div className="page" style={{ width: '100%', maxWidth: '100%', margin: 0, padding: '24px 32px' }}>
 
       {/* Header */}
       <div className="page-header">

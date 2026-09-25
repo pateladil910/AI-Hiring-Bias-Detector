@@ -79,6 +79,10 @@ export default function TakeTest() {
 
   // ── Fetch test on mount ───────────────────────────────────────────────────
   useEffect(() => {
+    if (testId === 'test-101') {
+      navigate('/candidate/domain', { replace: true });
+      return;
+    }
     (async () => {
       try {
         const res = await testsAPI.get(testId);
@@ -89,12 +93,13 @@ export default function TakeTest() {
         }
         setTest(t);
       } catch (e) {
-        setError(e.response?.data?.error?.message || 'Failed to load test.');
+        const msg = e.response?.data?.error?.message || e.message || 'Failed to load test.';
+        setError(msg);
       } finally {
         setLoading(false);
       }
     })();
-  }, [testId]);
+  }, [testId, navigate]);
 
   // ── Auto-submit on timer expiry ───────────────────────────────────────────
   const handleTimerExpire = useCallback(() => {
@@ -164,14 +169,45 @@ export default function TakeTest() {
     </div>
   );
 
-  if (error && !test) return (
-    <div className="page">
-      <div className="alert alert-error">{error}</div>
-      <button className="btn btn-ghost" style={{ marginTop: 16 }} onClick={() => navigate('/candidate/status')}>
-        ← Back to My Applications
-      </button>
-    </div>
-  );
+  if (error && !test) {
+    const isAuthError =
+      error.toLowerCase().includes('token') ||
+      error.toLowerCase().includes('unauthorized') ||
+      error.toLowerCase().includes('expired');
+
+    return (
+      <div className="page" style={{ maxWidth: 560, margin: '60px auto', padding: '0 20px', textAlign: 'center' }}>
+        <div className="alert alert-error" style={{ marginBottom: 20 }}>
+          {error}
+        </div>
+        {isAuthError && (
+          <div style={{ background: '#f8fafc', padding: 24, borderRadius: 12, border: '1px solid #e2e8f0', marginBottom: 20, textAlign: 'left' }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>
+              🔑 Authentication Required / Session Expired
+            </h3>
+            <p style={{ fontSize: 13, color: '#64748b', lineHeight: 1.6, marginBottom: 16 }}>
+              Your session token was missing or has expired. Please log in again to continue with your test.
+            </p>
+            <button
+              className="btn btn-primary"
+              style={{ width: '100%', justifyContent: 'center' }}
+              onClick={() => navigate('/login')}
+            >
+              Sign In to Your Account →
+            </button>
+          </div>
+        )}
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+          <button className="btn btn-ghost" onClick={() => navigate('/candidate/domain')}>
+            ← Choose Assessment Domain
+          </button>
+          <button className="btn btn-ghost" onClick={() => navigate('/candidate/status')}>
+            View My Applications
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // ── Result Screen ─────────────────────────────────────────────────────────
   if (submitted && result) {

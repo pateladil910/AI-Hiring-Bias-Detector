@@ -77,7 +77,11 @@ export default function ResumeUpload() {
     setError('');
 
     try {
-      const token = localStorage.getItem('token') || localStorage.getItem('fairhire_token');
+      const token =
+        localStorage.getItem('token') ||
+        localStorage.getItem('fairhire_token') ||
+        localStorage.getItem('fh_token') ||
+        sessionStorage.getItem('token');
       const formData = new FormData();
       formData.append('resume', file);
 
@@ -102,7 +106,7 @@ export default function ResumeUpload() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 font-sans">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 font-sans">
       {/* ── Header ───────────────────────────────────────────────────────── */}
       <div className="text-center mb-8">
         <div className="inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full mb-3">

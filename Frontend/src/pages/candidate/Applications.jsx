@@ -15,8 +15,8 @@ export default function Applications() {
       score: '88/100',
       statusPill: 'In Assessment',
       pillColor: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
-      actionUrl: '/candidate/test/test-101',
-      actionText: 'Resume Test'
+      actionUrl: '/candidate/domain',
+      actionText: 'Start Assessment'
     },
     {
       id: 'app-02',
@@ -39,14 +39,14 @@ export default function Applications() {
       score: '91/100',
       statusPill: 'Advanced to Panel',
       pillColor: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
-      actionUrl: '/notifications',
+      actionUrl: '/candidate/notifications',
       actionText: 'View Interview Details'
     }
   ]);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto">
+      <div className="w-full">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 flex items-center gap-3">

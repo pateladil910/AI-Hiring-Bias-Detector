@@ -5,272 +5,8 @@ const { authenticate, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 
-// ─── Domain Assessment Tracks Data ───────────────────────────────────────────
-const DOMAINS = [
-  {
-    id: 'fullstack',
-    name: 'Full Stack Engineering',
-    description: 'Assess full lifecycle web engineering across modern React frontends and Node.js RESTful backends.',
-    requiredSkills: ['React', 'Node.js', 'REST APIs', 'PostgreSQL / SQL', 'JavaScript/TypeScript', 'Git'],
-    durationMinutes: 30,
-    format: '5 MCQ Aptitude Questions + 1 Interactive Coding Challenge',
-    mcqs: [
-      {
-        id: 'fs-1',
-        question: 'Which HTTP method is defined as idempotent according to RFC 7231?',
-        options: ['POST', 'PUT', 'PATCH', 'CONNECT'],
-        correctIndex: 1,
-        topic: 'Web Protocols',
-      },
-      {
-        id: 'fs-2',
-        question: 'In React 18, what is the primary purpose of the cleanup function returned from useEffect?',
-        options: [
-          'To force a synchronous re-render of the DOM',
-          'To clean up subscriptions, timers, or event listeners before the component unmounts or re-runs the effect',
-          'To clear browser cookies and localStorage',
-          'To reset component state to initial values',
-        ],
-        correctIndex: 1,
-        topic: 'React Architecture',
-      },
-      {
-        id: 'fs-3',
-        question: 'What is the performance benefit of creating a B-Tree index on a SQL table column?',
-        options: [
-          'Reduces search time complexity from O(N) full table scans to O(log N)',
-          'Compresses database disk storage by 50%',
-          'Prevents duplicate records from ever being inserted',
-          'Automatically encrypts table data at rest',
-        ],
-        correctIndex: 0,
-        topic: 'Database Optimization',
-      },
-      {
-        id: 'fs-4',
-        question: 'Why does a browser send an HTTP OPTIONS preflight request before certain cross-origin requests?',
-        options: [
-          'To compress the request payload for speed',
-          'To check server CORS policy permissions before sending non-simple HTTP requests (e.g., custom headers or PUT/DELETE)',
-          'To authenticate the user using HTTP Basic Auth',
-          'To verify SSL certificate expiration',
-        ],
-        correctIndex: 1,
-        topic: 'Web Security',
-      },
-      {
-        id: 'fs-5',
-        question: 'In Node.js, how does the libuv event loop handle asynchronous I/O operations without blocking execution?',
-        options: [
-          'It spawns a new OS thread for every single JavaScript function call',
-          'It runs non-blocking OS system calls and delegates file/network tasks to an internal worker thread pool',
-          'It halts execution until the operating system returns data',
-          'It interprets JavaScript code line-by-line via Web Workers',
-        ],
-        correctIndex: 1,
-        topic: 'Node.js Internals',
-      },
-    ],
-    codingProblem: {
-      id: 'cp-fs-1',
-      title: 'Valid Balanced Parentheses & Brackets',
-      instructions: `Write a function \`isValid(s)\` that takes a string \`s\` containing characters '(', ')', '{', '}', '[' and ']' and returns \`true\` if the input string is valid, or \`false\` otherwise.
-
-An input string is valid if:
-1. Open brackets must be closed by the same type of brackets.
-2. Open brackets must be closed in the correct order.
-3. Every close bracket has a corresponding open bracket of the same type.`,
-      starterCode: `function isValid(s) {
-  // Your code here
-  const stack = [];
-  const map = { ')': '(', '}': '{', ']': '[' };
-  
-  for (let char of s) {
-    if (char === '(' || char === '{' || char === '[') {
-      stack.push(char);
-    } else if (map[char]) {
-      if (stack.pop() !== map[char]) return false;
-    }
-  }
-  return stack.length === 0;
-}`,
-      testCases: [
-        { input: '()', expected: true, description: 'Single matching pair ()' },
-        { input: '()[]{}', expected: true, description: 'Multiple matching pairs ()[]{}' },
-        { input: '(]', expected: false, description: 'Mismatched brackets (]' },
-        { input: '([)]', expected: false, description: 'Incorrect nesting ([)]' },
-        { input: '{[]}', expected: true, description: 'Properly nested brackets {[]}' },
-      ],
-    },
-  },
-  {
-    id: 'frontend',
-    name: 'Frontend Engineering',
-    description: 'Evaluate user interface design, accessibility standards, state management, and modern browser APIs.',
-    requiredSkills: ['React', 'TypeScript', 'CSS/TailwindCSS', 'Web Performance', 'Accessibility (a11y)'],
-    durationMinutes: 30,
-    format: '5 MCQ Questions + 1 Coding Challenge',
-    mcqs: [
-      {
-        id: 'fe-1',
-        question: 'Which CSS property creates a new stacking context for z-index without setting position relative/absolute?',
-        options: ['display: flex', 'opacity: 0.99', 'margin: 0 auto', 'box-sizing: border-box'],
-        correctIndex: 1,
-        topic: 'CSS Internals',
-      },
-      {
-        id: 'fe-2',
-        question: 'What is the difference between debouncing and throttling a function?',
-        options: [
-          'Debounce delays execution until after a period of inactivity; throttle limits execution to at most once per time window',
-          'Debounce is asynchronous while throttle is strictly synchronous',
-          'Throttle cancels all pending timeouts while debounce runs immediately',
-          'There is no functional difference; they are synonymous',
-        ],
-        correctIndex: 0,
-        topic: 'UI Performance',
-      },
-      {
-        id: 'fe-3',
-        question: 'What is the primary accessibility purpose of the ARIA attribute aria-live="polite"?',
-        options: [
-          'Prevents keyboard users from focusing an element',
-          'Instructs screen readers to announce dynamic DOM updates when the user is idle, without interrupting ongoing speech',
-          'Forces the browser to display a modal popup',
-          'Applies high contrast styles for visually impaired users',
-        ],
-        correctIndex: 1,
-        topic: 'Accessibility (a11y)',
-      },
-      {
-        id: 'fe-4',
-        question: 'Why should keys in React lists be stable, unique identifiers rather than array indices?',
-        options: [
-          'Using indices breaks CSS styling',
-          'Indices can cause unexpected component state bugs and inefficient re-renders when items are reordered or filtered',
-          'React does not compile if array indices are passed',
-          'Indices leak memory in the browser engine',
-        ],
-        correctIndex: 1,
-        topic: 'React Virtual DOM',
-      },
-      {
-        id: 'fe-5',
-        question: 'Which web browser storage mechanism has the largest storage quota and supports structured asynchronous queries?',
-        options: ['localStorage', 'sessionStorage', 'IndexedDB', 'HTTP Cookies'],
-        correctIndex: 2,
-        topic: 'Browser APIs',
-      },
-    ],
-    codingProblem: {
-      id: 'cp-fe-1',
-      title: 'Flatten Nested Array',
-      instructions: `Write a function \`flatten(arr)\` that recursively flattens a multi-dimensional array of arbitrary depth into a single flat array without using Array.prototype.flat().`,
-      starterCode: `function flatten(arr) {
-  // Your code here
-  let result = [];
-  for (let item of arr) {
-    if (Array.isArray(item)) {
-      result.push(...flatten(item));
-    } else {
-      result.push(item);
-    }
-  }
-  return result;
-}`,
-      testCases: [
-        { input: [1, [2, 3]], expected: [1, 2, 3], description: 'Depth 2 array' },
-        { input: [1, [2, [3, [4]]]], expected: [1, 2, 3, 4], description: 'Deeply nested array' },
-        { input: [[], [1], [2, [3]]], expected: [1, 2, 3], description: 'Array with empty sub-array' },
-        { input: [42], expected: [42], description: 'Single element array' },
-      ],
-    },
-  },
-  {
-    id: 'aiml',
-    name: 'Artificial Intelligence & ML',
-    description: 'Test applied machine learning concepts, NLP pipeline fundamentals, metric evaluation, and algorithmic fairness.',
-    requiredSkills: ['Python', 'PyTorch/TensorFlow', 'NLP', 'Model Evaluation', 'Algorithmic Fairness'],
-    durationMinutes: 30,
-    format: '5 MCQ Questions + 1 Coding Challenge',
-    mcqs: [
-      {
-        id: 'ai-1',
-        question: 'In a medical screening or bias detection model where missing a positive case is costly, which metric should be prioritized?',
-        options: ['Precision', 'Recall / Sensitivity', 'Accuracy', 'Specificity'],
-        correctIndex: 1,
-        topic: 'Evaluation Metrics',
-      },
-      {
-        id: 'ai-2',
-        question: 'Under the US EEOC Uniform Guidelines on Employee Selection, what is the Four-Fifths (80%) Rule used to identify?',
-        options: [
-          'The minimum passing grade on coding tests',
-          'Evidence of disparate impact / adverse bias against a protected demographic group in hiring selection rates',
-          'The percentage of resumes that must be processed by AI',
-          'The required training data diversity ratio',
-        ],
-        correctIndex: 1,
-        topic: 'Algorithmic Fairness',
-      },
-      {
-        id: 'ai-3',
-        question: 'What is the primary role of Self-Attention in the Transformer architecture?',
-        options: [
-          'To compute pairwise token relevance weights dynamically across the entire input sequence simultaneously',
-          'To compress the embedding matrix into 8-bit integers',
-          'To replace backpropagation with genetic algorithms',
-          'To execute recurrence sequentially like an RNN',
-        ],
-        correctIndex: 0,
-        topic: 'Transformer Architecture',
-      },
-      {
-        id: 'ai-4',
-        question: 'Which technique helps prevent overfitting in deep neural networks by randomly deactivating neurons during training?',
-        options: ['Batch Normalization', 'Dropout', 'Learning Rate Warmup', 'Quantization'],
-        correctIndex: 1,
-        topic: 'Deep Learning',
-      },
-      {
-        id: 'ai-5',
-        question: 'What is Vector Cosine Similarity commonly used for in semantic search and resume matching?',
-        options: [
-          'Measuring the angular orientation between two high-dimensional embedding vectors regardless of their magnitude',
-          'Calculating database disk read speed',
-          'Sorting text alphabetically',
-          'Generating random weights for model initialization',
-        ],
-        correctIndex: 0,
-        topic: 'Vector Embeddings',
-      },
-    ],
-    codingProblem: {
-      id: 'cp-ai-1',
-      title: 'Cosine Similarity of Two Vectors',
-      instructions: `Write a function \`cosineSimilarity(vecA, vecB)\` that calculates the cosine similarity between two non-empty numerical vectors of equal length.
-Formula: dotProduct(A, B) / (norm(A) * norm(B)). Round the result to 2 decimal places. Return 0 if either vector has norm 0.`,
-      starterCode: `function cosineSimilarity(vecA, vecB) {
-  // Your code here
-  let dot = 0, normA = 0, normB = 0;
-  for (let i = 0; i < vecA.length; i++) {
-    dot += vecA[i] * vecB[i];
-    normA += vecA[i] * vecA[i];
-    normB += vecB[i] * vecB[i];
-  }
-  if (normA === 0 || normB === 0) return 0;
-  const sim = dot / (Math.sqrt(normA) * Math.sqrt(normB));
-  return Math.round(sim * 100) / 100;
-}`,
-      testCases: [
-        { input: [[1, 2, 3], [1, 2, 3]], expected: 1, description: 'Identical vectors (sim = 1)' },
-        { input: [[1, 0], [0, 1]], expected: 0, description: 'Orthogonal vectors (sim = 0)' },
-        { input: [[1, 2, 3], [2, 4, 6]], expected: 1, description: 'Parallel scaled vectors (sim = 1)' },
-        { input: [[1, 1], [1, -1]], expected: 0, description: 'Perpendicular vectors (sim = 0)' },
-      ],
-    },
-  },
-];
+// ─── Domain Assessment Tracks Data (20 MCQs/track + 20 min Coding Challenge) ───
+const { DOMAINS } = require('../data/assessmentQuestions');
 
 // Helper: strip answer key before sending to candidate
 function stripAnswerKeys(domain) {
@@ -543,18 +279,23 @@ router.post('/:id/submit', authenticate, requireRole('candidate'), async (req, r
 
     // 1. Calculate MCQ score
     let mcqCorrect = 0;
+    const totalMCQs = domain.mcqs.length;
     domain.mcqs.forEach((q) => {
-      if (mcqAnswers[q.id] === q.correctIndex) {
+      if (mcqAnswers[q.id] !== undefined && Number(mcqAnswers[q.id]) === q.correctIndex) {
         mcqCorrect++;
       }
     });
-    const mcqScore = Math.round((mcqCorrect / domain.mcqs.length) * 100);
+    const mcqScore = totalMCQs > 0 ? Math.round((mcqCorrect / totalMCQs) * 100) : 0;
 
     // 2. Calculate Coding Score using VM Sandbox
-    const testCases = domain.codingProblem.testCases;
+    const testCases = domain.codingProblem.testCases || [];
     let testsPassed = 0;
 
-    if (code) {
+    // Verify whether actual executable code was attempted (not empty or just empty function)
+    const cleanCode = (code || '').replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '').trim();
+    const hasExecutableBody = /function\s+\w+\s*\([^)]*\)\s*\{[\s\S]*?[a-zA-Z0-9]+[\s\S]*?\}/.test(cleanCode);
+
+    if (hasExecutableBody) {
       for (const tc of testCases) {
         try {
           const sandbox = { inputData: JSON.parse(JSON.stringify(tc.input)), outputResult: null };
@@ -567,23 +308,51 @@ router.post('/:id/submit', authenticate, requireRole('candidate'), async (req, r
           `;
           const script = new vm.Script(scriptCode);
           script.runInContext(context, { timeout: 3000 });
-          if (JSON.stringify(sandbox.outputResult) === JSON.stringify(tc.expected)) {
+          if (
+            sandbox.outputResult !== null &&
+            sandbox.outputResult !== undefined &&
+            JSON.stringify(sandbox.outputResult) === JSON.stringify(tc.expected)
+          ) {
             testsPassed++;
           }
         } catch (_) {}
       }
     }
-    const codingScore = Math.round((testsPassed / testCases.length) * 100);
+    const codingScore = testCases.length > 0 ? Math.round((testsPassed / testCases.length) * 100) : 0;
 
-    // 3. Resume Match Score from candidate skills
-    const resume = await CandidateResume.findOne({ where: { userId: req.user.id } });
-    let resumeScore = 80;
-    if (resume?.extractedSkillsJson) {
-      const skills = resume.extractedSkillsJson;
-      const matched = domain.requiredSkills.filter((s) =>
-        skills.some((sk) => sk.toLowerCase().includes(s.toLowerCase()) || s.toLowerCase().includes(sk.toLowerCase()))
-      );
-      resumeScore = Math.min(100, Math.max(60, Math.round((matched.length / domain.requiredSkills.length) * 100)));
+    // 3. Resume Match Score from actual uploaded candidate skills (NO FAKE DEFAULTS)
+    const resume = await CandidateResume.findOne({
+      where: { userId: req.user.id },
+      order: [
+        ['confirmed', 'DESC'],
+        ['createdAt', 'DESC'],
+      ],
+    });
+    let resumeScore = 0;
+    let hasResume = false;
+    let matchedSkills = [];
+    let missingSkills = [...domain.requiredSkills];
+
+    if (resume) {
+      hasResume = true;
+      const candidateSkills = (resume.extractedSkillsJson || []).map((s) => s.toLowerCase());
+      const rawResumeText = (resume.redactedText || '').toLowerCase();
+
+      matchedSkills = domain.requiredSkills.filter((reqSkill) => {
+        // Split composite required skills like "PostgreSQL / SQL" or "JavaScript/TypeScript"
+        const parts = reqSkill.split(/[\/,|]/).map((p) => p.trim().toLowerCase()).filter(Boolean);
+        return parts.some((p) => {
+          const inSkills = candidateSkills.some((cs) => cs === p || cs.includes(p) || p.includes(cs));
+          const inText = rawResumeText.includes(p);
+          const dbMatch = (p === 'sql' || p === 'postgresql') && (candidateSkills.includes('mongodb') || rawResumeText.includes('database'));
+          return inSkills || inText || dbMatch;
+        });
+      });
+
+      missingSkills = domain.requiredSkills.filter((s) => !matchedSkills.includes(s));
+      resumeScore = domain.requiredSkills.length > 0
+        ? Math.round((matchedSkills.length / domain.requiredSkills.length) * 100)
+        : 100;
     }
 
     // 4. Transparent Mathematical Formula
@@ -591,17 +360,78 @@ router.post('/:id/submit', authenticate, requireRole('candidate'), async (req, r
     const compositeScore = Math.round((mcqScore * 0.4) + (codingScore * 0.4) + (resumeScore * 0.2));
     const scoringFormula = `(${mcqScore} × 0.4) + (${codingScore} × 0.4) + (${resumeScore} × 0.2) = ${compositeScore}`;
 
-    // 5. Update Test record
+    // 5. AI Benchmark Analysis & Objective Hiring Recommendation
+    let benchmarkTier = 'NEEDS_IMPROVEMENT';
+    let tierBadge = 'Needs Substantial Improvement';
+    let recommendation = 'Application Archived / Candidate Encouraged to Upskill';
+    let recommendationSummary = 'The submission lacks verified working code, necessary aptitude answers, or resume skill evidence for this domain.';
+    let statusLabel = 'Assessment Complete — Below Benchmark Threshold';
+
+    if (compositeScore >= 85) {
+      benchmarkTier = 'HIGH_PERFORMER';
+      tierBadge = 'Exceptional Readiness';
+      recommendation = 'Direct Fast-Track to Technical Onsite Interview';
+      recommendationSummary = 'Demonstrated top-tier mastery across domain theory, algorithmic implementation, and verified background skill depth.';
+      statusLabel = 'Assessment Complete — Fast-Track Interview Recommended';
+    } else if (compositeScore >= 70) {
+      benchmarkTier = 'INTERVIEW_READY';
+      tierBadge = 'Meets Core Standards';
+      recommendation = 'Proceed to Technical Screening Interview';
+      recommendationSummary = 'Demonstrated functional proficiency in algorithms and domain aptitude. Verified readiness for team interview.';
+      statusLabel = 'Assessment Complete — Recruiter Review Pending';
+    } else if (compositeScore >= 50) {
+      benchmarkTier = 'DEVELOPING';
+      tierBadge = 'Developing / Borderline';
+      recommendation = 'Targeted Technical Review Required';
+      recommendationSummary = 'Partial test case completion or theory gaps identified. Recommend recruiter review before scheduling interview.';
+      statusLabel = 'Assessment Complete — Additional Review Recommended';
+    }
+
+    const aiAnalysis = {
+      benchmarkTier,
+      tierBadge,
+      compositeScore,
+      passingThreshold: 70,
+      isPassing: compositeScore >= 70,
+      recommendation,
+      recommendationSummary,
+      hiringCriteria: {
+        hiringRule: 'Candidates scoring 70+ with working code and verified skills are recommended for interview consideration without demographic exposure.',
+        whoShouldHire: 'Hiring leads seeking candidates who demonstrably solve algorithmic problems in real-time and match key domain competencies.',
+        whyThisScore: [
+          mcqScore === 0 ? 'No MCQs were answered correctly (0/5 answered).' : `Aptitude MCQs: ${mcqCorrect}/${totalMCQs} answered correctly (${mcqScore}%).`,
+          codingScore === 0 ? 'Coding challenge had 0 passing unit tests or was left unsolved.' : `Coding Sandbox: ${testsPassed}/${testCases.length} unit tests passed in VM (${codingScore}%).`,
+          !hasResume ? 'No resume was uploaded (0% resume evidence contribution).' : `Resume Match: ${matchedSkills.length}/${domain.requiredSkills.length} domain skills verified in resume.`,
+        ],
+      },
+      componentBreakdown: {
+        mcq: { score: mcqScore, weight: 0.4, points: Number((mcqScore * 0.4).toFixed(1)), correct: mcqCorrect, total: totalMCQs },
+        coding: { score: codingScore, weight: 0.4, points: Number((codingScore * 0.4).toFixed(1)), testsPassed, testsTotal: testCases.length },
+        resume: { score: resumeScore, weight: 0.2, points: Number((resumeScore * 0.2).toFixed(1)), hasResume, matchedSkills, missingSkills },
+      },
+    };
+
+    // 6. Update Test record
     test.mcqScore = mcqScore;
     test.codingScore = codingScore;
     test.compositeScore = compositeScore;
-    test.scoringFormula = 'MCQ×0.4 + Coding×0.4 + Resume×0.2';
-    test.scoringExplanation = `Composite score calculated using verified weighted model: MCQ Aptitude (40%), Coding Sandbox Challenge (40%), and Anonymized Resume Match (20%).`;
-    test.codingSubmissionJson = { code, language, testsPassed, testsTotal: testCases.length };
+    test.scoringFormula = scoringFormula;
+    test.scoringExplanation = `Composite score calculated using verified weighted model: MCQ Aptitude (${(mcqScore * 0.4).toFixed(1)} pts), Coding Sandbox (${(codingScore * 0.4).toFixed(1)} pts), and Anonymized Resume (${(resumeScore * 0.2).toFixed(1)} pts).`;
+    test.codingSubmissionJson = {
+      code,
+      language,
+      testsPassed,
+      testsTotal: testCases.length,
+      resumeScore,
+      hasResume,
+      matchedSkills,
+      missingSkills,
+      aiAnalysis,
+    };
     test.status = 'evaluated';
     await test.save();
 
-    // 6. Update TestSubmission
+    // 7. Update TestSubmission
     await TestSubmission.create({
       testId: test.id,
       answersJson: mcqAnswers,
@@ -609,23 +439,23 @@ router.post('/:id/submit', authenticate, requireRole('candidate'), async (req, r
       submittedAt: new Date(),
     });
 
-    // 7. Update Application status
+    // 8. Update Application status
     if (test.applicationId) {
       const app = await Application.findByPk(test.applicationId);
       if (app) {
-        app.status = 'test_completed';
+        app.status = compositeScore >= 70 ? 'test_completed' : 'needs_review';
         await app.save();
       }
     }
 
-    // 8. Audit Log
+    // 9. Audit Log
     await AuditLog.create({
       action: 'TEST_SUBMITTED',
       entityType: 'aptitude_test',
       entityId: test.id,
       userId: req.user.id,
-      reason: 'Candidate completed MCQ and coding challenge with algorithmic scoring',
-      meta: { mcqScore, codingScore, resumeScore, compositeScore },
+      reason: 'Candidate completed assessment with algorithmic evaluation',
+      meta: { mcqScore, codingScore, resumeScore, compositeScore, benchmarkTier },
     });
 
     return res.json({
@@ -638,7 +468,8 @@ router.post('/:id/submit', authenticate, requireRole('candidate'), async (req, r
       compositeScore,
       scoringFormula,
       formulaSummary: 'Composite = (MCQ × 0.4) + (Coding × 0.4) + (Resume × 0.2)',
-      status: 'Assessment complete — recruiter review pending',
+      status: statusLabel,
+      aiAnalysis,
       completedAt: new Date().toISOString(),
     });
   } catch (err) {
@@ -662,16 +493,19 @@ router.get('/results/me', authenticate, requireRole('candidate'), async (req, re
         const app = await Application.findByPk(t.applicationId);
         if (app && app.candidateId === req.user.id) {
           const domain = DOMAINS.find((d) => d.id === t.domainId) || DOMAINS[0];
+          const codingJson = t.codingSubmissionJson || {};
           candidateResults.push({
             assessmentId: t.id,
             domainName: domain.name,
             domainId: t.domainId,
-            mcqScore: t.mcqScore,
-            codingScore: t.codingScore,
-            compositeScore: t.compositeScore,
+            mcqScore: t.mcqScore ?? 0,
+            codingScore: t.codingScore ?? 0,
+            resumeScore: codingJson.resumeScore ?? 0,
+            compositeScore: t.compositeScore ?? 0,
             scoringFormula: t.scoringFormula,
             scoringExplanation: t.scoringExplanation,
-            status: 'Assessment complete — recruiter review pending',
+            aiAnalysis: codingJson.aiAnalysis || null,
+            status: t.status,
             completedAt: t.updatedAt,
           });
         }
@@ -693,18 +527,80 @@ router.get('/results/:id', authenticate, requireRole('candidate'), async (req, r
     }
 
     const domain = DOMAINS.find((d) => d.id === test.domainId) || DOMAINS[0];
+    let codingJson = test.codingSubmissionJson || {};
+    let resumeScore = codingJson.resumeScore ?? 0;
+    let aiAnalysis = codingJson.aiAnalysis || null;
+
+    // If resume score was 0 or unlinked, check if candidate has a confirmed resume and calculate truthful score
+    if (resumeScore === 0) {
+      const resume = await CandidateResume.findOne({
+        where: { userId: req.user.id },
+        order: [
+          ['confirmed', 'DESC'],
+          ['createdAt', 'DESC'],
+        ],
+      });
+      if (resume) {
+        const candidateSkills = (resume.extractedSkillsJson || []).map((s) => s.toLowerCase());
+        const rawResumeText = (resume.redactedText || '').toLowerCase();
+        const matchedSkills = domain.requiredSkills.filter((reqSkill) => {
+          const parts = reqSkill.split(/[\/,|]/).map((p) => p.trim().toLowerCase()).filter(Boolean);
+          return parts.some((p) => {
+            const inSkills = candidateSkills.some((cs) => cs === p || cs.includes(p) || p.includes(cs));
+            const inText = rawResumeText.includes(p);
+            const dbMatch = (p === 'sql' || p === 'postgresql') && (candidateSkills.includes('mongodb') || rawResumeText.includes('database'));
+            return inSkills || inText || dbMatch;
+          });
+        });
+        const missingSkills = domain.requiredSkills.filter((s) => !matchedSkills.includes(s));
+        resumeScore = domain.requiredSkills.length > 0
+          ? Math.round((matchedSkills.length / domain.requiredSkills.length) * 100)
+          : 100;
+
+        codingJson.resumeScore = resumeScore;
+        codingJson.hasResume = true;
+        codingJson.matchedSkills = matchedSkills;
+        codingJson.missingSkills = missingSkills;
+
+        const mcqScore = test.mcqScore ?? 0;
+        const codingScore = test.codingScore ?? 0;
+        const compositeScore = Math.round((mcqScore * 0.4) + (codingScore * 0.4) + (resumeScore * 0.2));
+        test.compositeScore = compositeScore;
+        test.scoringFormula = `(${mcqScore} × 0.4) + (${codingScore} × 0.4) + (${resumeScore} × 0.2) = ${compositeScore}`;
+        test.scoringExplanation = `Composite score calculated using verified weighted model: MCQ Aptitude (${(mcqScore * 0.4).toFixed(1)} pts), Coding Sandbox (${(codingScore * 0.4).toFixed(1)} pts), and Anonymized Resume (${(resumeScore * 0.2).toFixed(1)} pts).`;
+
+        if (aiAnalysis && aiAnalysis.componentBreakdown) {
+          aiAnalysis.compositeScore = compositeScore;
+          aiAnalysis.componentBreakdown.resume = {
+            score: resumeScore,
+            weight: 0.2,
+            points: Number((resumeScore * 0.2).toFixed(1)),
+            hasResume: true,
+            matchedSkills,
+            missingSkills,
+          };
+          if (aiAnalysis.hiringCriteria && Array.isArray(aiAnalysis.hiringCriteria.whyThisScore)) {
+            aiAnalysis.hiringCriteria.whyThisScore[2] = `Resume Match: ${matchedSkills.length}/${domain.requiredSkills.length} domain skills verified in resume (${resumeScore}%).`;
+          }
+        }
+        test.codingSubmissionJson = codingJson;
+        await test.save();
+      }
+    }
 
     return res.json({
       assessmentId: test.id,
       domainName: domain.name,
       domainId: test.domainId,
-      mcqScore: test.mcqScore,
-      codingScore: test.codingScore,
-      compositeScore: test.compositeScore,
-      scoringFormula: `(${test.mcqScore || 0} × 0.4) + (${test.codingScore || 0} × 0.4) + (80 × 0.2) = ${test.compositeScore || 0}`,
+      mcqScore: test.mcqScore ?? 0,
+      codingScore: test.codingScore ?? 0,
+      resumeScore,
+      compositeScore: test.compositeScore ?? 0,
+      scoringFormula: test.scoringFormula || `(${test.mcqScore || 0} × 0.4) + (${test.codingScore || 0} × 0.4) + (${resumeScore} × 0.2) = ${test.compositeScore || 0}`,
       formulaTemplate: 'Composite = (MCQ × 0.4) + (Coding × 0.4) + (Resume × 0.2)',
       explanation: test.scoringExplanation,
-      status: 'Assessment complete — recruiter review pending',
+      aiAnalysis,
+      status: aiAnalysis?.recommendationSummary ? `Assessment Complete — ${aiAnalysis.tierBadge}` : 'Assessment Complete',
       completedAt: test.updatedAt,
     });
   } catch (err) {

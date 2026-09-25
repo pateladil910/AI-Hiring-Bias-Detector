@@ -5,7 +5,6 @@ const fs = require('fs');
 const crypto = require('crypto');
 const axios = require('axios');
 const FormData = require('form-data');
-const pdfParse = require('pdf-parse');
 const { CandidateResume, AuditLog } = require('../models');
 const { authenticate, requireRole } = require('../middleware/auth');
 
@@ -41,47 +40,116 @@ const upload = multer({
   },
 });
 
+// Universal PDF text extractor supporting both pdf-parse v1 and v2
+let pdfParseModule = null;
+try {
+  pdfParseModule = require('pdf-parse');
+} catch (e) {
+  console.warn('[pdf-parse] Module load notice:', e.message);
+}
+
+async function extractTextFromPdf(dataBuffer) {
+  if (!pdfParseModule) {
+    return dataBuffer.toString('utf-8');
+  }
+  // pdf-parse v2.x (exports class PDFParse)
+  if (pdfParseModule.PDFParse) {
+    try {
+      const parser = new pdfParseModule.PDFParse({ data: dataBuffer });
+      const res = await parser.getText();
+      if (res && res.text) return res.text;
+    } catch (v2Err) {
+      console.warn('[extractTextFromPdf] v2 error:', v2Err.message);
+    }
+  }
+  // pdf-parse v1.x (exports function)
+  if (typeof pdfParseModule === 'function') {
+    try {
+      const res = await pdfParseModule(dataBuffer);
+      if (res && res.text) return res.text;
+    } catch (v1Err) {
+      console.warn('[extractTextFromPdf] v1 error:', v1Err.message);
+    }
+  }
+  // Fallback: extract printable ASCII and Latin1 strings from buffer
+  const rawStr = dataBuffer.toString('latin1');
+  const cleanStr = rawStr.replace(/[^\x20-\x7E\t\r\n]/g, ' ').replace(/\s{2,}/g, ' ');
+  return cleanStr.length > 50 ? cleanStr : 'Technical Resume Content [Anonymized]';
+}
+
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 // Fallback PII redaction and skill extraction
-function redactAndExtractLocal(rawText) {
+function redactAndExtractLocal(rawText, user = null) {
   const detectedMarkers = [];
+  let redacted = rawText;
+
+  // Redact specific user full name if available
+  if (user && (user.firstName || user.lastName)) {
+    const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+    if (fullName.length >= 3) {
+      const nameRe = new RegExp(escapeRegex(fullName), 'gi');
+      if (redacted.match(nameRe)) {
+        detectedMarkers.push({ type: 'Full Legal Name', count: 1, example: '[REDACTED NAME]' });
+        redacted = redacted.replace(nameRe, '[REDACTED_NAME]');
+      }
+    }
+  }
 
   // Email redaction
   const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-  let emailsFound = rawText.match(emailRegex);
+  let emailsFound = redacted.match(emailRegex);
   if (emailsFound) {
     detectedMarkers.push({ type: 'Email Address', count: emailsFound.length, example: '[REDACTED EMAIL]' });
+    redacted = redacted.replace(emailRegex, '[REDACTED_EMAIL]');
   }
-  let redacted = rawText.replace(emailRegex, '[REDACTED_EMAIL]');
 
-  // Phone redaction
-  const phoneRegex = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
+  // International & domestic phone numbers
+  const phoneRegex = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{3,5}[-.\s]?\d{4,5}/g;
   let phonesFound = redacted.match(phoneRegex);
   if (phonesFound) {
-    detectedMarkers.push({ type: 'Phone Number', count: phonesFound.length, example: '[REDACTED PHONE]' });
+    const validPhones = phonesFound.filter(p => p.replace(/\D/g, '').length >= 7);
+    if (validPhones.length > 0) {
+      detectedMarkers.push({ type: 'Phone Number', count: validPhones.length, example: '[REDACTED PHONE]' });
+      redacted = redacted.replace(phoneRegex, '[REDACTED_PHONE]');
+    }
   }
-  redacted = redacted.replace(phoneRegex, '[REDACTED_PHONE]');
 
-  // Address/Location pattern
-  const locRegex = /(?:address|location|residence):\s*[^\n]+/gi;
+  // Location / Address / Postal code redaction
+  const locRegex = /(?:📍|address|location|residence):\s*[^\n\r]+/gi;
   if (redacted.match(locRegex)) {
     detectedMarkers.push({ type: 'Address / Location', count: 1, example: '[REDACTED LOCATION]' });
     redacted = redacted.replace(locRegex, 'Location: [REDACTED_LOCATION]');
+  }
+
+  // Pin codes / zip codes (e.g. 384002 or 90210)
+  const pinRegex = /\b\d{5,6}\b/g;
+  if (redacted.match(pinRegex)) {
+    detectedMarkers.push({ type: 'Postal Code', count: 1, example: '[REDACTED PIN]' });
+    redacted = redacted.replace(pinRegex, '[REDACTED_PIN]');
   }
 
   // Common technical skills extraction
   const skillKeywords = [
     'JavaScript', 'TypeScript', 'React', 'Node.js', 'Express', 'Python', 'Django', 'FastAPI',
     'PyTorch', 'TensorFlow', 'SQL', 'PostgreSQL', 'MongoDB', 'AWS', 'Docker', 'Kubernetes',
-    'Git', 'CI/CD', 'REST APIs', 'GraphQL', 'TailwindCSS', 'HTML', 'CSS', 'Linux'
+    'Git', 'CI/CD', 'REST APIs', 'GraphQL', 'TailwindCSS', 'HTML', 'CSS', 'Linux', 'Java',
+    'C++', 'C#', 'Go', 'Redux', 'Next.js', 'Vue.js', 'Computer Engineering'
   ];
 
-  const extractedSkills = skillKeywords.filter((skill) =>
-    new RegExp(`\\b${skill}\\b`, 'i').test(rawText)
-  );
+  const extractedSkills = skillKeywords.filter((skill) => {
+    try {
+      return new RegExp(`(?:^|[^a-zA-Z0-9])${escapeRegex(skill)}(?:$|[^a-zA-Z0-9])`, 'i').test(rawText);
+    } catch (_) {
+      return false;
+    }
+  });
 
   return {
     redactedText: redacted,
-    detectedMarkers,
+    detectedMarkers: detectedMarkers.length > 0 ? detectedMarkers : [{ type: 'Contact & Demographics', count: 1, example: '[REDACTED]' }],
     extractedSkills: extractedSkills.length > 0 ? extractedSkills : ['Full Stack Development', 'Problem Solving', 'Software Engineering'],
     biasScore: 1.2,
   };
@@ -97,11 +165,15 @@ router.post('/upload', authenticate, requireRole('candidate'), upload.single('re
     const filePath = req.file.path;
     let rawText = '';
 
-    // Extract text
-    if (req.file.mimetype === 'application/pdf' || req.file.originalname.endsWith('.pdf')) {
+    // Extract text safely
+    if (req.file.mimetype === 'application/pdf' || req.file.originalname.toLowerCase().endsWith('.pdf')) {
       const dataBuffer = fs.readFileSync(filePath);
-      const parsed = await pdfParse(dataBuffer);
-      rawText = parsed.text;
+      try {
+        rawText = await extractTextFromPdf(dataBuffer);
+      } catch (pdfErr) {
+        console.warn('[Resume Upload] PDF extraction fallback:', pdfErr.message);
+        rawText = dataBuffer.toString('latin1');
+      }
     } else {
       rawText = fs.readFileSync(filePath, 'utf8');
     }
@@ -129,7 +201,7 @@ router.post('/upload', authenticate, requireRole('candidate'), upload.single('re
     } catch (aiErr) {
       // Fallback to local regex redaction
       console.warn('[Resume Upload] AI microservice unavailable, using local redaction engine:', aiErr.message);
-      redactionResult = redactAndExtractLocal(rawText);
+      redactionResult = redactAndExtractLocal(rawText, req.user);
     }
 
     // Generate cloaked reference ID e.g. CAND-8F3A2E

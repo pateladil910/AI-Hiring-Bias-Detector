@@ -11,6 +11,7 @@ import {
   Sparkles,
   Terminal,
   Code2,
+  Clock,
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -28,12 +29,35 @@ export default function CodingSandbox() {
   const [testResults, setTestResults] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const [remainingSeconds, setRemainingSeconds] = useState(1200); // 20 minutes
 
   const mcqAnswers = location.state?.mcqAnswers || {};
 
   useEffect(() => {
     fetchAssessment();
   }, [id]);
+
+  // 20-Minute Countdown Timer for Coding Challenge
+  useEffect(() => {
+    if (loading || remainingSeconds <= 0) return;
+    const timer = setInterval(() => {
+      setRemainingSeconds((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          handleSubmit();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [loading, remainingSeconds]);
+
+  const formatTime = (totalSec) => {
+    const mins = Math.floor(totalSec / 60);
+    const secs = totalSec % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const fetchAssessment = async () => {
     try {
@@ -144,7 +168,28 @@ export default function CodingSandbox() {
           </h1>
         </div>
 
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          {/* 20-Minute Countdown Clock */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              background: remainingSeconds < 300 ? '#fef2f2' : '#ecfdf5',
+              border: remainingSeconds < 300 ? '1px solid #fecaca' : '1px solid #a7f3d0',
+              color: remainingSeconds < 300 ? '#dc2626' : '#047857',
+              padding: '6px 14px',
+              borderRadius: 10,
+              fontWeight: 800,
+              fontSize: 16,
+              fontFamily: 'monospace',
+            }}
+            title="20-Minute Algorithmic Challenge Timer"
+          >
+            <Clock size={16} />
+            <span>{formatTime(remainingSeconds)}</span>
+          </div>
+
           <button
             onClick={() => setCode(problem?.starterCode || '')}
             className="btn btn-ghost btn-sm"

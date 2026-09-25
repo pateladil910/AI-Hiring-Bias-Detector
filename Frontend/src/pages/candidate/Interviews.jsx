@@ -82,7 +82,7 @@ export default function CandidateInterviews() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 font-sans">
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-8 font-sans">
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <div className="mb-8">
         <div className="inline-flex items-center gap-1.5 text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200 px-3 py-1 rounded-full mb-3">

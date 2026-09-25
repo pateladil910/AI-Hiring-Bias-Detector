@@ -52,14 +52,19 @@ export default function DomainSelection() {
 
       navigate(`/candidate/assessment/${res.data.assessmentId}`);
     } catch (err) {
-      setError(err.response?.data?.error?.message || 'Failed to initialize assessment. Please try again.');
+      const msg = err.response?.data?.error?.message || 'Failed to initialize assessment. Please try again.';
+      if (err.response?.status === 401 || msg.toLowerCase().includes('token') || msg.toLowerCase().includes('expired')) {
+        setError('Your login session has expired. Please sign in again to continue.');
+      } else {
+        setError(msg);
+      }
     } finally {
       setStarting(false);
     }
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 font-sans">
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-10 font-sans">
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full mb-3">
@@ -69,13 +74,24 @@ export default function DomainSelection() {
           Select Your Engineering Assessment Specialization
         </h1>
         <p className="text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          All tracks feature standardized, objective benchmarks: 5 knowledge MCQs followed by 1 sandboxed algorithmic coding task.
+          Standardized objective benchmarks: 20 knowledge MCQs (1 min/Q) followed by 1 sandboxed algorithmic coding challenge (20 min).
         </p>
       </div>
 
       {error && (
-        <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl text-xs font-medium mb-6 text-center">
-          {error}
+        <div className="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-xl text-xs font-medium mb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <AlertCircle size={16} className="text-rose-600 flex-shrink-0" />
+            <span>{error}</span>
+          </div>
+          {(error.includes('expired') || error.includes('sign in')) && (
+            <button
+              onClick={() => navigate('/login')}
+              className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-bold text-xs shadow-xs transition cursor-pointer"
+            >
+              Sign In Again →
+            </button>
+          )}
         </div>
       )}
 

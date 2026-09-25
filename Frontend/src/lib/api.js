@@ -9,7 +9,12 @@ const api = axios.create({
 
 // ─── Request Interceptor: Attach JWT ──────────────────────────────────────────
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  const token =
+    localStorage.getItem('token') ||
+    localStorage.getItem('fairhire_token') ||
+    localStorage.getItem('fh_token') ||
+    sessionStorage.getItem('token') ||
+    sessionStorage.getItem('fairhire_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

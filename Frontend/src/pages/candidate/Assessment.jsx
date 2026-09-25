@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   Save,
   HelpCircle,
+  Sparkles,
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -22,7 +23,7 @@ export default function Assessment() {
   const [instructionsAccepted, setInstructionsAccepted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [remainingSeconds, setRemainingSeconds] = useState(1800);
+  const [remainingSeconds, setRemainingSeconds] = useState(1200); // 20 minutes (1 min per question for 20 MCQs)
   const [lastSaved, setLastSaved] = useState('Just now');
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -115,7 +116,7 @@ export default function Assessment() {
     return (
       <div className="container" style={{ textAlign: 'center', padding: '80px 24px' }}>
         <div className="spinner" style={{ margin: '0 auto 16px' }} />
-        <div style={{ color: 'var(--color-text-secondary)' }}>Loading assessment environment...</div>
+        <div style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>Loading assessment questions...</div>
       </div>
     );
   }
@@ -123,9 +124,11 @@ export default function Assessment() {
   if (error || !assessment) {
     return (
       <div className="container" style={{ maxWidth: 640, margin: '60px auto', textAlign: 'center' }}>
-        <AlertCircle size={48} color="#f87171" style={{ marginBottom: 16 }} />
-        <h2 style={{ color: '#fff', fontSize: 22, marginBottom: 8 }}>Assessment Error</h2>
-        <p style={{ color: 'var(--color-text-secondary)', marginBottom: 24 }}>{error}</p>
+        <AlertCircle size={48} color="#ef4444" style={{ margin: '0 auto 16px' }} />
+        <h2 style={{ color: 'var(--color-text-primary)', fontSize: 22, fontWeight: 700, marginBottom: 8 }}>
+          Assessment Error
+        </h2>
+        <p style={{ color: 'var(--color-text-secondary)', marginBottom: 24, fontSize: 14 }}>{error}</p>
         <button onClick={() => navigate('/candidate/domain')} className="btn btn-primary">
           Back to Domain Tracks
         </button>
@@ -142,10 +145,11 @@ export default function Assessment() {
       <div className="container" style={{ maxWidth: 760, margin: '0 auto', padding: '40px 24px' }}>
         <div
           style={{
-            background: 'var(--color-surface)',
+            background: '#ffffff',
             border: '1px solid var(--color-border)',
             borderRadius: 16,
             padding: 36,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
           }}
         >
           <div
@@ -153,8 +157,9 @@ export default function Assessment() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
-              background: 'rgba(16, 185, 129, 0.15)',
-              color: '#34d399',
+              background: '#ecfdf5',
+              color: '#059669',
+              border: '1px solid #a7f3d0',
               padding: '4px 12px',
               borderRadius: 9999,
               fontSize: 12,
@@ -165,50 +170,50 @@ export default function Assessment() {
             <ShieldCheck size={14} /> Stage 03: Aptitude Evaluation
           </div>
 
-          <h1 style={{ fontSize: 26, fontWeight: 800, margin: '0 0 12px', color: '#fff' }}>
+          <h1 style={{ fontSize: 26, fontWeight: 800, margin: '0 0 12px', color: 'var(--color-text-primary)' }}>
             {assessment.name} Assessment Instructions
           </h1>
-          <p style={{ color: 'var(--color-text-secondary)', fontSize: 15, lineHeight: 1.5, margin: '0 0 24px' }}>
+          <p style={{ color: 'var(--color-text-secondary)', fontSize: 14, lineHeight: 1.6, margin: '0 0 24px' }}>
             Please read the instructions carefully before starting. The server countdown timer will commence as soon as you confirm.
           </p>
 
           <div
             style={{
-              background: 'rgba(255,255,255,0.02)',
+              background: '#f8fafc',
               border: '1px solid var(--color-border)',
               borderRadius: 12,
               padding: 20,
               marginBottom: 28,
               display: 'flex',
               flexDirection: 'column',
-              gap: 14,
+              gap: 16,
             }}
           >
             <div style={{ display: 'flex', gap: 12 }}>
-              <CheckCircle2 size={18} color="#10b981" style={{ flexShrink: 0, marginTop: 2 }} />
-              <div style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-                <strong style={{ color: '#fff' }}>Time Limit:</strong> You have {assessment.timeLimitMinutes || 30} minutes in total to complete both the MCQs and the coding challenge.
+              <CheckCircle2 size={18} color="#059669" style={{ flexShrink: 0, marginTop: 2 }} />
+              <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
+                <strong style={{ color: 'var(--color-text-primary)' }}>Part 1 — 20 Aptitude MCQs:</strong> You have 20 minutes in total (1 minute per question) to complete 20 domain knowledge questions.
               </div>
             </div>
 
             <div style={{ display: 'flex', gap: 12 }}>
-              <CheckCircle2 size={18} color="#10b981" style={{ flexShrink: 0, marginTop: 2 }} />
-              <div style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-                <strong style={{ color: '#fff' }}>Autosave:</strong> Your answers are securely autosaved to the server every 30 seconds and whenever you navigate between questions.
+              <CheckCircle2 size={18} color="#059669" style={{ flexShrink: 0, marginTop: 2 }} />
+              <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
+                <strong style={{ color: 'var(--color-text-primary)' }}>Part 2 — Coding Challenge:</strong> After completing the MCQs, you will enter the coding sandbox with a dedicated 20-minute timer for the algorithmic problem.
               </div>
             </div>
 
             <div style={{ display: 'flex', gap: 12 }}>
-              <CheckCircle2 size={18} color="#10b981" style={{ flexShrink: 0, marginTop: 2 }} />
-              <div style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-                <strong style={{ color: '#fff' }}>Two-Part Structure:</strong> Part 1 consists of 5 domain aptitude MCQs. Part 2 is an interactive coding challenge in our sandboxed VM editor.
+              <CheckCircle2 size={18} color="#059669" style={{ flexShrink: 0, marginTop: 2 }} />
+              <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
+                <strong style={{ color: 'var(--color-text-primary)' }}>Autosave:</strong> Your MCQ answers are securely autosaved every 30 seconds and whenever you switch questions.
               </div>
             </div>
 
             <div style={{ display: 'flex', gap: 12 }}>
-              <CheckCircle2 size={18} color="#10b981" style={{ flexShrink: 0, marginTop: 2 }} />
-              <div style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-                <strong style={{ color: '#fff' }}>Integrity Protection:</strong> Answer keys are protected server-side and never exposed to the client browser.
+              <CheckCircle2 size={18} color="#059669" style={{ flexShrink: 0, marginTop: 2 }} />
+              <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
+                <strong style={{ color: 'var(--color-text-primary)' }}>Instant Objective Results:</strong> Final composite score (MCQ 40% + Coding 40% + Verified Skills 20%) is graded automatically upon final submission.
               </div>
             </div>
           </div>
@@ -217,13 +222,14 @@ export default function Assessment() {
             <button
               onClick={() => navigate('/candidate/domain')}
               className="btn btn-ghost"
+              style={{ fontSize: 13, fontWeight: 600 }}
             >
               Back
             </button>
             <button
               onClick={() => setInstructionsAccepted(true)}
               className="btn btn-primary"
-              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px' }}
+              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px', fontSize: 14, fontWeight: 700 }}
             >
               I Understand — Start Timer <ArrowRight size={16} />
             </button>
@@ -239,7 +245,7 @@ export default function Assessment() {
       {/* ── Top Bar: Progress & Timer ──────────────────────────────────────── */}
       <div
         style={{
-          background: 'var(--color-surface)',
+          background: '#ffffff',
           border: '1px solid var(--color-border)',
           borderRadius: 14,
           padding: '16px 24px',
@@ -249,19 +255,20 @@ export default function Assessment() {
           alignItems: 'center',
           flexWrap: 'wrap',
           gap: 16,
+          boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
         }}
       >
         <div>
-          <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
-            {assessment.name} • Part 1 of 2
+          <div style={{ fontSize: 11, color: '#059669', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.04em' }}>
+            {assessment.name} • PART 1 OF 2
           </div>
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginTop: 2 }}>
+          <div style={{ fontSize: 17, fontWeight: 800, color: 'var(--color-text-primary)', marginTop: 2 }}>
             Question {currentIndex + 1} of {questions.length}
           </div>
         </div>
 
-        {/* Question Nav Pills */}
-        <div style={{ display: 'flex', gap: 8 }}>
+        {/* Question Nav Pills (20 Questions) */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, maxWidth: 440 }}>
           {questions.map((q, idx) => {
             const isAnswered = answers[q.id] !== undefined;
             const isCurrent = idx === currentIndex;
@@ -271,16 +278,31 @@ export default function Assessment() {
                 key={q.id}
                 onClick={() => setCurrentIndex(idx)}
                 style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 8,
-                  border: isCurrent ? '2px solid #10b981' : '1px solid var(--color-border)',
-                  background: isAnswered ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255,255,255,0.04)',
-                  color: isAnswered ? '#34d399' : '#fff',
+                  width: 30,
+                  height: 30,
+                  borderRadius: 6,
+                  border: isCurrent
+                    ? '2px solid #059669'
+                    : isAnswered
+                    ? '1px solid #10b981'
+                    : '1px solid #cbd5e1',
+                  background: isCurrent
+                    ? '#ecfdf5'
+                    : isAnswered
+                    ? '#d1fae5'
+                    : '#ffffff',
+                  color: isCurrent
+                    ? '#047857'
+                    : isAnswered
+                    ? '#065f46'
+                    : '#475569',
                   fontSize: 12,
                   fontWeight: 700,
                   cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                  boxShadow: isCurrent ? '0 0 0 2px rgba(5, 150, 105, 0.2)' : 'none',
                 }}
+                title={`Question ${idx + 1}${isAnswered ? ' (Answered)' : ''}`}
               >
                 {idx + 1}
               </button>
@@ -290,7 +312,7 @@ export default function Assessment() {
 
         {/* Server Countdown Timer */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+          <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
             Autosaved: {saving ? 'Saving...' : lastSaved}
           </div>
           <div
@@ -298,9 +320,9 @@ export default function Assessment() {
               display: 'flex',
               alignItems: 'center',
               gap: 8,
-              background: remainingSeconds < 300 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.15)',
-              border: remainingSeconds < 300 ? '1px solid #ef4444' : '1px solid #10b981',
-              color: remainingSeconds < 300 ? '#f87171' : '#34d399',
+              background: remainingSeconds < 300 ? '#fef2f2' : '#ecfdf5',
+              border: remainingSeconds < 300 ? '1px solid #fecaca' : '1px solid #a7f3d0',
+              color: remainingSeconds < 300 ? '#dc2626' : '#047857',
               padding: '6px 14px',
               borderRadius: 10,
               fontWeight: 800,
@@ -317,40 +339,51 @@ export default function Assessment() {
       {/* ── Question Card ─────────────────────────────────────────────────── */}
       <div
         style={{
-          background: 'var(--color-surface)',
+          background: '#ffffff',
           border: '1px solid var(--color-border)',
           borderRadius: 16,
           padding: 32,
           marginBottom: 24,
+          boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
         }}
       >
-        {currentQ && (
+        {currentQ ? (
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
               <span
                 style={{
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: 700,
-                  background: 'rgba(56, 189, 248, 0.15)',
-                  color: '#38bdf8',
-                  padding: '3px 8px',
+                  background: '#e0f2fe',
+                  color: '#0284c7',
+                  padding: '4px 10px',
                   borderRadius: 6,
+                  border: '1px solid #bae6fd',
                 }}
               >
-                Topic: {currentQ.topic || 'General'}
+                Topic: {currentQ.topic || 'General Aptitude'}
               </span>
-              <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text-muted)' }}>
                 1 Point
               </span>
             </div>
 
-            <h2 style={{ fontSize: 18, fontWeight: 700, color: '#fff', lineHeight: 1.5, margin: '0 0 24px' }}>
+            {/* High-Contrast Visible Question Text */}
+            <h2
+              style={{
+                fontSize: 19,
+                fontWeight: 700,
+                color: '#0f172a',
+                lineHeight: 1.55,
+                margin: '0 0 24px',
+              }}
+            >
               {currentQ.question}
             </h2>
 
             {/* Radio Options */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {currentQ.options.map((opt, optIdx) => {
+              {currentQ.options?.map((opt, optIdx) => {
                 const isSelected = answers[currentQ.id] === optIdx;
 
                 return (
@@ -363,29 +396,44 @@ export default function Assessment() {
                       gap: 14,
                       padding: '14px 18px',
                       borderRadius: 12,
-                      border: isSelected ? '2px solid #10b981' : '1px solid var(--color-border)',
-                      background: isSelected ? 'rgba(16, 185, 129, 0.08)' : 'rgba(255,255,255,0.02)',
+                      border: isSelected ? '2px solid #059669' : '1px solid #e2e8f0',
+                      background: isSelected ? '#f0fdf4' : '#ffffff',
                       cursor: 'pointer',
                       transition: 'all 150ms ease',
+                      boxShadow: isSelected ? '0 2px 8px rgba(5, 150, 105, 0.1)' : '0 1px 2px rgba(0,0,0,0.02)',
                     }}
                   >
+                    {/* Clean Radio Button Circle */}
                     <div
                       style={{
                         width: 20,
                         height: 20,
                         borderRadius: '50%',
-                        border: isSelected ? '6px solid #10b981' : '2px solid var(--color-border)',
-                        background: '#090f0c',
+                        border: isSelected ? '6px solid #059669' : '2px solid #cbd5e1',
+                        background: '#ffffff',
                         flexShrink: 0,
+                        transition: 'all 150ms ease',
                       }}
                     />
-                    <span style={{ fontSize: 14, color: isSelected ? '#fff' : '#cbd5e1', lineHeight: 1.4 }}>
+                    {/* High-Contrast Visible Option Text */}
+                    <span
+                      style={{
+                        fontSize: 15,
+                        fontWeight: isSelected ? 600 : 500,
+                        color: isSelected ? '#047857' : '#1e293b',
+                        lineHeight: 1.45,
+                      }}
+                    >
                       {opt}
                     </span>
                   </label>
                 );
               })}
             </div>
+          </div>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '32px 0', color: 'var(--color-text-secondary)' }}>
+            No question available at index {currentIndex + 1}.
           </div>
         )}
       </div>
@@ -396,7 +444,7 @@ export default function Assessment() {
           onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
           disabled={currentIndex === 0}
           className="btn btn-ghost"
-          style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+          style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: currentIndex === 0 ? '#94a3b8' : '#475569' }}
         >
           <ArrowLeft size={16} /> Previous
         </button>
@@ -409,7 +457,7 @@ export default function Assessment() {
                 setCurrentIndex((prev) => prev + 1);
               }}
               className="btn btn-primary"
-              style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, padding: '10px 20px' }}
             >
               Save & Next Question <ArrowRight size={16} />
             </button>
@@ -420,7 +468,7 @@ export default function Assessment() {
                 navigate(`/candidate/coding/${id}`, { state: { mcqAnswers: answers } });
               }}
               className="btn btn-primary"
-              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px' }}
+              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 22px', fontSize: 14, fontWeight: 700 }}
             >
               Complete MCQs & Open Coding Sandbox <ArrowRight size={16} />
             </button>

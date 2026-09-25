@@ -1,9 +1,35 @@
 import { useState, useEffect } from 'react';
-import { Activity, CheckCircle2, RefreshCw, ArrowLeft, Server, Cpu, Globe, Zap } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import {
+  Activity,
+  CheckCircle2,
+  RefreshCw,
+  ArrowLeft,
+  Server,
+  Cpu,
+  Globe,
+  Zap,
+  ShieldCheck,
+  ShieldAlert,
+  LogIn,
+  LayoutDashboard,
+  Shield,
+  ArrowRight,
+} from 'lucide-react';
+import { Link, useLocation, Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import Footer from '../components/Footer';
 import axios from 'axios';
 
 export default function SystemStatus() {
+  const { user } = useAuth();
+  const location = useLocation();
+  const isInAdminLayout = location.pathname.startsWith('/admin');
+
+  // If logged in as admin and accessed via /status, redirect to /admin/status so full Admin Console Navbar is present
+  if (user?.role === 'admin' && !isInAdminLayout) {
+    return <Navigate to="/admin/status" replace />;
+  }
+
   const [backendStatus, setBackendStatus] = useState('checking');
   const [aiStatus, setAiStatus] = useState('checking');
   const [lastCheck, setLastCheck] = useState(new Date());
@@ -69,12 +95,75 @@ export default function SystemStatus() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className={`min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans ${isInAdminLayout ? 'py-8 px-4 sm:px-6 lg:px-8' : ''}`}>
+      {/* ── Standalone Top Navbar (only rendered if NOT already inside AdminLayout) ── */}
+      {!isInAdminLayout && (
+        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-xs mb-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Link to="/" className="flex items-center gap-2.5 text-slate-900 group">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-sm shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+                  <ShieldCheck size={20} />
+                </div>
+                <span className="font-extrabold text-xl tracking-tight text-slate-900">
+                  Fair<span className="text-emerald-600">Hire</span>
+                </span>
+              </Link>
+              <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/70 px-2.5 py-1 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                System Health Monitor
+              </span>
+            </div>
+
+            <nav className="flex items-center gap-3">
+              <Link
+                to="/"
+                className="text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition"
+              >
+                Home
+              </Link>
+              {user ? (
+                <Link
+                  to={user.role === 'admin' ? '/admin/dashboard' : user.role === 'recruiter' ? '/recruiter/dashboard' : '/candidate/dashboard'}
+                  className="flex items-center gap-1.5 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 px-3.5 py-1.5 rounded-lg transition"
+                >
+                  <LayoutDashboard size={14} />
+                  <span>Go to Dashboard</span>
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className="flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-3.5 py-1.5 rounded-lg shadow-xs transition"
+                >
+                  <LogIn size={14} />
+                  <span>Sign In</span>
+                </Link>
+              )}
+            </nav>
+          </div>
+        </header>
+      )}
+
+      {/* ── Main Content Container ────────────────────────────────────────── */}
+      <div className={`max-w-4xl mx-auto w-full space-y-8 flex-1 ${!isInAdminLayout ? 'px-4 sm:px-6 lg:px-8 pb-12' : ''}`}>
+        {/* Navigation Breadcrumb / Top Bar */}
         <div className="flex items-center justify-between">
-          <Link to="/" className="inline-flex items-center text-sm text-slate-500 hover:text-emerald-600 transition">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
-          </Link>
+          {isInAdminLayout ? (
+            <Link
+              to="/admin/dashboard"
+              className="inline-flex items-center text-sm font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100/80 border border-rose-200/70 px-3 py-1.5 rounded-lg transition"
+            >
+              <ArrowLeft className="w-4 h-4 mr-1.5" /> Back to Admin Governance
+            </Link>
+          ) : (
+            <Link
+              to="/"
+              className="inline-flex items-center text-sm text-slate-500 hover:text-emerald-600 transition"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
+            </Link>
+          )}
+
           <button
             onClick={checkServices}
             className="px-3.5 py-1.5 bg-white border border-slate-300 hover:border-emerald-600 rounded-lg text-xs font-semibold text-slate-700 shadow-xs flex items-center gap-1.5 transition cursor-pointer"
@@ -86,13 +175,24 @@ export default function SystemStatus() {
         {/* Global Banner */}
         <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center shrink-0">
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border ${
+              isInAdminLayout
+                ? 'bg-rose-50 border-rose-200 text-rose-600'
+                : 'bg-emerald-50 border-emerald-200 text-emerald-600'
+            }`}>
               <Activity className="w-7 h-7" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-slate-900">System Status & Service Health</h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-900">System Status & Service Health</h1>
+                {isInAdminLayout && (
+                  <span className="text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    Super-Admin
+                  </span>
+                )}
+              </div>
               <p className="text-xs text-slate-500 mt-0.5">
-                All systems targeting 99.5% operational uptime. Last checked: {lastCheck.toLocaleTimeString()}
+                All services targeting 99.5% operational uptime. Last checked: {lastCheck.toLocaleTimeString()}
               </p>
             </div>
           </div>
@@ -140,6 +240,9 @@ export default function SystemStatus() {
           </div>
         </div>
       </div>
+
+      {/* ── Standalone Footer (only rendered if NOT already inside AdminLayout) ── */}
+      {!isInAdminLayout && <Footer />}
     </div>
   );
 }

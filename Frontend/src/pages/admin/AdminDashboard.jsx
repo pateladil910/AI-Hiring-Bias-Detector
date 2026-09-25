@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   ShieldCheck,
   Check,
@@ -305,7 +306,7 @@ export default function AdminDashboard() {
             <Server size={16} color="#10b981" /> Multi-Tier Architecture Health:
           </div>
 
-          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--color-text-secondary)' }}>
               <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981' }} />
               REST API: <strong style={{ color: 'var(--color-text-primary)' }}>Port 5000 (Express)</strong>
@@ -325,6 +326,26 @@ export default function AdminDashboard() {
               <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981' }} />
               Real-Time: <strong style={{ color: 'var(--color-text-primary)' }}>ws://localhost:5000</strong>
             </div>
+
+            <Link
+              to="/admin/status"
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                color: '#e11d48',
+                background: 'rgba(225, 29, 72, 0.08)',
+                border: '1px solid rgba(225, 29, 72, 0.25)',
+                padding: '4px 10px',
+                borderRadius: 6,
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                transition: 'all 0.15s ease',
+              }}
+            >
+              View Service Health Matrix →
+            </Link>
           </div>
         </div>
 
@@ -834,6 +855,24 @@ export default function AdminDashboard() {
                   <strong style={{ color: '#10b981' }}>Deterministic Hex Cloaking</strong>
                 </div>
               </div>
+            </div>
+
+            <div style={{ gridColumn: '1 / -1', background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 16, padding: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14 }}>
+              <div>
+                <h4 style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 700, color: 'var(--color-text-primary)' }}>
+                  Live Multi-Service Health & Uptime Matrix
+                </h4>
+                <p style={{ margin: 0, fontSize: 13, color: 'var(--color-text-secondary)' }}>
+                  Inspect live health checks, WebSocket ping status, and port binding diagnostics.
+                </p>
+              </div>
+              <Link
+                to="/admin/status"
+                className="btn btn-primary btn-sm"
+                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}
+              >
+                <Activity size={14} /> Open System Health Monitor
+              </Link>
             </div>
           </div>
         )}

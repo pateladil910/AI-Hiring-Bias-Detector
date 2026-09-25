@@ -162,6 +162,7 @@ export default function App() {
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="billing" element={<Billing />} />
               <Route path="audit" element={<AuditExplorer />} />
+              <Route path="status" element={<SystemStatus />} />
             </Route>
 
             {/* Recruiter-side portal */}
@@ -212,6 +213,7 @@ export default function App() {
               <Route path="applications" element={<Applications />} />
               <Route path="interviews" element={<CandidateInterviews />} />
               <Route path="profile" element={<Profile />} />
+              <Route path="notifications" element={<Notifications />} />
               <Route path="test/:testId" element={<TakeTest />} />
             </Route>
 

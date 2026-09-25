@@ -16,7 +16,7 @@ const navItems = [
   { to: '/admin/dashboard', icon: <ShieldAlert size={16} />, label: 'Admin Governance' },
   { to: '/admin/audit', icon: <FileText size={16} />, label: 'Audit Explorer' },
   { to: '/admin/billing', icon: <CreditCard size={16} />, label: 'Enterprise Billing' },
-  { to: '/status', icon: <Activity size={16} />, label: 'System Health' },
+  { to: '/admin/status', icon: <Activity size={16} />, label: 'System Health' },
 ];
 
 export default function AdminLayout() {

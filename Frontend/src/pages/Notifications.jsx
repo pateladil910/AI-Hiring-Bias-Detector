@@ -1,9 +1,22 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Bell, CheckCheck, Clock, ShieldCheck, Briefcase, Info, ArrowRight } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  Bell,
+  CheckCheck,
+  Clock,
+  ShieldCheck,
+  Briefcase,
+  Info,
+  ArrowRight,
+  ArrowLeft,
+  Home,
+} from 'lucide-react';
 import { notificationsAPI } from '../lib/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function Notifications() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
@@ -26,7 +39,7 @@ export default function Notifications() {
           title: 'Blind Assessment Advanced',
           message: 'Your blind evaluation for Senior Full Stack Engineer has advanced to the Technical Panel review.',
           read: false,
-          link: '/applications',
+          link: '/candidate/applications',
           createdAt: new Date(Date.now() - 3600000).toISOString()
         },
         {
@@ -35,7 +48,7 @@ export default function Notifications() {
           title: 'Job Description Audit Cleared',
           message: 'JD "Backend Systems Architect" passed Layer-1 and Layer-2 bias inspection with a 96/100 neutrality index.',
           read: false,
-          link: '/recruiter/jobs',
+          link: '/candidate/jobs',
           createdAt: new Date(Date.now() - 7200000).toISOString()
         },
         {
@@ -44,7 +57,7 @@ export default function Notifications() {
           title: 'System Release v3.0.0 Active',
           message: 'FairHire AI 3.0.0 algorithms and WCAG 2.1 AA accessibility standards are now in effect.',
           read: true,
-          link: '/status',
+          link: '/candidate/dashboard',
           createdAt: new Date(Date.now() - 86400000).toISOString()
         }
       ]);
@@ -73,13 +86,48 @@ export default function Notifications() {
     ? notifications.filter(n => !n.read)
     : notifications.filter(n => n.type === filter);
 
+  const fallbackDashboard = user?.role === 'recruiter' ? '/recruiter/dashboard' : '/candidate/dashboard';
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate(fallbackDashboard);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="w-full min-h-screen bg-slate-50 text-slate-900 py-8 px-4 sm:px-6 lg:px-8 font-sans">
+      <div className="w-full space-y-6">
+        {/* Top Back Navigation Bar */}
+        <div className="flex items-center justify-between gap-4 pb-2 border-b border-slate-200/80">
+          <button
+            onClick={handleBack}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/60 text-xs font-semibold text-slate-700 hover:text-emerald-700 shadow-2xs transition-all cursor-pointer group"
+          >
+            <ArrowLeft className="w-4 h-4 text-slate-500 group-hover:text-emerald-600 group-hover:-translate-x-0.5 transition-transform" />
+            <span>Back to Dashboard</span>
+          </button>
+
+          <div className="flex items-center gap-2 text-xs text-slate-500">
+            <Link
+              to={fallbackDashboard}
+              className="hover:text-emerald-600 transition-colors flex items-center gap-1 font-medium"
+            >
+              <Home size={13} />
+              <span>Dashboard</span>
+            </Link>
+            <span>/</span>
+            <span className="text-slate-900 font-semibold">Notifications Center</span>
+          </div>
+        </div>
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 flex items-center gap-3">
-              <Bell className="w-7 h-7 text-emerald-600" />
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shadow-xs">
+                <Bell className="w-5 h-5" />
+              </div>
               Notifications Center
             </h1>
             <p className="text-sm text-slate-500 mt-1">
@@ -88,7 +136,7 @@ export default function Notifications() {
           </div>
           <button
             onClick={handleMarkAllRead}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-white border border-slate-300 hover:border-emerald-600 text-xs font-semibold text-slate-700 shadow-xs transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-white border border-slate-200 hover:border-emerald-600 text-xs font-semibold text-slate-700 shadow-xs transition cursor-pointer"
           >
             <CheckCheck className="w-4 h-4 text-emerald-600" /> Mark All as Read
           </button>

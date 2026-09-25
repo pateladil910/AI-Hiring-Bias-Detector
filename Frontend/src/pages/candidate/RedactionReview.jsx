@@ -64,6 +64,9 @@ export default function RedactionReview() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setConfirmed(true);
+      setTimeout(() => {
+        navigate('/candidate/domain');
+      }, 800);
     } catch (err) {
       setError('Failed to record confirmation. Please try again.');
     } finally {
@@ -97,7 +100,7 @@ export default function RedactionReview() {
   const skills = data.extractedSkills || [];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-sans">
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-8 font-sans">
       {/* ── Top Header ──────────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
         <div>
