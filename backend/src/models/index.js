@@ -108,6 +108,7 @@ const CandidateResume = sequelize.define('CandidateResume', {
   redactedText: { type: DataTypes.TEXT, allowNull: true },
   detectedMarkersJson: { type: DataTypes.JSONB, defaultValue: [] },
   extractedSkillsJson: { type: DataTypes.JSONB, defaultValue: [] },
+  aiAnalysisJson: { type: DataTypes.JSONB, defaultValue: null },
   biasScore: { type: DataTypes.FLOAT, defaultValue: null },
   confirmed: { type: DataTypes.BOOLEAN, defaultValue: false },
   consentTimestamp: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
@@ -276,6 +277,7 @@ const syncModels = async () => {
         'ALTER TABLE aptitude_tests ADD COLUMN scoringExplanation TEXT;',
         'ALTER TABLE aptitude_tests ADD COLUMN codingSubmissionJson JSON;',
         'ALTER TABLE aptitude_tests ADD COLUMN status TEXT;',
+        'ALTER TABLE candidate_resumes ADD COLUMN aiAnalysisJson JSON;',
       ];
       for (const q of safeQueries) {
         try { await sequelize.query(q); } catch (_) {}

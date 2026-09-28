@@ -262,18 +262,117 @@ export default function AssessmentResult() {
                 20% Weight
               </span>
             </div>
-            <div className="text-3xl font-extrabold text-slate-900 font-mono mb-2">
-              {resume}%
+            <div className="text-3xl font-extrabold text-slate-900 font-mono mb-2 flex items-center justify-between">
+              <span>{resume}%</span>
+              {aiAnalysis?.componentBreakdown?.resume?.fitBadge && (
+                <span className="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full font-sans">
+                  {aiAnalysis.componentBreakdown.resume.fitBadge}
+                </span>
+              )}
             </div>
             <div className="text-xs text-slate-500 leading-relaxed">
               Weighted contribution: <strong className="text-slate-800">{(resume * 0.2).toFixed(1)} pts</strong> out of 20.0 maximum.
             </div>
           </div>
           <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-500">
-            {resume > 0 ? `${resume}% skills verified from resume` : hasResume ? 'Resume uploaded — 0 domain skills matched' : 'No resume uploaded (0 / 100)'}
+            {resume > 0 ? `${resume}% domain competency match verified by AI` : hasResume ? 'Resume uploaded — 0 domain skills matched' : 'No resume uploaded (0 / 100)'}
           </div>
         </div>
       </div>
+
+      {/* ── AI Resume & Domain Alignment Evidence Card ──────────────────────── */}
+      {aiAnalysis?.componentBreakdown?.resume && (
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-8 shadow-xs">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center justify-center shrink-0">
+                <Sparkles size={16} />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  AI Resume Intelligence & Domain Alignment
+                  <span className="text-[10px] font-bold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full">
+                    Dynamic Scoring
+                  </span>
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Granular algorithmic evaluation matching candidate background against {result?.domainName || 'Target Domain'}.
+                </p>
+              </div>
+            </div>
+
+            <span className="text-xs font-extrabold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded-lg">
+              Match Score: {resume}% ({(resume * 0.2).toFixed(1)} / 20 pts)
+            </span>
+          </div>
+
+          {/* Subscores Breakdown (if available) */}
+          {aiAnalysis.componentBreakdown.resume.subscores && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-center">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Core Skills</div>
+                <div className="font-mono font-bold text-slate-900 text-sm">{aiAnalysis.componentBreakdown.resume.subscores.coreCompetency} / 45</div>
+              </div>
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-center">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Tooling &amp; Ecosystem</div>
+                <div className="font-mono font-bold text-slate-900 text-sm">{aiAnalysis.componentBreakdown.resume.subscores.toolingAndEcosystem} / 25</div>
+              </div>
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-center">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Project Evidence</div>
+                <div className="font-mono font-bold text-slate-900 text-sm">{aiAnalysis.componentBreakdown.resume.subscores.projectEvidence} / 20</div>
+              </div>
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-center">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Academic / Honors</div>
+                <div className="font-mono font-bold text-slate-900 text-sm">{aiAnalysis.componentBreakdown.resume.subscores.academicFoundation} / 10</div>
+              </div>
+            </div>
+          )}
+
+          {/* AI Qualitative Explanation */}
+          {aiAnalysis.componentBreakdown.resume.aiExplanation && (
+            <div className="bg-indigo-50/50 border border-indigo-100 rounded-xl p-3.5 mb-4 text-xs text-indigo-900 leading-relaxed font-medium">
+              💡 <strong>AI Analysis:</strong> {aiAnalysis.componentBreakdown.resume.aiExplanation}
+            </div>
+          )}
+
+          {/* Matched Skills Chips */}
+          {aiAnalysis.componentBreakdown.resume.matchedSkills && aiAnalysis.componentBreakdown.resume.matchedSkills.length > 0 && (
+            <div className="mb-4">
+              <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+                Verified Domain Competencies ({aiAnalysis.componentBreakdown.resume.matchedSkills.length})
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {aiAnalysis.componentBreakdown.resume.matchedSkills.map((sk, skIdx) => (
+                  <span
+                    key={skIdx}
+                    className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-md text-xs font-semibold"
+                  >
+                    <CheckCircle2 size={12} className="text-emerald-600" />
+                    {sk}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Project Evidence */}
+          {aiAnalysis.componentBreakdown.resume.relevantProjects && aiAnalysis.componentBreakdown.resume.relevantProjects.length > 0 && (
+            <div>
+              <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+                Identified Project Portfolio Evidence
+              </div>
+              <div className="space-y-1.5">
+                {aiAnalysis.componentBreakdown.resume.relevantProjects.map((p, pIdx) => (
+                  <div key={pIdx} className="bg-slate-50 border border-slate-200/80 rounded-lg p-2.5 text-xs text-slate-700">
+                    <span className="font-bold text-slate-900 block">{p.title}</span>
+                    {p.highlight && <span className="text-slate-500 text-[11px] mt-0.5 block">{p.highlight}</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ── AI Objective Evaluation & Hiring Recommendation Matrix ─────────── */}
       <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 mb-8 shadow-xs space-y-6">

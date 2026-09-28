@@ -7,6 +7,7 @@ const router = express.Router();
 
 // ─── Domain Assessment Tracks Data (20 MCQs/track + 20 min Coding Challenge) ───
 const { DOMAINS } = require('../data/assessmentQuestions');
+const { analyzeResumeWithAI } = require('../services/aiResumeAnalyzer');
 
 // Helper: strip answer key before sending to candidate
 function stripAnswerKeys(domain) {
@@ -33,7 +34,7 @@ function stripAnswerKeys(domain) {
   };
 }
 
-// Helper: Semantic & Domain-Aware Resume Matcher
+// Helper: Semantic & Domain-Aware Resume Matcher Powered by AI Engine
 function computeResumeMatch(domain, resume) {
   if (!resume) {
     return {
@@ -41,13 +42,46 @@ function computeResumeMatch(domain, resume) {
       resumeScore: 0,
       matchedSkills: [],
       missingSkills: [...(domain.requiredSkills || [])],
+      fitLevel: 'No Profile',
+      fitBadge: 'Unverified',
+      relevantProjects: [],
+      aiAnalysis: 'No resume profile available to match domain requirements.',
+      subscores: null,
     };
   }
 
+  // 1. Check if resume has precomputed AI domain match
+  let aiAnalysis = resume.aiAnalysisJson;
+  if (!aiAnalysis || !aiAnalysis.domainMatches) {
+    if (resume.redactedText) {
+      try {
+        aiAnalysis = analyzeResumeWithAI(resume.redactedText);
+        resume.aiAnalysisJson = aiAnalysis;
+        resume.save().catch(() => {});
+      } catch (_) {}
+    }
+  }
+
+  const domainMatch = aiAnalysis?.domainMatches?.[domain.id];
+  if (domainMatch) {
+    return {
+      hasResume: true,
+      resumeScore: domainMatch.score,
+      fitLevel: domainMatch.fitLevel,
+      fitBadge: domainMatch.fitBadge,
+      matchedSkills: domainMatch.matchedSkills || [],
+      missingSkills: domainMatch.missingSkills || [],
+      relevantProjects: domainMatch.relevantProjects || [],
+      aiAnalysis: domainMatch.aiAnalysis || `Evaluated by AI with a ${domainMatch.score}% domain compatibility rating.`,
+      subscores: domainMatch.subscores || null,
+    };
+  }
+
+  // Fallback if domain is custom or not in precomputed tracks
   const candidateSkills = (resume.extractedSkillsJson || []).map((s) => s.toLowerCase());
   const rawResumeText = (resume.redactedText || '').toLowerCase();
 
-  const matchedSkills = domain.requiredSkills.filter((reqSkill) => {
+  const matchedSkills = (domain.requiredSkills || []).filter((reqSkill) => {
     const parts = reqSkill.split(/[\/,|]/).map((p) => p.trim().toLowerCase()).filter(Boolean);
     return parts.some((p) => {
       const inSkills = candidateSkills.some((cs) => cs === p || cs.includes(p) || p.includes(cs));
@@ -75,8 +109,8 @@ function computeResumeMatch(domain, resume) {
     });
   });
 
-  const missingSkills = domain.requiredSkills.filter((s) => !matchedSkills.includes(s));
-  const resumeScore = domain.requiredSkills.length > 0
+  const missingSkills = (domain.requiredSkills || []).filter((s) => !matchedSkills.includes(s));
+  const resumeScore = (domain.requiredSkills || []).length > 0
     ? Math.round((matchedSkills.length / domain.requiredSkills.length) * 100)
     : 100;
 
@@ -85,6 +119,11 @@ function computeResumeMatch(domain, resume) {
     resumeScore,
     matchedSkills,
     missingSkills,
+    fitLevel: resumeScore >= 80 ? 'High Match' : 'Good Match',
+    fitBadge: resumeScore >= 80 ? '🌟 High Fit' : '👍 Suitable Fit',
+    relevantProjects: [],
+    aiAnalysis: `Dynamic match computed: ${matchedSkills.length}/${(domain.requiredSkills || []).length} required skills identified.`,
+    subscores: null,
   };
 }
 
@@ -435,13 +474,25 @@ router.post('/:id/submit', authenticate, requireRole('candidate'), async (req, r
         whyThisScore: [
           mcqScore === 0 ? 'No MCQs were answered correctly (0/5 answered).' : `Aptitude MCQs: ${mcqCorrect}/${totalMCQs} answered correctly (${mcqScore}%).`,
           codingScore === 0 ? 'Coding challenge had 0 passing unit tests or was left unsolved.' : `Coding Sandbox: ${testsPassed}/${testCases.length} unit tests passed in VM (${codingScore}%).`,
-          !hasResume ? 'No resume was uploaded (0% resume evidence contribution).' : `Resume Match: ${matchedSkills.length}/${domain.requiredSkills.length} domain skills verified in resume.`,
+          !hasResume ? 'No resume was uploaded (0% resume evidence contribution).' : `AI Resume Match (${resumeScore}%): ${matchedSkills.length} competencies & ${matchData.relevantProjects?.length || 0} project portfolio items verified.`,
         ],
       },
       componentBreakdown: {
         mcq: { score: mcqScore, weight: 0.4, points: Number((mcqScore * 0.4).toFixed(1)), correct: mcqCorrect, total: totalMCQs },
         coding: { score: codingScore, weight: 0.4, points: Number((codingScore * 0.4).toFixed(1)), testsPassed, testsTotal: testCases.length },
-        resume: { score: resumeScore, weight: 0.2, points: Number((resumeScore * 0.2).toFixed(1)), hasResume, matchedSkills, missingSkills },
+        resume: {
+          score: resumeScore,
+          weight: 0.2,
+          points: Number((resumeScore * 0.2).toFixed(1)),
+          hasResume,
+          matchedSkills,
+          missingSkills,
+          fitLevel: matchData.fitLevel,
+          fitBadge: matchData.fitBadge,
+          relevantProjects: matchData.relevantProjects,
+          aiExplanation: matchData.aiAnalysis,
+          subscores: matchData.subscores,
+        },
       },
     };
 
@@ -598,9 +649,14 @@ router.get('/results/:id', authenticate, requireRole('candidate'), async (req, r
             hasResume: true,
             matchedSkills: matchData.matchedSkills,
             missingSkills: matchData.missingSkills,
+            fitLevel: matchData.fitLevel,
+            fitBadge: matchData.fitBadge,
+            relevantProjects: matchData.relevantProjects,
+            aiExplanation: matchData.aiAnalysis,
+            subscores: matchData.subscores,
           };
           if (aiAnalysis.hiringCriteria && Array.isArray(aiAnalysis.hiringCriteria.whyThisScore)) {
-            aiAnalysis.hiringCriteria.whyThisScore[2] = `Resume Match: ${matchData.matchedSkills.length}/${domain.requiredSkills.length} domain skills verified in resume (${resumeScore}%).`;
+            aiAnalysis.hiringCriteria.whyThisScore[2] = `AI Resume Match (${resumeScore}%): ${matchData.matchedSkills.length} competencies & ${matchData.relevantProjects?.length || 0} project portfolio items verified.`;
           }
         }
         test.codingSubmissionJson = codingJson;

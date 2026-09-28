@@ -7,6 +7,7 @@ const axios = require('axios');
 const FormData = require('form-data');
 const { CandidateResume, AuditLog } = require('../models');
 const { authenticate, requireRole } = require('../middleware/auth');
+const { analyzeResumeWithAI } = require('../services/aiResumeAnalyzer');
 
 const router = express.Router();
 const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://localhost:8000';
@@ -204,10 +205,20 @@ router.post('/upload', authenticate, requireRole('candidate'), upload.single('re
       redactionResult = redactAndExtractLocal(rawText, req.user);
     }
 
+    // Run Deep Multi-Domain AI Analysis
+    const textForAI = redactionResult.redactedText || rawText;
+    const aiAnalysis = analyzeResumeWithAI(textForAI, req.user);
+
+    // Merge high-precision skills from AI analysis
+    const combinedSkills = Array.from(new Set([
+      ...(redactionResult.extractedSkills || []),
+      ...(aiAnalysis.extractedSkills || []),
+    ]));
+
     // Generate cloaked reference ID e.g. CAND-8F3A2E
     const refId = `CAND-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
 
-    // Create CandidateResume record
+    // Create CandidateResume record with rich AI analysis
     const resumeRecord = await CandidateResume.create({
       userId: req.user.id,
       refId,
@@ -215,7 +226,8 @@ router.post('/upload', authenticate, requireRole('candidate'), upload.single('re
       fileSize: req.file.size,
       redactedText: redactionResult.redactedText,
       detectedMarkersJson: redactionResult.detectedMarkers,
-      extractedSkillsJson: redactionResult.extractedSkills,
+      extractedSkillsJson: combinedSkills,
+      aiAnalysisJson: aiAnalysis,
       biasScore: redactionResult.biasScore,
       confirmed: false,
       consentTimestamp: new Date(),
@@ -227,11 +239,14 @@ router.post('/upload', authenticate, requireRole('candidate'), upload.single('re
       entityType: 'candidate_resume',
       entityId: resumeRecord.id,
       userId: req.user.id,
-      reason: 'Candidate uploaded resume for algorithmic anonymization',
+      reason: 'Candidate uploaded resume for algorithmic anonymization & multi-domain AI profiling',
       meta: {
         refId,
         fileName: req.file.originalname,
         markersCount: redactionResult.detectedMarkers.length,
+        skillsCount: combinedSkills.length,
+        bestDomain: aiAnalysis.bestDomainName,
+        overallScore: aiAnalysis.overallScore,
       },
     });
 
@@ -241,9 +256,10 @@ router.post('/upload', authenticate, requireRole('candidate'), upload.single('re
       fileName: req.file.originalname,
       redactedText: redactionResult.redactedText,
       detectedMarkers: redactionResult.detectedMarkers,
-      extractedSkills: redactionResult.extractedSkills,
+      extractedSkills: combinedSkills,
       biasScore: redactionResult.biasScore,
       confirmed: false,
+      aiAnalysis,
     });
   } catch (err) {
     console.error('[Resume Upload Error]', err.message);
@@ -256,11 +272,28 @@ router.get('/my', authenticate, requireRole('candidate'), async (req, res) => {
   try {
     const resume = await CandidateResume.findOne({
       where: { userId: req.user.id },
-      order: [['createdAt', 'DESC']],
+      order: [
+        ['confirmed', 'DESC'],
+        ['createdAt', 'DESC'],
+      ],
     });
 
     if (!resume) {
       return res.json({ resume: null });
+    }
+
+    // Lazy AI analysis calculation if record was uploaded prior to AI engine
+    let aiAnalysis = resume.aiAnalysisJson;
+    if ((!aiAnalysis || !aiAnalysis.domainMatches) && resume.redactedText) {
+      aiAnalysis = analyzeResumeWithAI(resume.redactedText, req.user);
+      resume.aiAnalysisJson = aiAnalysis;
+      if (aiAnalysis.extractedSkills && aiAnalysis.extractedSkills.length > 0) {
+        resume.extractedSkillsJson = Array.from(new Set([
+          ...(resume.extractedSkillsJson || []),
+          ...aiAnalysis.extractedSkills,
+        ]));
+      }
+      await resume.save();
     }
 
     return res.json({
@@ -272,6 +305,7 @@ router.get('/my', authenticate, requireRole('candidate'), async (req, res) => {
         redactedText: resume.redactedText,
         detectedMarkers: resume.detectedMarkersJson || [],
         extractedSkills: resume.extractedSkillsJson || [],
+        aiAnalysis: aiAnalysis || null,
         biasScore: resume.biasScore,
         confirmed: resume.confirmed,
         createdAt: resume.createdAt,
@@ -296,17 +330,65 @@ router.get('/profile/:refId', authenticate, async (req, res) => {
       return res.status(403).json({ error: { code: 'FORBIDDEN', message: 'Access denied' } });
     }
 
+    let aiAnalysis = resume.aiAnalysisJson;
+    if ((!aiAnalysis || !aiAnalysis.domainMatches) && resume.redactedText) {
+      aiAnalysis = analyzeResumeWithAI(resume.redactedText);
+      resume.aiAnalysisJson = aiAnalysis;
+      await resume.save();
+    }
+
     return res.json({
       refId: resume.refId,
       redactedText: resume.redactedText,
       detectedMarkers: resume.detectedMarkersJson || [],
       extractedSkills: resume.extractedSkillsJson || [],
+      aiAnalysis: aiAnalysis || null,
       biasScore: resume.biasScore,
       confirmed: resume.confirmed,
       createdAt: resume.createdAt,
     });
   } catch (err) {
     return res.status(500).json({ error: { code: 'FETCH_FAILED', message: 'Could not load profile' } });
+  }
+});
+
+// ─── GET /api/resume/domain-matches ───────────────────────────────────────────
+router.get('/domain-matches', authenticate, requireRole('candidate'), async (req, res) => {
+  try {
+    const resume = await CandidateResume.findOne({
+      where: { userId: req.user.id },
+      order: [
+        ['confirmed', 'DESC'],
+        ['createdAt', 'DESC'],
+      ],
+    });
+
+    if (!resume) {
+      return res.json({ hasResume: false, matches: {} });
+    }
+
+    let aiAnalysis = resume.aiAnalysisJson;
+    if ((!aiAnalysis || !aiAnalysis.domainMatches) && resume.redactedText) {
+      aiAnalysis = analyzeResumeWithAI(resume.redactedText, req.user);
+      resume.aiAnalysisJson = aiAnalysis;
+      await resume.save();
+    }
+
+    return res.json({
+      hasResume: true,
+      confirmed: resume.confirmed,
+      refId: resume.refId,
+      overallScore: aiAnalysis?.overallScore || 0,
+      bestDomainId: aiAnalysis?.bestDomainId,
+      bestDomainName: aiAnalysis?.bestDomainName,
+      profileSummary: aiAnalysis?.profileSummary,
+      domainMatches: aiAnalysis?.domainMatches || {},
+      extractedSkills: aiAnalysis?.extractedSkills || resume.extractedSkillsJson || [],
+      strengths: aiAnalysis?.strengths || [],
+    });
+  } catch (err) {
+    console.error('[Domain Matches Error]', err.message);
+    return res.status(500).json({ error: { code: 'FETCH_FAILED', message: 'Failed to retrieve domain matches' } });
   }
 });
 
@@ -329,7 +411,7 @@ router.post('/confirm/:refId', authenticate, requireRole('candidate'), async (re
       entityType: 'candidate_resume',
       entityId: resume.id,
       userId: req.user.id,
-      reason: 'Candidate confirmed anonymized resume preview',
+      reason: 'Candidate confirmed anonymized resume preview & AI domain profiling',
       meta: { refId: resume.refId },
     });
 

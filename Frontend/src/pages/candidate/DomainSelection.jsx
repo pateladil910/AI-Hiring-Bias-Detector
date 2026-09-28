@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Code,
   Target,
@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   Sparkles,
   HelpCircle,
+  AlertCircle,
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -17,14 +18,21 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export default function DomainSelection() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [domains, setDomains] = useState([]);
   const [selectedDomain, setSelectedDomain] = useState('fullstack');
+  const [aiMatches, setAiMatches] = useState(null);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    const paramDomain = searchParams.get('selected');
+    if (paramDomain) {
+      setSelectedDomain(paramDomain);
+    }
     fetchDomains();
+    fetchAiMatches();
   }, []);
 
   const fetchDomains = async () => {
@@ -36,6 +44,21 @@ export default function DomainSelection() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchAiMatches = async () => {
+    try {
+      const token = localStorage.getItem('token') || localStorage.getItem('fairhire_token');
+      const res = await axios.get(`${API_BASE}/api/resume/domain-matches`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.data?.domainMatches) {
+        setAiMatches(res.data);
+        if (!searchParams.get('selected') && res.data.bestDomainId) {
+          setSelectedDomain(res.data.bestDomainId);
+        }
+      }
+    } catch (_) {}
   };
 
   const handleStart = async () => {
@@ -66,7 +89,7 @@ export default function DomainSelection() {
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-10 font-sans">
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div className="text-center mb-10">
+      <div className="text-center mb-8">
         <div className="inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full mb-3">
           <Target size={14} className="text-emerald-600" /> Stage 02: Domain Assessment Track
         </div>
@@ -77,6 +100,39 @@ export default function DomainSelection() {
           Standardized objective benchmarks: 20 knowledge MCQs (1 min/Q) followed by 1 sandboxed algorithmic coding challenge (20 min).
         </p>
       </div>
+
+      {/* ── AI Recommendation Banner ────────────────────────────────────── */}
+      {aiMatches && aiMatches.bestDomainName && (
+        <div className="bg-gradient-to-r from-purple-50 via-indigo-50/50 to-emerald-50/60 border border-purple-200/80 rounded-2xl p-4 sm:p-5 mb-8 flex flex-wrap items-center justify-between gap-4 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+              <Sparkles size={20} />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-purple-800">
+                  AI Profile Recommendation
+                </span>
+                <span className="text-[11px] font-bold bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">
+                  {aiMatches.overallScore}% Best Fit
+                </span>
+              </div>
+              <div className="text-sm font-extrabold text-slate-900 mt-0.5">
+                Your resume demonstrates strongest alignment with <u>{aiMatches.bestDomainName}</u>
+              </div>
+              <div className="text-xs text-slate-600 mt-0.5">
+                Based on your background, AI identified verified competencies in {aiMatches.extractedSkills?.slice(0, 5).join(', ')}.
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setSelectedDomain(aiMatches.bestDomainId)}
+            className="px-3.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition shadow-xs cursor-pointer"
+          >
+            Select Recommended Track
+          </button>
+        </div>
+      )}
 
       {error && (
         <div className="bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-xl text-xs font-medium mb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -104,6 +160,7 @@ export default function DomainSelection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {domains.map((domain) => {
             const isSelected = selectedDomain === domain.id;
+            const matchInfo = aiMatches?.domainMatches?.[domain.id];
 
             return (
               <div
@@ -116,7 +173,7 @@ export default function DomainSelection() {
                 }`}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center justify-between mb-3">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
                       isSelected ? 'bg-emerald-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600'
                     }`}>
@@ -129,6 +186,25 @@ export default function DomainSelection() {
                       {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
                     </div>
                   </div>
+
+                  {/* AI Match Badge Pill */}
+                  {matchInfo && (
+                    <div className="mb-3 flex items-center justify-between bg-slate-50 border border-slate-200/80 rounded-lg px-2.5 py-1.5">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+                        <Sparkles size={13} className="text-purple-600" />
+                        <span>AI Match: {matchInfo.score}%</span>
+                      </div>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                        matchInfo.score >= 90
+                          ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
+                          : matchInfo.score >= 75
+                          ? 'bg-sky-100 text-sky-800 border-sky-200'
+                          : 'bg-amber-100 text-amber-800 border-amber-200'
+                      }`}>
+                        {matchInfo.fitBadge}
+                      </span>
+                    </div>
+                  )}
 
                   <h3 className="text-base font-bold text-slate-900 mb-2">
                     {domain.name}

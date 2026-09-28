@@ -162,6 +162,155 @@ export default function RedactionReview() {
         </div>
       )}
 
+      {/* ── AI Multi-Domain Compatibility & Scoring Card ────────────────────── */}
+      {data.aiAnalysis && data.aiAnalysis.domainMatches && (
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 mb-8 shadow-xs">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-4 border-b border-slate-100">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 flex items-center justify-center shrink-0">
+                <Sparkles size={18} />
+              </div>
+              <div>
+                <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  AI Resume Intelligence & Multi-Domain Alignment
+                  <span className="text-[11px] font-bold bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full border border-purple-200">
+                    Live Evaluation
+                  </span>
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Automated algorithmic scoring analyzing skills, project implementation depth, and domain fit.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 text-xs">
+              <span className="text-slate-500">Top Alignment:</span>
+              <span className="font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg">
+                {data.aiAnalysis.bestDomainName} ({data.aiAnalysis.overallScore}%)
+              </span>
+            </div>
+          </div>
+
+          {/* Profile Summary & Strengths */}
+          <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4 mb-6">
+            <p className="text-xs text-slate-700 leading-relaxed font-medium mb-3">
+              {data.aiAnalysis.profileSummary}
+            </p>
+
+            {data.aiAnalysis.strengths && data.aiAnalysis.strengths.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-200/60">
+                {data.aiAnalysis.strengths.map((str, sIdx) => (
+                  <span
+                    key={sIdx}
+                    className="inline-flex items-center gap-1.5 text-[11px] font-semibold bg-white border border-slate-200 text-slate-700 px-2.5 py-1 rounded-md shadow-2xs"
+                  >
+                    <CheckCircle2 size={12} className="text-emerald-600" />
+                    {str}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Domain Match Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {Object.entries(data.aiAnalysis.domainMatches).map(([domainId, match]) => {
+              const isBest = match.recommended || domainId === data.aiAnalysis.bestDomainId;
+
+              return (
+                <div
+                  key={domainId}
+                  className={`rounded-xl p-5 border flex flex-col justify-between transition-all ${
+                    isBest
+                      ? 'bg-gradient-to-b from-emerald-50/50 to-white border-emerald-300 ring-2 ring-emerald-500/20 shadow-xs'
+                      : 'bg-white border-slate-200 hover:border-slate-300'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${
+                        isBest
+                          ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                          : match.score >= 80
+                          ? 'bg-sky-100 text-sky-800 border-sky-200'
+                          : 'bg-amber-100 text-amber-800 border-amber-200'
+                      }`}>
+                        {match.fitBadge}
+                      </span>
+                      <span className="font-mono font-extrabold text-base text-slate-900">
+                        {match.score}%
+                      </span>
+                    </div>
+
+                    <h3 className="font-bold text-sm text-slate-900 mb-1">
+                      {match.domainName}
+                    </h3>
+                    <p className="text-[11px] text-slate-600 mb-3 leading-relaxed">
+                      {match.aiAnalysis}
+                    </p>
+
+                    {/* Progress Bar */}
+                    <div className="w-full bg-slate-100 rounded-full h-2 mb-3 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${
+                          match.score >= 90
+                            ? 'bg-emerald-500'
+                            : match.score >= 75
+                            ? 'bg-teal-500'
+                            : 'bg-amber-500'
+                        }`}
+                        style={{ width: `${match.score}%` }}
+                      />
+                    </div>
+
+                    {/* Matched Skills Chips */}
+                    <div className="mb-3">
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                        Verified Competencies ({match.matchedSkills?.length || 0})
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {match.matchedSkills?.slice(0, 4).map((sk, sIdx) => (
+                          <span
+                            key={sIdx}
+                            className="bg-emerald-50 text-emerald-800 border border-emerald-200/80 px-1.5 py-0.5 rounded text-[10px] font-medium"
+                          >
+                            ✓ {sk}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Relevant Project Evidence */}
+                    {match.relevantProjects && match.relevantProjects.length > 0 && (
+                      <div className="text-[11px] text-slate-500 bg-slate-50 border border-slate-200/60 rounded-lg p-2.5 mb-3">
+                        <span className="font-semibold text-slate-700 block mb-0.5">
+                          Project Evidence:
+                        </span>
+                        <span className="line-clamp-2 text-slate-600">
+                          {match.relevantProjects[0].title}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => navigate(`/candidate/domain?selected=${domainId}`)}
+                    className={`w-full py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
+                      isBest
+                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs'
+                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                    }`}
+                  >
+                    <span>Choose {match.domainName.split(' ')[0]} Track</span>
+                    <ArrowRight size={13} />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* ── Side-by-Side Split View ────────────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Column: Redacted Markers & Skills Evidence */}
